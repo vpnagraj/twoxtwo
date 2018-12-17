@@ -8,6 +8,7 @@ Description: This package provides a collection of functions for data analysis w
 Imports:
   dplyr,
   tidyr,
+  forcats,
   magrittr,
   rlang
 License: GPL-3

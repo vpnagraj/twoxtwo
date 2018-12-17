@@ -24,21 +24,25 @@ twoxtwo <- function(df, exposure, outcome, vals = NULL, na.rm = TRUE) {
 
   df <-
     df %>%
-    dplyr::group_by(!! quo_exposure,
-                    !! quo_outcome) %>%
-    dplyr::tally() %>%
-    dplyr::ungroup() %>%
-    tidyr::spread(!! quo_exposure, n) %>%
+    dplyr::count(!! quo_exposure, !! quo_outcome) %>%
+    # use ':=' to unquote left and right side
+    dplyr::mutate(!! quo_exposure := forcats::fct_rev(as.factor(!! quo_exposure)),
+                  !! quo_outcome := forcats::fct_rev(as.factor(!! quo_outcome))) %>%
+    tidyr::spread(!! quo_outcome, n) %>%
     dplyr::select(-1)
 
   if(!is.null(vals)) {
 
-    df[vals$exposure,vals$outcome]
-
-  } else {
-
-    df
-
+    df <-
+      df[vals$exposure,vals$outcome]
   }
+
+  # set names to include name / level of exposure variable
+  df %>%
+    magrittr::set_colnames(.,
+                           paste0(dplyr::quo_name(quo_outcome),
+                                  "_", colnames(.)
+                                  )
+                           )
 
 }
