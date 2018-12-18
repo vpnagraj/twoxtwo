@@ -28,13 +28,30 @@ twoxtwo <- function(df, exposure, outcome, vals = NULL, na.rm = TRUE) {
     # use ':=' to unquote left and right side
     dplyr::mutate(!! quo_exposure := forcats::fct_rev(as.factor(!! quo_exposure)),
                   !! quo_outcome := forcats::fct_rev(as.factor(!! quo_outcome))) %>%
-    tidyr::spread(!! quo_outcome, n) %>%
-    dplyr::select(-1)
+    tidyr::spread(!! quo_outcome, n)
 
-  if(!is.null(vals)) {
+    if(!is.null(vals)) {
 
-    df <-
-      df[vals$exposure,vals$outcome]
+      # if reordering of outcome and exposure for 2x2 is desired, convert to data.frame ...
+      # then take values from named list vals for columnames and rownames
+      df <- as.data.frame(df)
+
+      row.names(df) <- df[,1]
+
+      # check inputs for exposure and outcome levels
+      if(!(all(vals$outcome %in% colnames(df)) & all(vals$exposure %in% rownames(df)))) {
+        stop("One or more of the levels you've specified in vals does not exist in the exposure and/or outcome.")
+      }
+
+      # this step will reorder *and get rid of outcome column (index 1)
+      df <- df[vals$exposure,vals$outcome]
+
+      df <- dplyr::as_tibble(df)
+
+    } else {
+
+      # otherwise get rid of outcome column (index 1)altogether
+      df <- df[,-1]
   }
 
   # set names to include name / level of exposure variable
