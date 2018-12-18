@@ -4,7 +4,7 @@
 \alias{twoxtwo}
 \title{Create a two-by-two table}
 \usage{
-twoxtwo(df, exposure, outcome, vals = NULL, na.rm = TRUE)
+twoxtwo(df, exposure, outcome, levels = NULL, na.rm = TRUE)
 }
 \arguments{
 \item{df}{data frame}
@@ -13,7 +13,7 @@ twoxtwo(df, exposure, outcome, vals = NULL, na.rm = TRUE)
 
 \item{outcome}{outcome}
 
-\item{vals}{values to keep; passed as a named list; contingency table will be oriented in sequence of values}
+\item{levels}{explicitly specify levels for the exposure and outcome as a named list; if supplied, contingency table will be oriented with respect to the sequence of levels specified}
 
 \item{na.rm}{logical as to whether or not to remove NA values when constructing contingency table; default is TRUE}
 }
