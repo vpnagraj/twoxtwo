@@ -2,6 +2,8 @@
 
 export("%>%")
 export(odds_ratio)
+export(risk_diff)
+export(risk_ratio)
 export(twoxtwo)
 importFrom(magrittr,"%>%")
 importFrom(rlang,"!!")
