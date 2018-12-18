@@ -40,7 +40,12 @@ twoxtwo <- function(df, exposure, outcome, levels = NULL, na.rm = TRUE) {
 
       # check inputs for exposure and outcome levels
       if(!(all(levels$outcome %in% colnames(df)) & all(levels$exposure %in% rownames(df)))) {
-        stop("One or more of the levels you've specified in levels does not exist in the exposure and/or outcome.")
+        stop("Make sure all levels specified exist in the exposure and/or outcome.")
+      }
+
+      # check inputs for exposure and outcome levels
+      if(length(unique(levels$outcome)) == 1 | length(unique(levels$exposure)) == 1) {
+        stop("Make sure all levels specified are unique to exposure or outcome.")
       }
 
       # this step will reorder *and get rid of outcome column (index 1)
