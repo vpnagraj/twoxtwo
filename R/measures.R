@@ -16,11 +16,13 @@ odds_ratio <- function(df, exposure, outcome, alpha = 0.05, ...) {
   quo_outcome <- dplyr::enquo(outcome)
 
   twoxtwo(df, !! quo_exposure, !! quo_outcome, ...) %>%
-    dplyr::summarise(or = prod(.[1,1], .[2,2]) / prod(.[2,1], .[1,2]),
-                     se = sqrt((1/.[1,1]) + (1/.[1,2]) + (1/.[2,1]) + (1/.[2,2]))) %>%
+    dplyr::summarise(odds_ratio = prod(.[1,1], .[2,2]) / prod(.[2,1], .[1,2]),
+                     se = sqrt((1/.[1,1]) + (1/.[1,2]) + (1/.[2,1]) + (1/.[2,2])),
+                     exposure = dplyr::first(exposure),
+                     outcome = dplyr::first(outcome)) %>%
     dplyr::mutate(
-      lower = exp(log(.$or) - (stats::qnorm(1-(alpha/2)) * (.$se)))[1,1],
-      upper = exp(log(.$or) + (stats::qnorm(1-(alpha/2)) * (.$se)))[1,1]
+      ci_lower = exp(log(.$or) - (stats::qnorm(1-(alpha/2)) * (.$se)))[1,1],
+      ci_upper = exp(log(.$or) + (stats::qnorm(1-(alpha/2)) * (.$se)))[1,1]
     ) %>%
     dplyr::select(-2)
 
@@ -45,12 +47,14 @@ risk_ratio <- function(df, exposure, outcome, alpha = 0.05, ...) {
 
   twoxtwo(df, !! quo_exposure, !! quo_outcome, ...) %>%
     dplyr::mutate(risk = .[[1]] / rowSums(.)) %>%
-    dplyr::summarise(rr = .[1,3] / .[2,3],
+    dplyr::summarise(risk_ratio = .[1,3] / .[2,3],
                      se = sqrt(
-                       ((1-.[1,3])/((.[1,1]+.[1,2])*.[1,3])) + ((1-.[2,3])/((.[2,1]+.[2,2])*.[2,3])))) %>%
+                       ((1-.[1,3])/((.[1,1]+.[1,2])*.[1,3])) + ((1-.[2,3])/((.[2,1]+.[2,2])*.[2,3]))),
+                     exposure = dplyr::first(exposure),
+                     outcome = dplyr::first(outcome)) %>%
     dplyr::mutate(
-      lower = exp(log(.$rr) - (stats::qnorm(1-(alpha/2)) * (.$se)))[1,1],
-      upper = exp(log(.$rr) + (stats::qnorm(1-(alpha/2)) * (.$se)))[1,1]
+      ci_lower = exp(log(.$rr) - (stats::qnorm(1-(alpha/2)) * (.$se)))[1,1],
+      ci_upper = exp(log(.$rr) + (stats::qnorm(1-(alpha/2)) * (.$se)))[1,1]
     ) %>%
     dplyr::select(-2)
 
@@ -76,13 +80,15 @@ risk_diff <- function(df, exposure, outcome, alpha = 0.05, ...) {
   twoxtwo(df, !! quo_exposure, !! quo_outcome, ...) %>%
     dplyr::mutate(
       risk = .[[1]] / rowSums(.)) %>%
-    dplyr::summarise(rd = .[1,3] - .[2,3],
+    dplyr::summarise(risk_diff = .[1,3] - .[2,3],
                      se = sqrt(
                        ((.[1,1] + .[2,1]) / (.[1,1] + .[2,1] + .[1,2] + .[2,2] )) * (1-((.[1,1] + .[2,1]) / (.[1,1] + .[2,1] + .[1,2] + .[2,2] ))) * ((1/(.[1,1] + .[1,2])) + (1/(.[2,1] + .[2,2])))
-                     )) %>%
+                     ),
+                     exposure = dplyr::first(exposure),
+                     outcome = dplyr::first(outcome)) %>%
     dplyr::mutate(
-      lower = .$rd[[1]] - (stats::qnorm(1-(0.05/2)) * (.$se))[1,1],
-      upper = .$rd[[1]] + (stats::qnorm(1-(0.05/2)) * (.$se))[1,1]
+      ci_lower = .$rd[[1]] - (stats::qnorm(1-(0.05/2)) * (.$se))[1,1],
+      ci_upper = .$rd[[1]] + (stats::qnorm(1-(0.05/2)) * (.$se))[1,1]
     ) %>%
     dplyr::select(-2)
 
