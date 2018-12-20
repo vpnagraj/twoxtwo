@@ -79,9 +79,11 @@ twoxtwo <- function(df, exposure, outcome, levels = NULL, na.rm = TRUE) {
   # set names to include name / level of exposure variable
   df %>%
     magrittr::set_colnames(.,
-                           paste0(dplyr::quo_name(quo_outcome),
-                                  "_", colnames(.)
-                                  )
+                           c(paste0(dplyr::quo_name(quo_outcome),
+                                    "_", colnames(.)[1:2]),
+                             # keep expsoure outcome name
+                             colnames(.)[3:4]
                            )
+    )
 
 }
