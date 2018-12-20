@@ -28,7 +28,8 @@ twoxtwo <- function(df, exposure, outcome, levels = NULL, na.rm = TRUE) {
     # use ':=' to unquote left and right side
     dplyr::mutate(!! quo_exposure := forcats::fct_rev(as.factor(!! quo_exposure)),
                   !! quo_outcome := forcats::fct_rev(as.factor(!! quo_outcome))) %>%
-    tidyr::spread(!! quo_outcome, n)
+    tidyr::spread(!! quo_outcome, n) %>%
+    dplyr::mutate(!! quo_exposure := as.character(!! quo_exposure))
 
     if(!is.null(levels)) {
 
@@ -51,9 +52,25 @@ twoxtwo <- function(df, exposure, outcome, levels = NULL, na.rm = TRUE) {
       # this step will reorder *and get rid of outcome column (index 1)
       df <- df[levels$exposure,levels$outcome]
 
+      df$exposure <- paste0(dplyr::quo_name(quo_exposure),
+                            "::",
+                            paste0(rownames(df), collapse = "/"))
+
+      df$outcome <- paste0(dplyr::quo_name(quo_outcome),
+                           "::",
+                           paste0(colnames(df), collapse = "/"))
+
       df <- dplyr::as_tibble(df)
 
     } else {
+
+      df$exposure <- paste0(dplyr::quo_name(quo_exposure),
+                            "::",
+                            paste0(dplyr::pull(df,1), collapse = "/"))
+
+      df$outcome <- paste0(dplyr::quo_name(quo_outcome),
+                           "::",
+                           paste0(colnames(df)[2:3], collapse = "/"))
 
       # otherwise get rid of outcome column (index 1)altogether
       df <- df[,-1]
