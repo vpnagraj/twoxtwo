@@ -21,10 +21,14 @@ odds_ratio <- function(df, exposure, outcome, alpha = 0.05, ...) {
                      exposure = dplyr::first(exposure),
                      outcome = dplyr::first(outcome)) %>%
     dplyr::mutate(
-      ci_lower = exp(log(.$or) - (stats::qnorm(1-(alpha/2)) * (.$se)))[1,1],
-      ci_upper = exp(log(.$or) + (stats::qnorm(1-(alpha/2)) * (.$se)))[1,1]
+      ci_lower = exp(log(.$odds_ratio) - (stats::qnorm(1-(alpha/2)) * (.$se)))[1,1],
+      ci_upper = exp(log(.$odds_ratio) + (stats::qnorm(1-(alpha/2)) * (.$se)))[1,1]
     ) %>%
-    dplyr::select(-2)
+    dplyr::select(-2) %>%
+    # order exposure and outcome last
+    dplyr::select(1,4,5,2,3) %>%
+    # make sure all columns are simplified
+    dplyr::mutate_all("unlist")
 
 }
 
@@ -46,17 +50,23 @@ risk_ratio <- function(df, exposure, outcome, alpha = 0.05, ...) {
   quo_outcome <- dplyr::enquo(outcome)
 
   twoxtwo(df, !! quo_exposure, !! quo_outcome, ...) %>%
-    dplyr::mutate(risk = .[[1]] / rowSums(.)) %>%
-    dplyr::summarise(risk_ratio = .[1,3] / .[2,3],
+    dplyr::mutate(risk = .[[1]] / rowSums(dplyr::select(.,-exposure,-outcome))) %>%
+    # risks are in last column
+    dplyr::summarise(risk_ratio = .[1,ncol(.)] / .[2,ncol(.)][1,1],
                      se = sqrt(
-                       ((1-.[1,3])/((.[1,1]+.[1,2])*.[1,3])) + ((1-.[2,3])/((.[2,1]+.[2,2])*.[2,3]))),
+                       ((1-.[1,ncol(.)])/((.[1,1]+.[1,2])*.[1,ncol(.)])) + ((1-.[2,ncol(.)])/((.[2,1]+.[2,2])*.[2,ncol(.)]))),
                      exposure = dplyr::first(exposure),
                      outcome = dplyr::first(outcome)) %>%
     dplyr::mutate(
-      ci_lower = exp(log(.$rr) - (stats::qnorm(1-(alpha/2)) * (.$se)))[1,1],
-      ci_upper = exp(log(.$rr) + (stats::qnorm(1-(alpha/2)) * (.$se)))[1,1]
+      ci_lower = exp(log(.$risk_ratio) - (stats::qnorm(1-(alpha/2)) * (.$se)))[1,1],
+      ci_upper = exp(log(.$risk_ratio) + (stats::qnorm(1-(alpha/2)) * (.$se)))[1,1]
     ) %>%
-    dplyr::select(-2)
+    dplyr::select(-2) %>%
+    # order exposure and outcome last
+    dplyr::select(1,4,5,2,3) %>%
+    # make sure all columns are simplified
+    dplyr::mutate_all("unlist")
+
 
 }
 
@@ -78,19 +88,22 @@ risk_diff <- function(df, exposure, outcome, alpha = 0.05, ...) {
   quo_outcome <- dplyr::enquo(outcome)
 
   twoxtwo(df, !! quo_exposure, !! quo_outcome, ...) %>%
-    dplyr::mutate(
-      risk = .[[1]] / rowSums(.)) %>%
-    dplyr::summarise(risk_diff = .[1,3] - .[2,3],
+    dplyr::mutate(risk = .[[1]] / rowSums(dplyr::select(.,-exposure,-outcome))) %>%
+    dplyr::summarise(risk_diff = .[1,ncol(.)] - .[2,ncol(.)],
                      se = sqrt(
                        ((.[1,1] + .[2,1]) / (.[1,1] + .[2,1] + .[1,2] + .[2,2] )) * (1-((.[1,1] + .[2,1]) / (.[1,1] + .[2,1] + .[1,2] + .[2,2] ))) * ((1/(.[1,1] + .[1,2])) + (1/(.[2,1] + .[2,2])))
                      ),
                      exposure = dplyr::first(exposure),
                      outcome = dplyr::first(outcome)) %>%
     dplyr::mutate(
-      ci_lower = .$rd[[1]] - (stats::qnorm(1-(0.05/2)) * (.$se))[1,1],
-      ci_upper = .$rd[[1]] + (stats::qnorm(1-(0.05/2)) * (.$se))[1,1]
+      ci_lower = .$risk_diff[[1]] - (stats::qnorm(1-(alpha/2)) * (.$se))[1,1],
+      ci_upper = .$risk_diff[[1]] + (stats::qnorm(1-(alpha/2)) * (.$se))[1,1]
     ) %>%
-    dplyr::select(-2)
+    dplyr::select(-2) %>%
+    # order exposure and outcome last
+    dplyr::select(1,4,5,2,3) %>%
+    # make sure all columns are simplified
+    dplyr::mutate_all("unlist")
 
 }
 

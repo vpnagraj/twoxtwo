@@ -58,7 +58,7 @@ twoxtwo <- function(df, exposure, outcome, levels = NULL, na.rm = TRUE) {
 
       df$outcome <- paste0(dplyr::quo_name(quo_outcome),
                            "::",
-                           paste0(colnames(df), collapse = "/"))
+                           paste0(colnames(df)[1:2], collapse = "/"))
 
       df <- dplyr::as_tibble(df)
 
