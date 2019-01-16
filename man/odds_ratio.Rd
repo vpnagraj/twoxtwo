@@ -15,11 +15,16 @@ odds_ratio(df, exposure, outcome, alpha = 0.05, ...)
 
 \item{alpha}{significance level}
 
-\item{...}{additional arguments passed to twoxtwo function}
+\item{...}{additional arguments passed to \code{\link[=twoxtwo]{twoxtwo()}}}
 }
 \value{
-tibble
+\code{tibble}
 }
 \description{
 Calculate odds ratio
 }
+\seealso{
+Other Effect measures: \code{\link{risk_diff}},
+  \code{\link{risk_ratio}}
+}
+\concept{Effect measures}

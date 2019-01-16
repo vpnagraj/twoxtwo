@@ -15,11 +15,16 @@ risk_diff(df, exposure, outcome, alpha = 0.05, ...)
 
 \item{alpha}{significance level}
 
-\item{...}{additional arguments passed to twoxtwo function}
+\item{...}{additional arguments passed to \code{\link[=twoxtwo]{twoxtwo()}}}
 }
 \value{
-tibble
+\code{tibble}
 }
 \description{
 Calculate risk difference
 }
+\seealso{
+Other Effect measures: \code{\link{odds_ratio}},
+  \code{\link{risk_ratio}}
+}
+\concept{Effect measures}

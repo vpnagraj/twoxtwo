@@ -4,12 +4,12 @@
 #' @param exposure exposure
 #' @param outcome outcome
 #' @param alpha significance level
-#' @param ... additional arguments passed to twoxtwo function
+#' @param ... additional arguments passed to [twoxtwo()]
 #'
-#' @return tibble
+#' @return `tibble`
 #' @importFrom rlang "!!"
 #' @export
-#'
+#' @family Effect measures
 odds_ratio <- function(df, exposure, outcome, alpha = 0.05, ...) {
 
   quo_exposure <- dplyr::enquo(exposure)
@@ -38,12 +38,12 @@ odds_ratio <- function(df, exposure, outcome, alpha = 0.05, ...) {
 #' @param exposure exposure
 #' @param outcome outcome
 #' @param alpha significance level
-#' @param ... additional arguments passed to twoxtwo function
+#' @param ... additional arguments passed to [twoxtwo()]
 #'
-#' @return tibble
+#' @return `tibble`
 #' @importFrom rlang "!!"
 #' @export
-#'
+#' @family Effect measures
 risk_ratio <- function(df, exposure, outcome, alpha = 0.05, ...) {
 
   quo_exposure <- dplyr::enquo(exposure)
@@ -76,12 +76,12 @@ risk_ratio <- function(df, exposure, outcome, alpha = 0.05, ...) {
 #' @param exposure exposure
 #' @param outcome outcome
 #' @param alpha significance level
-#' @param ... additional arguments passed to twoxtwo function
+#' @param ... additional arguments passed to [twoxtwo()]
 #'
-#' @return tibble
+#' @return `tibble`
 #' @importFrom rlang "!!"
 #' @export
-#'
+#' @family Effect measures
 risk_diff <- function(df, exposure, outcome, alpha = 0.05, ...) {
 
   quo_exposure <- dplyr::enquo(exposure)
