@@ -3,6 +3,7 @@
 export("%>%")
 export(fisher)
 export(odds_ratio)
+export(reri)
 export(risk_diff)
 export(risk_ratio)
 export(twoxtwo)
