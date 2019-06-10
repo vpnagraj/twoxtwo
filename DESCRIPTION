@@ -2,8 +2,8 @@ Package: twoxtwo
 Type: Package
 Title: Work with two-by-two tables
 Version: 0.1.0
-Authors@R: c(person("VP", "Nagraj", role = c("aut", "cre"), email = "vpnagraj@virginia.edu"))
-Maintainer: VP Nagraj <vpnagraj@virginia.edu>
+Authors@R: c(person("VP", "Nagraj", role = c("aut", "cre"), email = "nagraj@nagraj.net"))
+Maintainer: VP Nagraj <nagraj@nagraj.net>
 Description: This package provides a collection of functions for data analysis with two-by-two contingency tables.
 Imports:
   dplyr,
