@@ -4,10 +4,10 @@
 \alias{twoxtwo}
 \title{Create a two-by-two table}
 \usage{
-twoxtwo(df, exposure, outcome, levels = NULL, na.rm = TRUE)
+twoxtwo(.data, exposure, outcome, levels = NULL, na.rm = TRUE)
 }
 \arguments{
-\item{df}{data frame}
+\item{.data}{data frame}
 
 \item{exposure}{exposure}
 

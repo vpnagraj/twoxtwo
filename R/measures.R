@@ -1,6 +1,6 @@
 #' Calculate odds ratio
 #'
-#' @param df dataframe
+#' @param .data dataframe
 #' @param exposure exposure
 #' @param outcome outcome
 #' @param alpha significance level
@@ -10,12 +10,12 @@
 #' @importFrom rlang "!!"
 #' @export
 #' @family Effect measures
-odds_ratio <- function(df, exposure, outcome, alpha = 0.05, ...) {
+odds_ratio <- function(.data, exposure, outcome, alpha = 0.05, ...) {
 
   quo_exposure <- dplyr::enquo(exposure)
   quo_outcome <- dplyr::enquo(outcome)
 
-  twoxtwo(df, !! quo_exposure, !! quo_outcome, ...) %>%
+  twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...) %>%
     dplyr::summarise(odds_ratio = prod(.[1,1], .[2,2]) / prod(.[2,1], .[1,2]),
                      se = sqrt((1/.[1,1]) + (1/.[1,2]) + (1/.[2,1]) + (1/.[2,2])),
                      exposure = dplyr::first(exposure),
@@ -34,7 +34,7 @@ odds_ratio <- function(df, exposure, outcome, alpha = 0.05, ...) {
 
 #' Calculate risk ratio
 #'
-#' @param df dataframe
+#' @param .data dataframe
 #' @param exposure exposure
 #' @param outcome outcome
 #' @param alpha significance level
@@ -44,12 +44,12 @@ odds_ratio <- function(df, exposure, outcome, alpha = 0.05, ...) {
 #' @importFrom rlang "!!"
 #' @export
 #' @family Effect measures
-risk_ratio <- function(df, exposure, outcome, alpha = 0.05, ...) {
+risk_ratio <- function(.data, exposure, outcome, alpha = 0.05, ...) {
 
   quo_exposure <- dplyr::enquo(exposure)
   quo_outcome <- dplyr::enquo(outcome)
 
-  twoxtwo(df, !! quo_exposure, !! quo_outcome, ...) %>%
+  twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...) %>%
     dplyr::mutate(risk = .[[1]] / rowSums(dplyr::select(.,-exposure,-outcome))) %>%
     # risks are in last column
     dplyr::summarise(risk_ratio = .[1,ncol(.)] / .[2,ncol(.)][1,1],
@@ -72,7 +72,7 @@ risk_ratio <- function(df, exposure, outcome, alpha = 0.05, ...) {
 
 #' Calculate risk difference
 #'
-#' @param df dataframe
+#' @param .data dataframe
 #' @param exposure exposure
 #' @param outcome outcome
 #' @param alpha significance level
@@ -82,12 +82,12 @@ risk_ratio <- function(df, exposure, outcome, alpha = 0.05, ...) {
 #' @importFrom rlang "!!"
 #' @export
 #' @family Effect measures
-risk_diff <- function(df, exposure, outcome, alpha = 0.05, ...) {
+risk_diff <- function(.data, exposure, outcome, alpha = 0.05, ...) {
 
   quo_exposure <- dplyr::enquo(exposure)
   quo_outcome <- dplyr::enquo(outcome)
 
-  twoxtwo(df, !! quo_exposure, !! quo_outcome, ...) %>%
+  twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...) %>%
     dplyr::mutate(risk = .[[1]] / rowSums(dplyr::select(.,-exposure,-outcome))) %>%
     dplyr::summarise(risk_diff = .[1,ncol(.)] - .[2,ncol(.)],
                      se = sqrt(

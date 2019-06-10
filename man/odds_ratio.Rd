@@ -4,10 +4,10 @@
 \alias{odds_ratio}
 \title{Calculate odds ratio}
 \usage{
-odds_ratio(df, exposure, outcome, alpha = 0.05, ...)
+odds_ratio(.data, exposure, outcome, alpha = 0.05, ...)
 }
 \arguments{
-\item{df}{dataframe}
+\item{.data}{dataframe}
 
 \item{exposure}{exposure}
 

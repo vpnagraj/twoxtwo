@@ -1,6 +1,6 @@
 #' Create a two-by-two table
 #'
-#' @param df data frame
+#' @param .data data frame
 #' @param exposure exposure
 #' @param outcome outcome
 #' @param levels explicitly specify levels for the exposure and outcome as a named list; if supplied, contingency table will be oriented with respect to the sequence of levels specified
@@ -9,21 +9,21 @@
 #' @return tibble
 #' @importFrom rlang ":="
 #' @export
-twoxtwo <- function(df, exposure, outcome, levels = NULL, na.rm = TRUE) {
+twoxtwo <- function(.data, exposure, outcome, levels = NULL, na.rm = TRUE) {
 
   quo_exposure <- dplyr::enquo(exposure)
   quo_outcome <- dplyr::enquo(outcome)
 
   if (na.rm) {
 
-    df <-
-      df %>%
+    .data <-
+      .data %>%
       dplyr::filter(!is.na(!! quo_exposure) & !is.na(!! quo_outcome))
 
   }
 
-  df <-
-    df %>%
+  .data <-
+    .data %>%
     dplyr::count(!! quo_exposure, !! quo_outcome) %>%
     # use ':=' to unquote left and right side
     dplyr::mutate(!! quo_exposure := forcats::fct_rev(as.factor(!! quo_exposure)),
@@ -35,12 +35,12 @@ twoxtwo <- function(df, exposure, outcome, levels = NULL, na.rm = TRUE) {
 
       # if reordering of outcome and exposure for 2x2 is desired, convert to data.frame ...
       # then take values from named list levels for columnames and rownames
-      df <- as.data.frame(df)
+      .data <- as.data.frame(.data)
 
-      row.names(df) <- df[,1]
+      row.names(.data) <- .data[,1]
 
       # check inputs for exposure and outcome levels
-      if(!(all(levels$outcome %in% colnames(df)) & all(levels$exposure %in% rownames(df)))) {
+      if(!(all(levels$outcome %in% colnames(.data)) & all(levels$exposure %in% rownames(.data)))) {
         stop("Make sure all levels specified exist in the exposure and/or outcome.")
       }
 
@@ -50,34 +50,34 @@ twoxtwo <- function(df, exposure, outcome, levels = NULL, na.rm = TRUE) {
       }
 
       # this step will reorder *and get rid of outcome column (index 1)
-      df <- df[levels$exposure,levels$outcome]
+      .data <- .data[levels$exposure,levels$outcome]
 
-      df$exposure <- paste0(dplyr::quo_name(quo_exposure),
+      .data$exposure <- paste0(dplyr::quo_name(quo_exposure),
                             "::",
-                            paste0(rownames(df), collapse = "/"))
+                            paste0(rownames(.data), collapse = "/"))
 
-      df$outcome <- paste0(dplyr::quo_name(quo_outcome),
+      .data$outcome <- paste0(dplyr::quo_name(quo_outcome),
                            "::",
-                           paste0(colnames(df)[1:2], collapse = "/"))
+                           paste0(colnames(.data)[1:2], collapse = "/"))
 
-      df <- dplyr::as_tibble(df)
+      .data <- dplyr::as_tibble(.data)
 
     } else {
 
-      df$exposure <- paste0(dplyr::quo_name(quo_exposure),
+      .data$exposure <- paste0(dplyr::quo_name(quo_exposure),
                             "::",
-                            paste0(dplyr::pull(df,1), collapse = "/"))
+                            paste0(dplyr::pull(.data,1), collapse = "/"))
 
-      df$outcome <- paste0(dplyr::quo_name(quo_outcome),
+      .data$outcome <- paste0(dplyr::quo_name(quo_outcome),
                            "::",
-                           paste0(colnames(df)[2:3], collapse = "/"))
+                           paste0(colnames(.data)[2:3], collapse = "/"))
 
-      # otherwise get rid of outcome column (index 1)altogether
-      df <- df[,-1]
+      # otherwise get rid of outcome column (index 1) altogether
+      .data <- .data[,-1]
   }
 
   # set names to include name / level of exposure variable
-  df %>%
+  .data %>%
     magrittr::set_colnames(.,
                            c(paste0(dplyr::quo_name(quo_outcome),
                                     "_", colnames(.)[1:2]),

@@ -4,10 +4,10 @@
 \alias{risk_ratio}
 \title{Calculate risk ratio}
 \usage{
-risk_ratio(df, exposure, outcome, alpha = 0.05, ...)
+risk_ratio(.data, exposure, outcome, alpha = 0.05, ...)
 }
 \arguments{
-\item{df}{dataframe}
+\item{.data}{dataframe}
 
 \item{exposure}{exposure}
 

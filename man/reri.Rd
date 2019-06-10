@@ -4,7 +4,7 @@
 \alias{reri}
 \title{Relative risk due to interaction (RERI)}
 \usage{
-reri(df, exposure, outcome, effect_modifier, ...)
+reri(.data, exposure, outcome, effect_modifier, ...)
 }
 \arguments{
 \item{...}{}

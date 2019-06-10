@@ -1,6 +1,6 @@
 #' Relative risk due to interaction (RERI)
 #'
-#' @param df
+#' @param .data
 #' @param exposure
 #' @param outcome
 #' @param effect_modifier
@@ -10,14 +10,14 @@
 #' @export
 #'
 #' @examples
-reri <- function(df, exposure, outcome, effect_modifier, ...) {
+reri <- function(.data, exposure, outcome, effect_modifier, ...) {
 
   quo_exposure <- dplyr::enquo(exposure)
   quo_outcome <- dplyr::enquo(outcome)
   quo_effect_modifier <- dplyr::enquo(effect_modifier)
 
   combined <-
-    df %>%
+    .data %>%
     dplyr::mutate(effect_modifier := forcats::fct_rev(as.factor(!!quo_effect_modifier)))
 
   # why doesn't enquo work for this?

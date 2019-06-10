@@ -4,10 +4,10 @@
 \alias{risk_diff}
 \title{Calculate risk difference}
 \usage{
-risk_diff(df, exposure, outcome, alpha = 0.05, ...)
+risk_diff(.data, exposure, outcome, alpha = 0.05, ...)
 }
 \arguments{
-\item{df}{dataframe}
+\item{.data}{dataframe}
 
 \item{exposure}{exposure}
 

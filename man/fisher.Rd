@@ -4,10 +4,10 @@
 \alias{fisher}
 \title{Fisher test}
 \usage{
-fisher(df, exposure, outcome, ...)
+fisher(.data, exposure, outcome, ...)
 }
 \arguments{
-\item{df}{dataframe}
+\item{.data}{dataframe}
 
 \item{exposure}{exposure}
 
