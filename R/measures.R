@@ -24,9 +24,7 @@ odds_ratio <- function(.data, exposure, outcome, alpha = 0.05, ...) {
       ci_lower = exp(log(.$odds_ratio) - (stats::qnorm(1-(alpha/2)) * (.$se)))[1,1],
       ci_upper = exp(log(.$odds_ratio) + (stats::qnorm(1-(alpha/2)) * (.$se)))[1,1]
     ) %>%
-    dplyr::select(-2) %>%
-    # order exposure and outcome last
-    dplyr::select(1,4,5,2,3) %>%
+    dplyr::select(odds_ratio, ci_lower, ci_upper, exposure, outcome) %>%
     # make sure all columns are simplified
     dplyr::mutate_all("unlist")
 
@@ -61,9 +59,7 @@ risk_ratio <- function(.data, exposure, outcome, alpha = 0.05, ...) {
       ci_lower = exp(log(.$risk_ratio) - (stats::qnorm(1-(alpha/2)) * (.$se)))[1,1],
       ci_upper = exp(log(.$risk_ratio) + (stats::qnorm(1-(alpha/2)) * (.$se)))[1,1]
     ) %>%
-    dplyr::select(-2) %>%
-    # order exposure and outcome last
-    dplyr::select(1,4,5,2,3) %>%
+    dplyr::select(risk_ratio, ci_lower, ci_upper, exposure, outcome) %>%
     # make sure all columns are simplified
     dplyr::mutate_all("unlist")
 
@@ -99,9 +95,7 @@ risk_diff <- function(.data, exposure, outcome, alpha = 0.05, ...) {
       ci_lower = .$risk_diff[[1]] - (stats::qnorm(1-(alpha/2)) * (.$se))[1,1],
       ci_upper = .$risk_diff[[1]] + (stats::qnorm(1-(alpha/2)) * (.$se))[1,1]
     ) %>%
-    dplyr::select(-2) %>%
-    # order exposure and outcome last
-    dplyr::select(1,4,5,2,3) %>%
+    dplyr::select(risk_diff, ci_lower, ci_upper, exposure, outcome) %>%
     # make sure all columns are simplified
     dplyr::mutate_all("unlist")
 
