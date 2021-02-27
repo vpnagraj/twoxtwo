@@ -12,6 +12,8 @@
 #' @family Effect measures
 odds_ratio <- function(.data, exposure, outcome, alpha = 0.05, ...) {
 
+  critical_value <- stats::qnorm(1-(alpha/2))
+
   quo_exposure <- dplyr::enquo(exposure)
   quo_outcome <- dplyr::enquo(outcome)
 
@@ -21,8 +23,8 @@ odds_ratio <- function(.data, exposure, outcome, alpha = 0.05, ...) {
                      exposure = dplyr::first(exposure),
                      outcome = dplyr::first(outcome)) %>%
     dplyr::mutate(
-      ci_lower = exp(log(.$odds_ratio) - (stats::qnorm(1-(alpha/2)) * (.$se)))[1,1],
-      ci_upper = exp(log(.$odds_ratio) + (stats::qnorm(1-(alpha/2)) * (.$se)))[1,1]
+      ci_lower = exp(log(.$odds_ratio) - (critical_value * (.$se))),
+      ci_upper = exp(log(.$odds_ratio) + (critical_value * (.$se)))
     ) %>%
     dplyr::select(odds_ratio, ci_lower, ci_upper, exposure, outcome) %>%
     # make sure all columns are simplified
@@ -44,20 +46,22 @@ odds_ratio <- function(.data, exposure, outcome, alpha = 0.05, ...) {
 #' @family Effect measures
 risk_ratio <- function(.data, exposure, outcome, alpha = 0.05, ...) {
 
+  critical_value <- stats::qnorm(1-(alpha/2))
+
   quo_exposure <- dplyr::enquo(exposure)
   quo_outcome <- dplyr::enquo(outcome)
 
   twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...) %>%
     dplyr::mutate(risk = .[[1]] / rowSums(dplyr::select(.,-exposure,-outcome))) %>%
     # risks are in last column
-    dplyr::summarise(risk_ratio = .[1,ncol(.)] / .[2,ncol(.)][1,1],
+    dplyr::summarise(risk_ratio = .[1,ncol(.)] / .[2,ncol(.)],
                      se = sqrt(
                        ((1-.[1,ncol(.)])/((.[1,1]+.[1,2])*.[1,ncol(.)])) + ((1-.[2,ncol(.)])/((.[2,1]+.[2,2])*.[2,ncol(.)]))),
                      exposure = dplyr::first(exposure),
                      outcome = dplyr::first(outcome)) %>%
     dplyr::mutate(
-      ci_lower = exp(log(.$risk_ratio) - (stats::qnorm(1-(alpha/2)) * (.$se)))[1,1],
-      ci_upper = exp(log(.$risk_ratio) + (stats::qnorm(1-(alpha/2)) * (.$se)))[1,1]
+      ci_lower = exp(log(.$risk_ratio) - (critical_value * (.$se))),
+      ci_upper = exp(log(.$risk_ratio) + (critical_value * (.$se)))
     ) %>%
     dplyr::select(risk_ratio, ci_lower, ci_upper, exposure, outcome) %>%
     # make sure all columns are simplified
@@ -80,6 +84,8 @@ risk_ratio <- function(.data, exposure, outcome, alpha = 0.05, ...) {
 #' @family Effect measures
 risk_diff <- function(.data, exposure, outcome, alpha = 0.05, ...) {
 
+  critical_value <- stats::qnorm(1-(alpha/2))
+
   quo_exposure <- dplyr::enquo(exposure)
   quo_outcome <- dplyr::enquo(outcome)
 
@@ -92,8 +98,8 @@ risk_diff <- function(.data, exposure, outcome, alpha = 0.05, ...) {
                      exposure = dplyr::first(exposure),
                      outcome = dplyr::first(outcome)) %>%
     dplyr::mutate(
-      ci_lower = .$risk_diff[[1]] - (stats::qnorm(1-(alpha/2)) * (.$se))[1,1],
-      ci_upper = .$risk_diff[[1]] + (stats::qnorm(1-(alpha/2)) * (.$se))[1,1]
+      ci_lower = .$risk_diff[[1]] - (critical_value * (.$se)),
+      ci_upper = .$risk_diff[[1]] + (critical_value * (.$se))
     ) %>%
     dplyr::select(risk_diff, ci_lower, ci_upper, exposure, outcome) %>%
     # make sure all columns are simplified
