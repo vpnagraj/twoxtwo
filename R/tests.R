@@ -14,7 +14,7 @@ fisher <- function(.data, exposure, outcome, ...) {
   quo_exposure <- dplyr::enquo(exposure)
   quo_outcome <- dplyr::enquo(outcome)
 
-  twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...) %>%
+  twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)$tbl %>%
     dplyr::select(-c(3,4)) %>%
     dplyr::summarise(odds_ratio = fisher.test(.)$estimate,
                      ci_lower = fisher.test(.)$conf.int[1],

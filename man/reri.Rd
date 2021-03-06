@@ -9,6 +9,9 @@ reri(.data, exposure, outcome, effect_modifier, ...)
 \arguments{
 \item{...}{}
 }
+\value{
+
+}
 \description{
 Relative risk due to interaction (RERI)
 }

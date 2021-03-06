@@ -24,7 +24,8 @@ risk_diff(.data, exposure, outcome, alpha = 0.05, ...)
 Calculate risk difference
 }
 \seealso{
-Other Effect measures: \code{\link{odds_ratio}},
-  \code{\link{risk_ratio}}
+Other Effect measures: 
+\code{\link{odds_ratio}()},
+\code{\link{risk_ratio}()}
 }
 \concept{Effect measures}

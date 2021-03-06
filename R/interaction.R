@@ -28,14 +28,14 @@ reri <- function(.data, exposure, outcome, effect_modifier, ...) {
 
   strata1 <-
     apart[[1]] %>%
-    twoxtwo(!!quo_exposure,!!quo_outcome) %>%
+    twoxtwo(!!quo_exposure,!!quo_outcome)$tbl %>%
     dplyr::mutate(risk = .[[1]] / rowSums(dplyr::select(.,-exposure,-outcome))) %>%
     dplyr::mutate(effect_modifier := paste0(splitter, "::", names(apart)[1]))
 
 
   strata2 <-
     apart[[2]] %>%
-    twoxtwo(!!quo_exposure,!!quo_outcome) %>%
+    twoxtwo(!!quo_exposure,!!quo_outcome)$tbl %>%
     dplyr::mutate(risk = .[[1]] / rowSums(dplyr::select(.,-exposure,-outcome))) %>%
     dplyr::mutate(effect_modifier := paste0(splitter, "::", names(apart)[2]))
 

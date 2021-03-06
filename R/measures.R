@@ -17,7 +17,7 @@ odds_ratio <- function(.data, exposure, outcome, alpha = 0.05, ...) {
   quo_exposure <- dplyr::enquo(exposure)
   quo_outcome <- dplyr::enquo(outcome)
 
-  twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...) %>%
+  twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)$tbl %>%
     dplyr::summarise(odds_ratio = prod(.[1,1], .[2,2]) / prod(.[2,1], .[1,2]),
                      se = sqrt((1/.[1,1]) + (1/.[1,2]) + (1/.[2,1]) + (1/.[2,2])),
                      exposure = dplyr::first(exposure),
@@ -89,7 +89,7 @@ risk_diff <- function(.data, exposure, outcome, alpha = 0.05, ...) {
   quo_exposure <- dplyr::enquo(exposure)
   quo_outcome <- dplyr::enquo(outcome)
 
-  twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...) %>%
+  twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)$tbl %>%
     dplyr::mutate(risk = .[[1]] / rowSums(dplyr::select(.,-exposure,-outcome))) %>%
     dplyr::summarise(risk_diff = .[1,ncol(.)] - .[2,ncol(.)],
                      se = sqrt(

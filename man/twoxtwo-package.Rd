@@ -4,6 +4,3 @@
 \name{twoxtwo-package}
 \alias{twoxtwo-package}
 \title{twoxtwo}
-\description{
-twoxtwo
-}
