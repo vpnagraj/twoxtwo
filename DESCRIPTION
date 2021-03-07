@@ -18,3 +18,5 @@ RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
 Suggests: 
     testthat
+Depends: 
+    R (>= 2.10)
