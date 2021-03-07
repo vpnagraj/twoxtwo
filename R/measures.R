@@ -51,7 +51,7 @@ risk_ratio <- function(.data, exposure, outcome, alpha = 0.05, ...) {
   quo_exposure <- dplyr::enquo(exposure)
   quo_outcome <- dplyr::enquo(outcome)
 
-  twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...) %>%
+  twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)$tbl %>%
     dplyr::mutate(risk = .[[1]] / rowSums(dplyr::select(.,-exposure,-outcome))) %>%
     # risks are in last column
     dplyr::summarise(risk_ratio = .[1,ncol(.)] / .[2,ncol(.)],
