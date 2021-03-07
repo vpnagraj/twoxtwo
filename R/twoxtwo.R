@@ -30,10 +30,45 @@ twoxtwo <- function(.data, exposure, outcome, levels = NULL, na.rm = TRUE, verbo
     dat <- .data
   }
 
+  ## checks for levels != 2
+  ## outcome
+  tmp_outcome_levels <-
+    dat %>%
+    dplyr::filter(!is.na(!! quo_outcome)) %>%
+    dplyr::pull(!! quo_outcome) %>%
+    unique(.)
+
+  if(length(tmp_outcome_levels) != 2) {
+    stop(
+      sprintf("The outcome must include exactly 2 levels. The outcome specified includes %d levels: %s",
+              length(tmp_outcome_levels),
+              paste0(tmp_outcome_levels, collapse = ",")
+      )
+    )
+  }
+
+  ## exposure
+  tmp_exposure_levels <-
+    dat %>%
+    dplyr::filter(!is.na(!! quo_exposure)) %>%
+    dplyr::pull(!! quo_exposure) %>%
+    unique(.)
+
+  if(length(tmp_exposure_levels) != 2) {
+    stop(
+      sprintf("The exposure must include exactly 2 levels. The exposure specified includes %d levels: %s",
+      length(tmp_exposure_levels),
+      paste0(tmp_exposure_levels, collapse = ",")
+      )
+    )
+  }
+
   dat <-
     .data %>%
     dplyr::count(!! quo_exposure, !! quo_outcome) %>%
-    # use ':=' to unquote left and right side
+    ## use ':=' to unquote left and right side
+    ## NOTE: this code forces exposure and outcome to be factors ...
+    ## ... and then reverses the factor to ensure that 1 (or TRUE) is first level and 0 (or FALSE) is second
     dplyr::mutate(!! quo_exposure := forcats::fct_rev(as.factor(!! quo_exposure)),
                   !! quo_outcome := forcats::fct_rev(as.factor(!! quo_outcome))) %>%
     tidyr::spread(!! quo_outcome, n) %>%
