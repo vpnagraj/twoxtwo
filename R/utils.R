@@ -34,13 +34,13 @@ expand_counts <- function(.data, freq_col) {
 #' @return
 #'
 format_measure <- function(.data, digits = 3) {
-  tmp_meas <- .data[1,1]
+  tmp_meas <- unname(unlist(.data[1,1]))
   tmp_lower <- .data$ci_lower
   tmp_upper <- .data$ci_upper
   paste0(round(tmp_meas, digits),
          " (",
          round(tmp_lower, digits),
-         "-",
+         ",",
          round(tmp_upper, digits),
          ")")
 }

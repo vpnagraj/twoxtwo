@@ -4,7 +4,7 @@
 \alias{summary.twoxtwo}
 \title{Title}
 \usage{
-\method{summary}{twoxtwo}(.twoxtwo, ...)
+\method{summary}{twoxtwo}(.twoxtwo, alpha = 0.05, ...)
 }
 \arguments{
 \item{...}{}
