@@ -41,7 +41,8 @@ odds_ratio <- function(.data, exposure, outcome, alpha = 0.05, ...) {
 
   ## return everything as a tibble
   dplyr::tibble(
-    odds_ratio = or,
+    measure = "Odds Ratio",
+    estimate = or,
     ci_lower = ci_lower_bound,
     ci_upper = ci_upper_bound,
     exposure = dplyr::first(tmp_twoxtwo$tbl$exposure),
@@ -93,7 +94,8 @@ risk_ratio <- function(.data, exposure, outcome, alpha = 0.05, ...) {
 
   ## return everything as a tibble
   dplyr::tibble(
-    risk_ratio = rr,
+    measure = "Risk Ratio",
+    estimate = rr,
     ci_lower = ci_lower_bound,
     ci_upper = ci_upper_bound,
     exposure = dplyr::first(tmp_twoxtwo$tbl$exposure),
@@ -147,7 +149,8 @@ risk_diff <- function(.data, exposure, outcome, alpha = 0.05, ...) {
 
   ## return everything as a tibble
   dplyr::tibble(
-    risk_diff = rd,
+    measure = "Risk Difference",
+    estimate = rd,
     ci_lower = ci_lower_bound,
     ci_upper = ci_upper_bound,
     exposure = dplyr::first(tmp_twoxtwo$tbl$exposure),

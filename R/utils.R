@@ -11,10 +11,10 @@ magrittr::`%>%`
 #' @return
 #'
 format_measure <- function(.data, digits = 3) {
-  tmp_meas <- unname(unlist(.data[1,1]))
+  tmp_est <- .data$estimate
   tmp_lower <- .data$ci_lower
   tmp_upper <- .data$ci_upper
-  paste0(round(tmp_meas, digits),
+  paste0(round(tmp_est, digits),
          " (",
          round(tmp_lower, digits),
          ",",
