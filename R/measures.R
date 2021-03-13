@@ -20,29 +20,33 @@ odds_ratio <- function(.data, exposure, outcome, alpha = 0.05, ...) {
   quo_outcome <- dplyr::enquo(outcome)
 
   ## run twoxtwo
-  twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)$tbl %>%
-    ## A = value at first row, first column [1,1]
-    ## B = value at second row, first column [2,1]
-    ## C = value at first row, second column [1,2]
-    ## D = value at second row, second column [2,2]
-    ## each of the above should be single numeric vectors
-    ## use the above to calculate odds ratio and standard error
-    ## OR = A*D / B*C
-    ## seOR = sqrt(1/A + 1/B + 1/C + 1/D)
-    dplyr::summarise(odds_ratio = prod(.[1,1], .[2,2]) / prod(.[2,1], .[1,2]),
-                     se = sqrt((1/.[1,1]) + (1/.[1,2]) + (1/.[2,1]) + (1/.[2,2])),
-                     exposure = dplyr::first(exposure),
-                     outcome = dplyr::first(outcome)) %>%
-    ## get confidence interval around odds ratio ...
-    ## exponentiate the log of odds ratio +/- critical value times standard error
-    dplyr::mutate(
-      ci_lower = exp(log(.$odds_ratio) - (critical_value * (.$se))),
-      ci_upper = exp(log(.$odds_ratio) + (critical_value * (.$se)))
-    ) %>%
-    ## select columns of interest
-    dplyr::select(odds_ratio, ci_lower, ci_upper, exposure, outcome) %>%
-    ## make sure all columns are simplified
-    dplyr::mutate_all("unlist")
+  tmp_twoxtwo <- twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)
+
+  ## get the cell values
+  A <- tmp_twoxtwo$cells$A
+  B <- tmp_twoxtwo$cells$B
+  C <- tmp_twoxtwo$cells$C
+  D <- tmp_twoxtwo$cells$D
+
+  ## odds ratio = odds among exposed / odds among unexposed
+  ## simplifies to ...
+  ## OR = (A*D) / (B*C)
+  or <- (A*D) / (B*C)
+  ## get standard error of OR
+  ## sqrt(1/A + 1/B + 1/C + 1/D)
+  se_or <- sqrt(1/A + 1/B + 1/C + 1/D)
+  ## use standard error and critical value to establish bounds for CI
+  ci_lower_bound <- exp(log(or) - critical_value * se_or)
+  ci_upper_bound <- exp(log(or) + critical_value * se_or)
+
+  ## return everything as a tibble
+  dplyr::tibble(
+    odds_ratio = or,
+    ci_lower = ci_lower_bound,
+    ci_upper = ci_upper_bound,
+    exposure = dplyr::first(tmp_twoxtwo$tbl$exposure),
+    outcome = dplyr::first(tmp_twoxtwo$tbl$outcome),
+  )
 
 }
 
@@ -68,33 +72,33 @@ risk_ratio <- function(.data, exposure, outcome, alpha = 0.05, ...) {
   quo_outcome <- dplyr::enquo(outcome)
 
   ## run twoxtwo
-  twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)$tbl %>%
-    ## A = value at first row, first column [1,1]
-    ## B = value at second row, first column [2,1]
-    ## C = value at first row, second column [1,2]
-    ## D = value at second row, second column [2,2]
-    ## risks = (A / A + B) and (C / C + D)
-    ## get A + B, C + D respectively with rowSums()
-    ## the .[[1]] will give you the first column (A,C)
-    dplyr::mutate(risk = .[[1]] / rowSums(dplyr::select(.,-exposure,-outcome))) %>%
-    ## the risk ratio (RR) is the risk in first row (exposured) divided by the risk in second row (unexposed)
-    ## risk is in the last column (hence ncol(.))
-    ## also calculate seRR using formula with A,B,C,D values
-    dplyr::summarise(risk_ratio = .[1,ncol(.)] / .[2,ncol(.)],
-                     se = sqrt(
-                       ((1-.[1,ncol(.)])/((.[1,1]+.[1,2])*.[1,ncol(.)])) + ((1-.[2,ncol(.)])/((.[2,1]+.[2,2])*.[2,ncol(.)]))),
-                     exposure = dplyr::first(exposure),
-                     outcome = dplyr::first(outcome)) %>%
-    ## extract value for RR and use that with critical value and seRR to get the lower and upper bounds of CI
-    dplyr::mutate(
-      ci_lower = exp(log(.$risk_ratio) - (critical_value * (.$se))),
-      ci_upper = exp(log(.$risk_ratio) + (critical_value * (.$se)))
-    ) %>%
-    ## select columns of interest
-    dplyr::select(risk_ratio, ci_lower, ci_upper, exposure, outcome) %>%
-    ## make sure all columns are simplified
-    dplyr::mutate_all("unlist")
+  tmp_twoxtwo <- twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)
 
+  ## get the cell values
+  A <- tmp_twoxtwo$cells$A
+  B <- tmp_twoxtwo$cells$B
+  C <- tmp_twoxtwo$cells$C
+  D <- tmp_twoxtwo$cells$D
+
+  ## risk ratio = risk among exposed / risk among unexposed
+  ## RR = (A / A + B)) / (C / C + D)
+  r_exposed <- A / (A + B)
+  r_unexposed <- C / (C + D)
+  rr <- r_exposed/r_unexposed
+  ## get standard error of RR
+  se_rr <- sqrt(((1 - r_exposed)/((A+B)*r_exposed)) + ((1-r_unexposed)/((C+D)*r_unexposed)))
+  ## use standard error and critical value to establish bounds for CI
+  ci_lower_bound <- exp(log(rr) - critical_value * se_rr)
+  ci_upper_bound <- exp(log(rr) + critical_value * se_rr)
+
+  ## return everything as a tibble
+  dplyr::tibble(
+    risk_ratio = rr,
+    ci_lower = ci_lower_bound,
+    ci_upper = ci_upper_bound,
+    exposure = dplyr::first(tmp_twoxtwo$tbl$exposure),
+    outcome = dplyr::first(tmp_twoxtwo$tbl$outcome),
+  )
 
 }
 
@@ -120,33 +124,35 @@ risk_diff <- function(.data, exposure, outcome, alpha = 0.05, ...) {
   quo_outcome <- dplyr::enquo(outcome)
 
   ## run twoxtwo
-  twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)$tbl %>%
-    ## A = value at first row, first column [1,1]
-    ## B = value at second row, first column [2,1]
-    ## C = value at first row, second column [1,2]
-    ## D = value at second row, second column [2,2]
-    ## risks = (A / A + B) and (C / C + D)
-    ## get A + B, C + D respectively with rowSums()
-    ## the .[[1]] will give you the first column (A,C)
-    dplyr::mutate(risk = .[[1]] / rowSums(dplyr::select(.,-exposure,-outcome))) %>%
-    ## the risk difference (RD) is the risk in first row (exposed) minus risk in second row (unexposed)
-    ## risk is in the last column (hence ncol(.))
-    ## also calculate seRD using formula with A,B,C,D values
-    dplyr::summarise(risk_diff = .[1,ncol(.)] - .[2,ncol(.)],
-                     se = sqrt(
-                       ((.[1,1] + .[2,1]) / (.[1,1] + .[2,1] + .[1,2] + .[2,2] )) * (1-((.[1,1] + .[2,1]) / (.[1,1] + .[2,1] + .[1,2] + .[2,2] ))) * ((1/(.[1,1] + .[1,2])) + (1/(.[2,1] + .[2,2])))
-                     ),
-                     exposure = dplyr::first(exposure),
-                     outcome = dplyr::first(outcome)) %>%
-    ## extract value for RD and use that with critical value and seRD to get the lower and upper bounds of CI
-    dplyr::mutate(
-      ci_lower = .$risk_diff[[1]] - (critical_value * (.$se)),
-      ci_upper = .$risk_diff[[1]] + (critical_value * (.$se))
-    ) %>%
-    ## select columns of interest
-    dplyr::select(risk_diff, ci_lower, ci_upper, exposure, outcome) %>%
-    ## make sure all columns are simplified
-    dplyr::mutate_all("unlist")
+  tmp_twoxtwo <- twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)
+
+  ## get the cell values
+  A <- tmp_twoxtwo$cells$A
+  B <- tmp_twoxtwo$cells$B
+  C <- tmp_twoxtwo$cells$C
+  D <- tmp_twoxtwo$cells$D
+
+  ## risk difference = risk among exposed minus risk among unexposed
+  ## RD = (A / A + B)) / (C / C + D)
+  r_exposed <- A / (A + B)
+  r_unexposed <- C / (C + D)
+  rd <- r_exposed - r_unexposed
+  ## get standard error of RD
+  # se_rd <- sqrt(((1 - r_exposed)/((A+B)*r_exposed)) + ((1-r_unexposed)/((C+D)*r_unexposed)))
+  se_rd <- sqrt(((A + C) / (A + B + C + D)) * (1-((A + C) / (A + B + C + D))) * ((1/(A+B)) + (1/(C+D))))
+
+  ## use standard error and critical value to establish bounds for CI
+  ci_lower_bound <- rd - (critical_value * se_rd)
+  ci_upper_bound <- rd + (critical_value * se_rd)
+
+  ## return everything as a tibble
+  dplyr::tibble(
+    risk_diff = rd,
+    ci_lower = ci_lower_bound,
+    ci_upper = ci_upper_bound,
+    exposure = dplyr::first(tmp_twoxtwo$tbl$exposure),
+    outcome = dplyr::first(tmp_twoxtwo$tbl$outcome),
+  )
 
 }
 

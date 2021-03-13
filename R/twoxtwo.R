@@ -12,6 +12,7 @@
 #' @export
 twoxtwo <- function(.data, exposure, outcome, levels = NULL, na.rm = TRUE, verbose = FALSE) {
 
+  ## handle exposure/outcome variable name quotation
   quo_exposure <- dplyr::enquo(exposure)
   quo_outcome <- dplyr::enquo(outcome)
 
@@ -21,7 +22,7 @@ twoxtwo <- function(.data, exposure, outcome, levels = NULL, na.rm = TRUE, verbo
     dplyr::filter(is.na(!! quo_exposure) | is.na(!! quo_outcome)) %>%
     nrow(.)
 
-  ## optionally remove before proceeding
+  ## optionally remove NA before proceeding
   if (na.rm) {
     dat <-
       .data %>%
@@ -137,6 +138,10 @@ twoxtwo <- function(.data, exposure, outcome, levels = NULL, na.rm = TRUE, verbo
 
   ## construct output object
   res <- list(tbl = dat,
+              cells = list(A = as.numeric(dat[1,1]),
+                           B = as.numeric(dat[1,2]),
+                           C = as.numeric(dat[2,1]),
+                           D = as.numeric(dat[2,2])),
               exposure = list(variable = dplyr::quo_name(quo_exposure),
                               levels = exposure_levels),
               outcome = list(variable = dplyr::quo_name(quo_outcome),
