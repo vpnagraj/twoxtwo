@@ -1,15 +1,38 @@
-#' Calculate odds ratio
+#' Effect measures
 #'
-#' @param .data dataframe
-#' @param exposure exposure
-#' @param outcome outcome
-#' @param alpha significance level
-#' @param ... additional arguments passed to [twoxtwo()]
+#' @name measures
+#'
+#' @description
+#'
+#' ## odds ratio
+#'
+#' lorem ipsum
+#'
+#' ## risk ratio
+#'
+#' lorem ipsum
+#'
+#' ## risk difference
+#'
+#' lorem ipsum
+#'
+#' @param .data Data frame with observation-level exposure and outcome data
+#' @param exposure Name of exposure variable
+#' @param outcome Name of outcome variable
+#' @param alpha Significance level to be used for constructing confidence interval; default is `0.05`
+#' @param ... Additional arguments passed to \link[twoxtwo]{twoxtwo} function
 #'
 #' @return `tibble`
+#'
 #' @importFrom rlang "!!"
+#' @md
+#'
+
+
+
+
 #' @export
-#' @family Effect measures
+#' @rdname measures
 odds_ratio <- function(.data, exposure, outcome, alpha = 0.05, ...) {
 
   ## get critical value from normal distribution based on value to alpha
@@ -51,18 +74,8 @@ odds_ratio <- function(.data, exposure, outcome, alpha = 0.05, ...) {
 
 }
 
-#' Calculate risk ratio
-#'
-#' @param .data dataframe
-#' @param exposure exposure
-#' @param outcome outcome
-#' @param alpha significance level
-#' @param ... additional arguments passed to [twoxtwo()]
-#'
-#' @return `tibble`
-#' @importFrom rlang "!!"
 #' @export
-#' @family Effect measures
+#' @rdname measures
 risk_ratio <- function(.data, exposure, outcome, alpha = 0.05, ...) {
 
   ## get critical value from normal distribution based on value to alpha
@@ -104,18 +117,8 @@ risk_ratio <- function(.data, exposure, outcome, alpha = 0.05, ...) {
 
 }
 
-#' Calculate risk difference
-#'
-#' @param .data dataframe
-#' @param exposure exposure
-#' @param outcome outcome
-#' @param alpha significance level
-#' @param ... additional arguments passed to [twoxtwo()]
-#'
-#' @return `tibble`
-#' @importFrom rlang "!!"
 #' @export
-#' @family Effect measures
+#' @rdname measures
 risk_diff <- function(.data, exposure, outcome, alpha = 0.05, ...) {
 
   ## get critical value from normal distribution based on value to alpha

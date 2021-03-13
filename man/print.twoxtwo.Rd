@@ -2,19 +2,18 @@
 % Please edit documentation in R/methods.R
 \name{print.twoxtwo}
 \alias{print.twoxtwo}
-\title{Title}
+\title{Print twoxtwo object}
 \usage{
 \method{print}{twoxtwo}(.twoxtwo, ...)
 }
 \arguments{
-\item{...}{}
+\item{.twoxtwo}{\link[twoxtwo]{twoxtwo} object}
+
+\item{...}{Additional arguments passed to \link[knitr]{kable}}
 }
 \value{
 
 }
 \description{
-Title
-}
-\examples{
-
+Print twoxtwo object
 }

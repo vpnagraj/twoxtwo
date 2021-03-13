@@ -1,26 +1,25 @@
-#' Title
+#' Print twoxtwo object
 #'
-#' @param .twoxtwo
-#' @param ...
+#' @param .twoxtwo \link[twoxtwo]{twoxtwo} object
+#' @param ... Additional arguments passed to \link[knitr]{kable}
 #'
 #' @return
 #' @export
 #'
-#' @examples
 #'
 print.twoxtwo <- function(.twoxtwo, ...) {
   cat(display(.twoxtwo, ...), sep = "\n")
 }
 
-#' Title
+#' Summarize twoxtwo object
 #'
-#' @param .twoxtwo
-#' @param ...
+#' @param .twoxtwo \link[twoxtwo]{twoxtwo} object
+#' @param alpha Sigificance level to be used for constructing confidence interval; default is `0.05`
+#' @param ... Additional arguments passed to \link[twoxtwo]{print.twoxtwo}
 #'
 #' @return
 #' @export
 #'
-#' @examples
 summary.twoxtwo <- function(.twoxtwo, alpha = 0.05, ...) {
 
   ## print relevant summary information

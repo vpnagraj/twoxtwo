@@ -7,11 +7,11 @@
 twoxtwo(.data, exposure, outcome, levels = NULL, na.rm = TRUE, verbose = FALSE)
 }
 \arguments{
-\item{.data}{data frame}
+\item{.data}{Data frame with observation-level exposure and outcome data}
 
-\item{exposure}{exposure}
+\item{exposure}{Name of exposure variable}
 
-\item{outcome}{outcome}
+\item{outcome}{Name of outcome variable}
 
 \item{levels}{explicitly specify levels for the exposure and outcome as a named list; if supplied, contingency table will be oriented with respect to the sequence of levels specified}
 

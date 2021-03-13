@@ -7,10 +7,12 @@
 format_measure(.data, digits = 3)
 }
 \arguments{
-\item{digits}{}
+\item{.data}{Output from a twoxtwo effect measure function (e.g. \link[twoxtwo]{odds_ratio})}
+
+\item{digits}{Number of digits; default is \code{3}}
 }
 \value{
-
+formatted measure
 }
 \description{
 Title

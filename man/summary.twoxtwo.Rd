@@ -2,16 +2,20 @@
 % Please edit documentation in R/methods.R
 \name{summary.twoxtwo}
 \alias{summary.twoxtwo}
-\title{Title}
+\title{Summarize twoxtwo object}
 \usage{
 \method{summary}{twoxtwo}(.twoxtwo, alpha = 0.05, ...)
 }
 \arguments{
-\item{...}{}
+\item{.twoxtwo}{\link[twoxtwo]{twoxtwo} object}
+
+\item{alpha}{Sigificance level to be used for constructing confidence interval; default is \code{0.05}}
+
+\item{...}{Additional arguments passed to \link[twoxtwo]{print.twoxtwo}}
 }
 \value{
 
 }
 \description{
-Title
+Summarize twoxtwo object
 }

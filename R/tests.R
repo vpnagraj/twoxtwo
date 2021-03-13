@@ -1,9 +1,15 @@
 #' Fisher test
 #'
-#' @param .data dataframe
-#' @param exposure exposure
-#' @param outcome outcome
-#' @param ... additional arguments passed to twoxtwo function
+#' @description
+#'
+#' description
+#'
+#' @param .data Data frame with observation-level exposure and outcome data
+#' @param exposure Name of exposure variable
+#' @param outcome Name of outcome variable
+#' @param ... Additional arguments passed to \link[twoxtwo]{twoxtwo} function
+#'
+#' @md
 #'
 #' @return tibble
 #' @importFrom rlang "!!"
@@ -16,9 +22,9 @@ fisher <- function(.data, exposure, outcome, ...) {
 
   twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)$tbl %>%
     dplyr::select(-c(3,4)) %>%
-    dplyr::summarise(odds_ratio = fisher.test(.)$estimate,
-                     ci_lower = fisher.test(.)$conf.int[1],
-                     ci_upper = fisher.test(.)$conf.int[2],
-                     pvalue = fisher.test(.)$p.value)
+    dplyr::summarise(odds_ratio = stats::fisher.test(.)$estimate,
+                     ci_lower = stats::fisher.test(.)$conf.int[1],
+                     ci_upper = stats::fisher.test(.)$conf.int[2],
+                     pvalue = stats::fisher.test(.)$p.value)
 
 }

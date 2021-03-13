@@ -1,14 +1,11 @@
-#' @importFrom magrittr %>%
-#' @export
-magrittr::`%>%`
-
-
 #' Title
 #'
-#' @param .data
-#' @param digits
+#' @param .data Output from a twoxtwo effect measure function (e.g. \link[twoxtwo]{odds_ratio})
+#' @param digits Number of digits; default is `3`
 #'
-#' @return
+#' @md
+#'
+#' @return formatted measure
 #'
 format_measure <- function(.data, digits = 3) {
   tmp_est <- .data$estimate
@@ -25,13 +22,12 @@ format_measure <- function(.data, digits = 3) {
 
 #' Title
 #'
-#' @param .twoxtwo
-#' @param ...
+#' @param .twoxtwo \link[twoxtwo]{twoxtwo} object
+#' @param ... Additional arguments passed to \link[knitr]{kable}
 #'
-#' @return
+#' @return kable output ...
 #' @export
 #'
-#' @examples
 display <- function(.twoxtwo, ...) {
   ## extract exposure and outcome names / levels from twoxtwo object
   exposure_var <- .twoxtwo$exposure$variable

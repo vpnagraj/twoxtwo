@@ -1,8 +1,8 @@
 #' Create a two-by-two table
 #'
-#' @param .data data frame
-#' @param exposure exposure
-#' @param outcome outcome
+#' @param .data Data frame with observation-level exposure and outcome data
+#' @param exposure Name of exposure variable
+#' @param outcome Name of outcome variable
 #' @param levels explicitly specify levels for the exposure and outcome as a named list; if supplied, contingency table will be oriented with respect to the sequence of levels specified
 #' @param na.rm logical as to whether or not to remove NA values when constructing contingency table; default is TRUE
 #' @param verbose Logical

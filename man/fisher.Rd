@@ -7,17 +7,17 @@
 fisher(.data, exposure, outcome, ...)
 }
 \arguments{
-\item{.data}{dataframe}
+\item{.data}{Data frame with observation-level exposure and outcome data}
 
-\item{exposure}{exposure}
+\item{exposure}{Name of exposure variable}
 
-\item{outcome}{outcome}
+\item{outcome}{Name of outcome variable}
 
-\item{...}{additional arguments passed to twoxtwo function}
+\item{...}{Additional arguments passed to \link[twoxtwo]{twoxtwo} function}
 }
 \value{
 tibble
 }
 \description{
-Fisher test
+
 }

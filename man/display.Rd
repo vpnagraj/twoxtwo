@@ -7,10 +7,12 @@
 display(.twoxtwo, ...)
 }
 \arguments{
-\item{...}{}
+\item{.twoxtwo}{\link[twoxtwo]{twoxtwo} object}
+
+\item{...}{Additional arguments passed to \link[knitr]{kable}}
 }
 \value{
-
+kable output ...
 }
 \description{
 Title

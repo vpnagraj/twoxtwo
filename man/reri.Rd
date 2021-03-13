@@ -7,10 +7,18 @@
 reri(.data, exposure, outcome, effect_modifier, ...)
 }
 \arguments{
-\item{...}{}
+\item{.data}{Data frame with observation-level exposure and outcome data}
+
+\item{exposure}{Name of exposure variable}
+
+\item{outcome}{Name of outcome variable}
+
+\item{effect_modifier}{Name of effect modifier variable}
+
+\item{...}{Additional arguments passed to \link[twoxtwo]{twoxtwo} function}
 }
 \value{
-
+\code{tibble}
 }
 \description{
 Relative risk due to interaction (RERI)

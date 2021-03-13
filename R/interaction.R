@@ -1,15 +1,14 @@
 #' Relative risk due to interaction (RERI)
 #'
-#' @param .data
-#' @param exposure
-#' @param outcome
-#' @param effect_modifier
-#' @param ...
+#' @param .data Data frame with observation-level exposure and outcome data
+#' @param exposure Name of exposure variable
+#' @param outcome Name of outcome variable
+#' @param effect_modifier Name of effect modifier variable
+#' @param ... Additional arguments passed to \link[twoxtwo]{twoxtwo} function
 #'
-#' @return
+#' @return `tibble`
 #' @export
 #'
-#' @examples
 reri <- function(.data, exposure, outcome, effect_modifier, ...) {
 
   quo_exposure <- dplyr::enquo(exposure)
@@ -28,14 +27,14 @@ reri <- function(.data, exposure, outcome, effect_modifier, ...) {
 
   strata1 <-
     apart[[1]] %>%
-    twoxtwo(!!quo_exposure,!!quo_outcome)$tbl %>%
+    twoxtwo(!!quo_exposure,!!quo_outcome, ...)$tbl %>%
     dplyr::mutate(risk = .[[1]] / rowSums(dplyr::select(.,-exposure,-outcome))) %>%
     dplyr::mutate(effect_modifier := paste0(splitter, "::", names(apart)[1]))
 
 
   strata2 <-
     apart[[2]] %>%
-    twoxtwo(!!quo_exposure,!!quo_outcome)$tbl %>%
+    twoxtwo(!!quo_exposure,!!quo_outcome, ...)$tbl %>%
     dplyr::mutate(risk = .[[1]] / rowSums(dplyr::select(.,-exposure,-outcome))) %>%
     dplyr::mutate(effect_modifier := paste0(splitter, "::", names(apart)[2]))
 
