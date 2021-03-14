@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{display}
 \alias{display}
-\title{Title}
+\title{Display twoxtwo object}
 \usage{
 display(.twoxtwo, ...)
 }
@@ -12,8 +12,8 @@ display(.twoxtwo, ...)
 \item{...}{Additional arguments passed to \link[knitr]{kable}}
 }
 \value{
-kable output ...
+A \code{knitr_kable} object with the the \code{twoxtwo} cell counts, exposure levels as row names, and outcome levels as column names.
 }
 \description{
-Title
+This is a helper to render a \link[twoxtwo]{twoxtwo} object as a \link[knitr]{kable}. The function extracts \code{twoxtwo} cell counts and uses exposure levels as row names and outcome levels as column names.
 }

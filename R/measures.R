@@ -6,9 +6,9 @@
 #'
 #' The \link[twoxtwo]{twoxtwo} framework allows for estimation of the magnitude of association between an exposure and outcome. Measures of effect that can be calculated include odds ratio, risk ratio, and risk difference. Each measure can be calculated as a point estimate as well as the standard error (SE) around that value. It is critical to note that the interpretation of measures of effect depends on the study design and research question being investigated.
 #'
-#' The `odds_ratio()`, `risk_ratio()`, and `risk_diff()` functions provide a standard interface for calculating measures of effect. Each function takes an input dataset and arguments for outcome and exposure as of bare, unquoted variable names. The functions all return a tidy `tibble` with the name of the measure, the point estimate, and lower/upper bounds of a confidence interval (CI) based on the SE.
+#' The `odds_ratio()`, `risk_ratio()`, and `risk_diff()` functions provide a standard interface for calculating measures of effect. Each function takes an input dataset and arguments for outcome and exposure as bare, unquoted variable names. The functions all return a tidy `tibble` with the name of the measure, the point estimate, and lower/upper bounds of a confidence interval (CI) based on the SE.
 #'
-#' Formulas used to calculate point estimates for measures of effect (and SE) are available in 'Details'.
+#' Formulas used in point estimate and SE calculations are available in 'Details'.
 #'
 #' @details
 #'
@@ -42,7 +42,7 @@
 #'
 #' A `tibble` with the following columns:
 #'
-#' - **measure**: Name of the measure calculate
+#' - **measure**: Name of the measure calculated
 #' - **estimate**: Point estimate for the effect measure
 #' - **ci_lower**: The lower bound of the confidence interval for the estimate
 #' - **ci_upper**: The upper bound of the confidence interval for the estimate

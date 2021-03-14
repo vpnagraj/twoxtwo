@@ -20,13 +20,21 @@ format_measure <- function(.data, digits = 3) {
 }
 
 
-#' Title
+#' Display twoxtwo object
+#'
+#' @description
+#'
+#' This is a helper to render a \link[twoxtwo]{twoxtwo} object as a \link[knitr]{kable}. The function extracts `twoxtwo` cell counts and uses exposure levels as row names and outcome levels as column names.
 #'
 #' @param .twoxtwo \link[twoxtwo]{twoxtwo} object
 #' @param ... Additional arguments passed to \link[knitr]{kable}
 #'
-#' @return kable output ...
+#' @return
+#'
+#' A `knitr_kable` object with the the `twoxtwo` cell counts, exposure levels as row names, and outcome levels as column names.
+#'
 #' @export
+#' @md
 #'
 display <- function(.twoxtwo, ...) {
   ## extract exposure and outcome names / levels from twoxtwo object
@@ -52,6 +60,5 @@ display <- function(.twoxtwo, ...) {
                col.names = c("","OUTCOME","OUTCOME"),
                row.names = TRUE,
                ...)
-
 }
 

@@ -27,7 +27,7 @@ risk_diff(.data, exposure, outcome, alpha = 0.05, ...)
 \value{
 A \code{tibble} with the following columns:
 \itemize{
-\item \strong{measure}: Name of the measure calculate
+\item \strong{measure}: Name of the measure calculated
 \item \strong{estimate}: Point estimate for the effect measure
 \item \strong{ci_lower}: The lower bound of the confidence interval for the estimate
 \item \strong{ci_upper}: The upper bound of the confidence interval for the estimate
@@ -38,9 +38,9 @@ A \code{tibble} with the following columns:
 \description{
 The \link[twoxtwo]{twoxtwo} framework allows for estimation of the magnitude of association between an exposure and outcome. Measures of effect that can be calculated include odds ratio, risk ratio, and risk difference. Each measure can be calculated as a point estimate as well as the standard error (SE) around that value. It is critical to note that the interpretation of measures of effect depends on the study design and research question being investigated.
 
-The \code{odds_ratio()}, \code{risk_ratio()}, and \code{risk_diff()} functions provide a standard interface for calculating measures of effect. Each function takes an input dataset and arguments for outcome and exposure as of bare, unquoted variable names. The functions all return a tidy \code{tibble} with the name of the measure, the point estimate, and lower/upper bounds of a confidence interval (CI) based on the SE.
+The \code{odds_ratio()}, \code{risk_ratio()}, and \code{risk_diff()} functions provide a standard interface for calculating measures of effect. Each function takes an input dataset and arguments for outcome and exposure as bare, unquoted variable names. The functions all return a tidy \code{tibble} with the name of the measure, the point estimate, and lower/upper bounds of a confidence interval (CI) based on the SE.
 
-Formulas used to calculate point estimates for measures of effect (and SE) are available in 'Details'.
+Formulas used in point estimate and SE calculations are available in 'Details'.
 }
 \details{
 The formulas below denote cell values as A,B,C,D. For more on \code{twoxtwo} notation see the \link[twoxtwo]{twoxtwo} documentation.
