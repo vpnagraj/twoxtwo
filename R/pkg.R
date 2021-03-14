@@ -1,5 +1,9 @@
 #' twoxtwo
 #'
+#' @description
+#'
+#' description here ...
+#'
 #' @name twoxtwo-package
 #' @aliases twoxtwo-package
 #' @docType package

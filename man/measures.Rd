@@ -5,7 +5,7 @@
 \alias{odds_ratio}
 \alias{risk_ratio}
 \alias{risk_diff}
-\title{Effect measures}
+\title{Measures of effect}
 \usage{
 odds_ratio(.data, exposure, outcome, alpha = 0.05, ...)
 
@@ -25,21 +25,43 @@ risk_diff(.data, exposure, outcome, alpha = 0.05, ...)
 \item{...}{Additional arguments passed to \link[twoxtwo]{twoxtwo} function}
 }
 \value{
-\code{tibble}
+A \code{tibble} with the following columns:
+\itemize{
+\item \strong{measure}: Name of the measure calculate
+\item \strong{estimate}: Point estimate for the effect measure
+\item \strong{ci_lower}: The lower bound of the confidence interval for the estimate
+\item \strong{ci_upper}: The upper bound of the confidence interval for the estimate
+\item \strong{exposure}: Name of the exposure variable followed by +/- levels (e.g. smoking::yes/no)
+\item \strong{outcome}: Name of the outcome variable followed by +/- levels (e.g. heart_disease::yes/no)
+}
 }
 \description{
-\subsection{odds ratio}{
+The \link[twoxtwo]{twoxtwo} framework allows for estimation of the magnitude of association between an exposure and outcome. Measures of effect that can be calculated include odds ratio, risk ratio, and risk difference. Each measure can be calculated as a point estimate as well as the standard error (SE) around that value. It is critical to note that the interpretation of measures of effect depends on the study design and research question being investigated.
 
-lorem ipsum
+The \code{odds_ratio()}, \code{risk_ratio()}, and \code{risk_diff()} functions provide a standard interface for calculating measures of effect. Each function takes an input dataset and arguments for outcome and exposure as of bare, unquoted variable names. The functions all return a tidy \code{tibble} with the name of the measure, the point estimate, and lower/upper bounds of a confidence interval (CI) based on the SE.
+
+Formulas used to calculate point estimates for measures of effect (and SE) are available in 'Details'.
+}
+\details{
+The formulas below denote cell values as A,B,C,D. For more on \code{twoxtwo} notation see the \link[twoxtwo]{twoxtwo} documentation.
+\subsection{Odds Ratio}{
+
+\deqn{OR = (A*D)/(B*C)}
+
+\deqn{seOR = sqrt(1/A + 1/B + 1/C + 1/D)}
 }
 
-\subsection{risk ratio}{
+\subsection{Risk Ratio}{
 
-lorem ipsum
+\deqn{RR = (A/(A+B)) / (C/(C+D))}
+
+\deqn{seRR = sqrt(((1 - (A/(A+B)))/((A+B)*(A/(A+B)))) + ((1-(C/(C+D)))/((C+D)*(C/(C+D)))))}
 }
 
-\subsection{risk difference}{
+\subsection{Risk Difference}{
 
-lorem ipsum
+\deqn{RD = (A/(A+B)) - (C/(C+D))}
+
+\deqn{seRD = sqrt(((A*B)/((A+B)^3)) + ((C*D)/((C+D)^3)))}
 }
 }

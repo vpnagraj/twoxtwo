@@ -19,5 +19,5 @@ fisher(.data, exposure, outcome, ...)
 tibble
 }
 \description{
-
+description
 }

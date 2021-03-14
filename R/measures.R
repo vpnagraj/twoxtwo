@@ -1,20 +1,36 @@
-#' Effect measures
+#' Measures of effect
 #'
 #' @name measures
 #'
 #' @description
 #'
-#' ## odds ratio
+#' The \link[twoxtwo]{twoxtwo} framework allows for estimation of the magnitude of association between an exposure and outcome. Measures of effect that can be calculated include odds ratio, risk ratio, and risk difference. Each measure can be calculated as a point estimate as well as the standard error (SE) around that value. It is critical to note that the interpretation of measures of effect depends on the study design and research question being investigated.
 #'
-#' lorem ipsum
+#' The `odds_ratio()`, `risk_ratio()`, and `risk_diff()` functions provide a standard interface for calculating measures of effect. Each function takes an input dataset and arguments for outcome and exposure as of bare, unquoted variable names. The functions all return a tidy `tibble` with the name of the measure, the point estimate, and lower/upper bounds of a confidence interval (CI) based on the SE.
 #'
-#' ## risk ratio
+#' Formulas used to calculate point estimates for measures of effect (and SE) are available in 'Details'.
 #'
-#' lorem ipsum
+#' @details
 #'
-#' ## risk difference
+#' The formulas below denote cell values as A,B,C,D. For more on `twoxtwo` notation see the \link[twoxtwo]{twoxtwo} documentation.
 #'
-#' lorem ipsum
+#' ## Odds Ratio
+#'
+#' \deqn{OR = (A*D)/(B*C)}
+#'
+#' \deqn{seOR = sqrt(1/A + 1/B + 1/C + 1/D)}
+#'
+#' ## Risk Ratio
+#'
+#' \deqn{RR = (A/(A+B)) / (C/(C+D))}
+#'
+#' \deqn{seRR = sqrt(((1 - (A/(A+B)))/((A+B)*(A/(A+B)))) + ((1-(C/(C+D)))/((C+D)*(C/(C+D)))))}
+#'
+#' ## Risk Difference
+#'
+#' \deqn{RD = (A/(A+B)) - (C/(C+D))}
+#'
+#' \deqn{seRD = sqrt(((A*B)/((A+B)^3)) + ((C*D)/((C+D)^3)))}
 #'
 #' @param .data Data frame with observation-level exposure and outcome data
 #' @param exposure Name of exposure variable
@@ -22,7 +38,16 @@
 #' @param alpha Significance level to be used for constructing confidence interval; default is `0.05`
 #' @param ... Additional arguments passed to \link[twoxtwo]{twoxtwo} function
 #'
-#' @return `tibble`
+#' @return
+#'
+#' A `tibble` with the following columns:
+#'
+#' - **measure**: Name of the measure calculate
+#' - **estimate**: Point estimate for the effect measure
+#' - **ci_lower**: The lower bound of the confidence interval for the estimate
+#' - **ci_upper**: The upper bound of the confidence interval for the estimate
+#' - **exposure**: Name of the exposure variable followed by +/- levels (e.g. smoking::yes/no)
+#' - **outcome**: Name of the outcome variable followed by +/- levels (e.g. heart_disease::yes/no)
 #'
 #' @importFrom rlang "!!"
 #' @md
@@ -139,12 +164,14 @@ risk_diff <- function(.data, exposure, outcome, alpha = 0.05, ...) {
 
   ## risk difference = risk among exposed minus risk among unexposed
   ## RD = (A / A + B)) / (C / C + D)
+  ## se_RD = sqrt((A*B) / ((A+B)^3) + (C*D)/((C+D)^3))
   r_exposed <- A / (A + B)
   r_unexposed <- C / (C + D)
   rd <- r_exposed - r_unexposed
   ## get standard error of RD
-  # se_rd <- sqrt(((1 - r_exposed)/((A+B)*r_exposed)) + ((1-r_unexposed)/((C+D)*r_unexposed)))
-  se_rd <- sqrt(((A + C) / (A + B + C + D)) * (1-((A + C) / (A + B + C + D))) * ((1/(A+B)) + (1/(C+D))))
+  se_rd <- sqrt(((A*B)/((A+B)^3)) + ((C*D)/((C+D)^3)))
+
+
 
   ## use standard error and critical value to establish bounds for CI
   ci_lower_bound <- rd - (critical_value * se_rd)

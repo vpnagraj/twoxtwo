@@ -4,16 +4,16 @@
 \alias{print.twoxtwo}
 \title{Print twoxtwo object}
 \usage{
-\method{print}{twoxtwo}(.twoxtwo, ...)
+\method{print}{twoxtwo}(x, ...)
 }
 \arguments{
-\item{.twoxtwo}{\link[twoxtwo]{twoxtwo} object}
+\item{x}{\link[twoxtwo]{twoxtwo} object}
 
 \item{...}{Additional arguments passed to \link[knitr]{kable}}
 }
 \value{
-
+print output ...
 }
 \description{
-Print twoxtwo object
+description here ...
 }

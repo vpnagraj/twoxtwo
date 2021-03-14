@@ -4,18 +4,18 @@
 \alias{summary.twoxtwo}
 \title{Summarize twoxtwo object}
 \usage{
-\method{summary}{twoxtwo}(.twoxtwo, alpha = 0.05, ...)
+\method{summary}{twoxtwo}(object, alpha = 0.05, ...)
 }
 \arguments{
-\item{.twoxtwo}{\link[twoxtwo]{twoxtwo} object}
+\item{object}{\link[twoxtwo]{twoxtwo} object}
 
-\item{alpha}{Sigificance level to be used for constructing confidence interval; default is \code{0.05}}
+\item{alpha}{Significance level to be used for constructing confidence interval; default is \code{0.05}}
 
 \item{...}{Additional arguments passed to \link[twoxtwo]{print.twoxtwo}}
 }
 \value{
-
+summary object
 }
 \description{
-Summarize twoxtwo object
+description ...
 }
