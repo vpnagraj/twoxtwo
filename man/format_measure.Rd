@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{format_measure}
 \alias{format_measure}
-\title{Title}
+\title{Format measure}
 \usage{
 format_measure(.data, digits = 3)
 }
@@ -12,8 +12,8 @@ format_measure(.data, digits = 3)
 \item{digits}{Number of digits; default is \code{3}}
 }
 \value{
-formatted measure
+A character vector of length 1 with the effect measure formatted as point estimate (lower bound of CI, upper bound of CI). The point estimate and CI are rounded to precision specified in "digits" argument.
 }
 \description{
-Title
+This helper takes the output from a \code{twoxtwo} effect measure function and formats the point estimate and lower/upper bounds of the computed confidence interval (CI) as a string.
 }

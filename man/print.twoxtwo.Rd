@@ -12,8 +12,8 @@
 \item{...}{Additional arguments passed to \link[knitr]{kable}}
 }
 \value{
-print output ...
+A printed \code{knitr_kable} object with the \code{twoxtwo} cell counts, exposure levels as row names, and outcome levels as column names.
 }
 \description{
-description here ...
+The \code{print.twoxtwo()} function provides an S3 method for printing objects created with \link[twoxtwo]{twoxtwo}. The printed output formats the contents of the \code{twoxtwo} table as a \link[knitr]{kable}.
 }

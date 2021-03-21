@@ -1,16 +1,31 @@
-#' Create a two-by-two table
+#' Create a twoxtwo table
+#'
+#' @description
+#'
+#' The `twoxtwo` constructor function takes an input data frame and summarizes counts of the specified exposure and outcome variables as a two-by-two contingency table. This function is used internally in package functions for computing measure of effect and hypothesis testing, but can be used on its own as well. The returned object is given a `twoxtwo` class which allows dispatch of the `twoxtwo` S3 methods (see \link[twoxtwo]{print.twoxtwo} and \link[twoxtwo]{summary.twoxtwo}).
 #'
 #' @param .data Data frame with observation-level exposure and outcome data
 #' @param exposure Name of exposure variable
 #' @param outcome Name of outcome variable
-#' @param levels explicitly specify levels for the exposure and outcome as a named list; if supplied, contingency table will be oriented with respect to the sequence of levels specified
-#' @param na.rm logical as to whether or not to remove NA values when constructing contingency table; default is TRUE
-#' @param verbose Logical
+#' @param levels Levels for the exposure and outcome as a named list; if supplied, then the contingency table will be oriented with respect to the sequence of levels specified; default is `NULL`
+#' @param na.rm Logical as to whether or not to remove `NA` values when constructing contingency table; default is `TRUE`
+#' @param retain Logical as to whether or not the original data passed to the ".data" argument should be retained; if `FALSE` the `summary.twoxtwo()` function will not compute effect measures; default is `TRUE`
 #'
-#' @return tibble
+#' @return
+#'
+#' A named list with the `twoxtwo` class. Elements include:
+#'
+#' - **tbl**: The summarized two-by-two contingency table as a `tibble`.
+#' - **cells**: Named list with the counts in each of the cells in the two-by-two contingency table (i.e. A,B,C,D)
+#' - **exposure**: Named list of exposure information (name of variable and levels)
+#' - **outcome**: Named list of outcome information (name of variable and levels)
+#' - **n_missing**: The number of missing values (in either exposure or outcome variable) removed prior to computing counts for the two-by-two table
+#' - **data**: The original data frame passed to the ".data" argument. If `retain=FALSE`, then this element will be `NULL`.
+#'
 #' @importFrom rlang ":="
+#' @md
 #' @export
-twoxtwo <- function(.data, exposure, outcome, levels = NULL, na.rm = TRUE, verbose = FALSE) {
+twoxtwo <- function(.data, exposure, outcome, levels = NULL, na.rm = TRUE, retain = TRUE) {
 
   ## handle exposure/outcome variable name quotation
   quo_exposure <- dplyr::enquo(exposure)
@@ -130,11 +145,15 @@ twoxtwo <- function(.data, exposure, outcome, levels = NULL, na.rm = TRUE, verbo
     magrittr::set_colnames(.,
                            c(paste0(dplyr::quo_name(quo_outcome),
                                     "_", colnames(.)[1:2]),
-                             # keep expsoure outcome name
+                             # keep exposure outcome name
                              colnames(.)[3:4]
                            )
     ) %>%
     dplyr::as_tibble(.)
+
+  if(!retain) {
+    .data <- NULL
+  }
 
   ## construct output object
   res <- list(tbl = dat,
@@ -148,6 +167,7 @@ twoxtwo <- function(.data, exposure, outcome, levels = NULL, na.rm = TRUE, verbo
                              levels = outcome_levels),
               n_missing = n_na,
               data = .data)
+
   ## assign the twoxtwo class
   class(res) <- "twoxtwo"
 

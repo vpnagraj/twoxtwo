@@ -49,6 +49,11 @@
 #' - **exposure**: Name of the exposure variable followed by +/- levels (e.g. smoking::yes/no)
 #' - **outcome**: Name of the outcome variable followed by +/- levels (e.g. heart_disease::yes/no)
 #'
+#' @references Tripepi, G., Jager, K. J., Dekker, F. W., Wanner, C., & Zoccali, C. (2007). Measures of effect: relative risks, odds ratios, risk difference, and 'number needed to treat'. Kidney international, 72(7), 789–791. https://doi.org/10.1038/sj.ki.5002432
+#' @references Walter S. D. (2000). Choice of effect measure for epidemiological data. Journal of clinical epidemiology, 53(9), 931–939. https://doi.org/10.1016/s0895-4356(00)00210-9
+#' @references Szklo, M., & Nieto, F. J. (2007). Epidemiology: Beyond the basics. Sudbury, Massachussets: Jones and Bartlett.
+#' @references Keyes, K.M, & Galea S. (2014). Epidemiology Matters: A new introduction to methodological foundations. New York, New York: Oxford University Press.
+#'
 #' @importFrom rlang "!!"
 #' @md
 #'

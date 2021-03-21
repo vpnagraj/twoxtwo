@@ -65,3 +65,12 @@ The formulas below denote cell values as A,B,C,D. For more on \code{twoxtwo} not
 \deqn{seRD = sqrt(((A*B)/((A+B)^3)) + ((C*D)/((C+D)^3)))}
 }
 }
+\references{
+Tripepi, G., Jager, K. J., Dekker, F. W., Wanner, C., & Zoccali, C. (2007). Measures of effect: relative risks, odds ratios, risk difference, and 'number needed to treat'. Kidney international, 72(7), 789–791. https://doi.org/10.1038/sj.ki.5002432
+
+Walter S. D. (2000). Choice of effect measure for epidemiological data. Journal of clinical epidemiology, 53(9), 931–939. https://doi.org/10.1016/s0895-4356(00)00210-9
+
+Szklo, M., & Nieto, F. J. (2007). Epidemiology: Beyond the basics. Sudbury, Massachussets: Jones and Bartlett.
+
+Keyes, K.M, & Galea S. (2014). Epidemiology Matters: A new introduction to methodological foundations. New York, New York: Oxford University Press.
+}

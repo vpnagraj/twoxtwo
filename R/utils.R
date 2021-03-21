@@ -1,11 +1,17 @@
-#' Title
+#' Format measure
+#'
+#' @description
+#'
+#' This helper takes the output from a `twoxtwo` effect measure function and formats the point estimate and lower/upper bounds of the computed confidence interval (CI) as a string.
 #'
 #' @param .data Output from a twoxtwo effect measure function (e.g. \link[twoxtwo]{odds_ratio})
 #' @param digits Number of digits; default is `3`
 #'
 #' @md
 #'
-#' @return formatted measure
+#' @return
+#'
+#' A character vector of length 1 with the effect measure formatted as point estimate (lower bound of CI, upper bound of CI). The point estimate and CI are rounded to precision specified in "digits" argument.
 #'
 format_measure <- function(.data, digits = 3) {
   tmp_est <- .data$estimate
@@ -31,7 +37,7 @@ format_measure <- function(.data, digits = 3) {
 #'
 #' @return
 #'
-#' A `knitr_kable` object with the the `twoxtwo` cell counts, exposure levels as row names, and outcome levels as column names.
+#' A `knitr_kable` object with the `twoxtwo` cell counts, exposure levels as row names, and outcome levels as column names.
 #'
 #' @export
 #' @md

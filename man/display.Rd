@@ -12,7 +12,7 @@ display(.twoxtwo, ...)
 \item{...}{Additional arguments passed to \link[knitr]{kable}}
 }
 \value{
-A \code{knitr_kable} object with the the \code{twoxtwo} cell counts, exposure levels as row names, and outcome levels as column names.
+A \code{knitr_kable} object with the \code{twoxtwo} cell counts, exposure levels as row names, and outcome levels as column names.
 }
 \description{
 This is a helper to render a \link[twoxtwo]{twoxtwo} object as a \link[knitr]{kable}. The function extracts \code{twoxtwo} cell counts and uses exposure levels as row names and outcome levels as column names.
