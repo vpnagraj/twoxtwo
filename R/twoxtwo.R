@@ -105,23 +105,27 @@ twoxtwo <- function(.data, exposure, outcome, levels = NULL, na.rm = TRUE, retai
 
     if(!is.null(levels)) {
 
-      # if reordering of outcome and exposure for 2x2 is desired, convert to data.frame ...
-      # then take values from named list levels for columnames and rownames
+      ## if levels are passed coerce to character vectors
+      levels$outcome <- as.character(levels$outcome)
+      levels$exposure <- as.character(levels$exposure)
+
+      ## if reordering of outcome and exposure for 2x2 is desired, convert to data.frame ...
+      ## then take values from named list levels for columnames and rownames
       dat <- as.data.frame(dat)
 
       row.names(dat) <- dat[,1]
 
-      # check inputs for exposure and outcome levels
+      ## check inputs for exposure and outcome levels
       if(!(all(levels$outcome %in% colnames(dat)) & all(levels$exposure %in% rownames(dat)))) {
         stop("Make sure all levels specified exist in the exposure and/or outcome.")
       }
 
-      # check inputs for exposure and outcome levels
+      ## check inputs for exposure and outcome levels
       if(length(unique(levels$outcome)) == 1 | length(unique(levels$exposure)) == 1) {
         stop("Make sure all levels specified are unique to exposure or outcome.")
       }
 
-      # this step will reorder *and get rid of outcome column (index 1)
+      ## this step will reorder *and get rid of outcome column (index 1)
       dat <- dat[levels$exposure,levels$outcome]
 
       exposure_levels <- rownames(dat)
