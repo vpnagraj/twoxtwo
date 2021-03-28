@@ -5,8 +5,10 @@
 
 <!-- badges: start -->
 
-[![R build
-status](https://github.com/vpnagraj/twoxtwo/workflows/R-CMD-check/badge.svg)](https://github.com/vpnagraj/twoxtwo/actions)
+[![BUILD STATUS:
+STABLE](https://github.com/vpnagraj/twoxtwo/workflows/R-CMD-check/badge.svg)](https://github.com/vpnagraj/twoxtwo/actions)
+[![BUILD STATUS:
+DEVELOPMENT](https://github.com/vpnagraj/twoxtwo/workflows/R-CMD-check-dev/badge.svg)](https://github.com/vpnagraj/twoxtwo/actions)
 <!-- badges: end -->
 
 The `twoxtwo` package provides a collection of functions to display,
