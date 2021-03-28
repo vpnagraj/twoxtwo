@@ -1,5 +1,9 @@
-context("test-tests")
+test_that("fisher test p-value comes through as expected", {
 
-test_that("multiplication works", {
-  expect_equal(2 * 2, 4)
+  tmp_fisher_res <-
+    titanic %>%
+    dplyr::mutate(Crew = ifelse(Class == "Crew", TRUE, FALSE)) %>%
+    fisher(., Crew, Survived)
+
+  expect_lt(tmp_fisher_res$pvalue, 0.05)
 })

@@ -10,11 +10,15 @@ Imports:
   tidyr,
   forcats,
   magrittr,
-  rlang
+  rlang,
+  knitr
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.0.1.9000
+RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
 Suggests: 
-    testthat
+    testthat,
+    lifecycle
+Depends: 
+    R (>= 2.10)

@@ -2,24 +2,47 @@
 % Please edit documentation in R/twoxtwo.R
 \name{twoxtwo}
 \alias{twoxtwo}
-\title{Create a two-by-two table}
+\title{Create a twoxtwo table}
 \usage{
-twoxtwo(.data, exposure, outcome, levels = NULL, na.rm = TRUE)
+twoxtwo(.data, exposure, outcome, levels = NULL, na.rm = TRUE, retain = TRUE)
 }
 \arguments{
-\item{.data}{data frame}
+\item{.data}{Data frame with observation-level exposure and outcome data}
 
-\item{exposure}{exposure}
+\item{exposure}{Name of exposure variable}
 
-\item{outcome}{outcome}
+\item{outcome}{Name of outcome variable}
 
-\item{levels}{explicitly specify levels for the exposure and outcome as a named list; if supplied, contingency table will be oriented with respect to the sequence of levels specified}
+\item{levels}{Levels for the exposure and outcome as a named list; if supplied, then the contingency table will be oriented with respect to the sequence of levels specified; default is \code{NULL}}
 
-\item{na.rm}{logical as to whether or not to remove NA values when constructing contingency table; default is TRUE}
+\item{na.rm}{Logical as to whether or not to remove \code{NA} values when constructing contingency table; default is \code{TRUE}}
+
+\item{retain}{Logical as to whether or not the original data passed to the ".data" argument should be retained; if \code{FALSE} the \code{summary.twoxtwo()} function will not compute effect measures; default is \code{TRUE}}
 }
 \value{
-tibble
+A named list with the \code{twoxtwo} class. Elements include:
+\itemize{
+\item \strong{tbl}: The summarized two-by-two contingency table as a \code{tibble}.
+\item \strong{cells}: Named list with the counts in each of the cells in the two-by-two contingency table (i.e. A,B,C,D)
+\item \strong{exposure}: Named list of exposure information (name of variable and levels)
+\item \strong{outcome}: Named list of outcome information (name of variable and levels)
+\item \strong{n_missing}: The number of missing values (in either exposure or outcome variable) removed prior to computing counts for the two-by-two table
+\item \strong{data}: The original data frame passed to the ".data" argument. If \code{retain=FALSE}, then this element will be \code{NULL}.
+}
 }
 \description{
-Create a two-by-two table
+The \code{twoxtwo} constructor function takes an input data frame and summarizes counts of the specified exposure and outcome variables as a two-by-two contingency table. This function is used internally in other functions, but can be used on its own as well. The returned object is given a \code{twoxtwo} class which allows dispatch of the \code{twoxtwo} S3 methods (see \link[twoxtwo]{print.twoxtwo} and \link[twoxtwo]{summary.twoxtwo}).
+
+For more information on how the two-by-two table is created see 'Details'.
+}
+\details{
+The two-by-two table covers four conditions that can be specified with A,B,C,D notation:
+\itemize{
+\item \strong{A}: Exposure "+" and Outcome "+"
+\item \strong{B}: Exposure "+" and Outcome "-"
+\item \strong{C}: Exposure "-" and Outcome "+"
+\item \strong{D}: Exposure "-" and Outcome "-"
+}
+
+\code{twoxtwo()} requires that the exposure and outcome variables are binary. The columns can be character, numeric, or factor but must have only two levels. Each column will internally be coerced to a factor with levels reversed. The reversal results in exposures with \code{TRUE} and \code{FALSE} (or \code{1} and \code{0}) oriented in the two-by-two table with the \code{TRUE} as "+" (first row) and \code{FALSE} as "-" (second row). Likewise, \code{TRUE}/\code{FALSE} outcomes will be oriented with \code{TRUE} as "+" (first column) and \code{FALSE} as "-" (second column). Note that the user can also define the orientation of the table using the "levels" argument.
 }

@@ -2,22 +2,42 @@
 % Please edit documentation in R/tests.R
 \name{fisher}
 \alias{fisher}
-\title{Fisher test}
+\title{Fisher's exact test}
 \usage{
-fisher(.data, exposure, outcome, ...)
+fisher(
+  .data,
+  exposure,
+  outcome,
+  alternative = "two.sided",
+  conf_level = 0.95,
+  ...
+)
 }
 \arguments{
-\item{.data}{dataframe}
+\item{.data}{Data frame with observation-level exposure and outcome data}
 
-\item{exposure}{exposure}
+\item{exposure}{Name of exposure variable}
 
-\item{outcome}{outcome}
+\item{outcome}{Name of outcome variable}
 
-\item{...}{additional arguments passed to twoxtwo function}
+\item{alternative}{Alternative hypothesis for test; must be one of "two.sided", "greater", or "less"; default is \code{"two.sided"}}
+
+\item{conf_level}{Confidence level for the confidence interval; default is \code{0.95}}
+
+\item{...}{Additional arguments passed to \link[twoxtwo]{twoxtwo} function}
 }
 \value{
-tibble
+A \code{tibble} with the following columns:
+\itemize{
+\item \strong{test}: Name of the test conducted
+\item \strong{estimate}: Point estimate from the test
+\item \strong{ci_lower}: The lower bound of the confidence interval for the estimate
+\item \strong{ci_upper}: The upper bound of the confidence interval for the estimate
+\item \strong{pvalue}: P-value from the test
+\item \strong{exposure}: Name of the exposure variable followed by +/- levels (e.g. smoking::yes/no)
+\item \strong{outcome}: Name of the outcome variable followed by +/- levels (e.g. heart_disease::yes/no)
+}
 }
 \description{
-Fisher test
+This function conducts a Fisher's exact test using specified exposure and outcome. Internally the function uses \link[stats]{fisher.test} to test independence of \code{twoxtwo} rows and columns. The output of the function includes the odds ratio, the lower/upper bounds for the confidence interval around the estimate, and the p-value from the test.
 }

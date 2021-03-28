@@ -5,5 +5,5 @@
 \alias{twoxtwo-package}
 \title{twoxtwo}
 \description{
-twoxtwo
+Provides a collection of functions for data analysis with two-by-two contingency tables.
 }
