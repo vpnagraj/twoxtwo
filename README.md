@@ -14,7 +14,7 @@
 The `twoxtwo` package provides a collection of functions to display,
 summarize, and analyze data in two-by-two contingency tables.
 Statistical analysis functions are oriented towards epidemiological
-ivestigation of exposure/outcome relationships.
+investigation of exposure/outcome relationships.
 
 ## Installation
 
@@ -43,14 +43,6 @@ First load `twoxtwo` and `dplyr` to help prep data:
 ``` r
 library(twoxtwo)
 library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
 ```
 
 Next create a object with S3 class `twoxtwo`. For this example, use the
@@ -64,11 +56,11 @@ crew_2x2 <-
   twoxtwo(.data = ., exposure = Crew, outcome = Survived)
 
 crew_2x2
-#> |         |           |OUTCOME      |OUTCOME     |
-#> |:--------|:----------|:------------|:-----------|
-#> |         |           |Survived=Yes |Survived=No |
-#> |EXPOSURE |Crew=TRUE  |212          |673         |
-#> |EXPOSURE |Crew=FALSE |499          |817         |
+|         |           |OUTCOME      |OUTCOME     |
+|:--------|:----------|:------------|:-----------|
+|         |           |Survived=Yes |Survived=No |
+|EXPOSURE |Crew=TRUE  |212          |673         |
+|EXPOSURE |Crew=FALSE |499          |817         |
 ```
 
 The `twoxtwo` class has its own `summary.twoxtwo()` method that computes
@@ -76,27 +68,27 @@ effect measures (odds ratio, risk ratio, and risk difference):
 
 ``` r
 summary(crew_2x2)
-#> 
-#> |         |           |OUTCOME      |OUTCOME     |
-#> |:--------|:----------|:------------|:-----------|
-#> |         |           |Survived=Yes |Survived=No |
-#> |EXPOSURE |Crew=TRUE  |212          |673         |
-#> |EXPOSURE |Crew=FALSE |499          |817         |
-#> 
-#> 
-#> Outcome: Survived
-#> Outcome + : Yes
-#> Outcome - : No
-#> 
-#> Exposure: Crew
-#> Exposure + : TRUE
-#> Exposure - : FALSE
-#> 
-#> Number of missing observations: 0
-#> 
-#> Odds Ratio: 0.516 (0.426,0.624)
-#> Risk Ratio: 0.632 (0.551,0.724)
-#> Risk Difference: -0.14 (-0.178,-0.101)
+
+|         |           |OUTCOME      |OUTCOME     |
+|:--------|:----------|:------------|:-----------|
+|         |           |Survived=Yes |Survived=No |
+|EXPOSURE |Crew=TRUE  |212          |673         |
+|EXPOSURE |Crew=FALSE |499          |817         |
+
+
+Outcome: Survived
+Outcome + : Yes
+Outcome - : No
+
+Exposure: Crew
+Exposure + : TRUE
+Exposure - : FALSE
+
+Number of missing observations: 0
+
+Odds Ratio: 0.516 (0.426,0.624)
+Risk Ratio: 0.632 (0.551,0.724)
+Risk Difference: -0.14 (-0.178,-0.101)
 ```
 
 Each effect measure can also be calculated without first creating the
@@ -106,30 +98,30 @@ Each effect measure can also be calculated without first creating the
 titanic %>%
   mutate(Crew = ifelse(Class == "Crew", TRUE, FALSE)) %>%
   odds_ratio(.data = ., exposure = Crew, outcome = Survived)
-#> # A tibble: 1 x 6
-#>   measure    estimate ci_lower ci_upper exposure         outcome         
-#>   <chr>         <dbl>    <dbl>    <dbl> <chr>            <chr>           
-#> 1 Odds Ratio    0.516    0.426    0.624 Crew::TRUE/FALSE Survived::Yes/No
+# A tibble: 1 x 6
+  measure    estimate ci_lower ci_upper exposure         outcome         
+  <chr>         <dbl>    <dbl>    <dbl> <chr>            <chr>           
+1 Odds Ratio    0.516    0.426    0.624 Crew::TRUE/FALSE Survived::Yes/No
 ```
 
 ``` r
 titanic %>%
   mutate(Crew = ifelse(Class == "Crew", TRUE, FALSE)) %>%
   risk_ratio(.data = ., exposure = Crew, outcome = Survived)
-#> # A tibble: 1 x 6
-#>   measure    estimate ci_lower ci_upper exposure         outcome         
-#>   <chr>         <dbl>    <dbl>    <dbl> <chr>            <chr>           
-#> 1 Risk Ratio    0.632    0.551    0.724 Crew::TRUE/FALSE Survived::Yes/No
+# A tibble: 1 x 6
+  measure    estimate ci_lower ci_upper exposure         outcome         
+  <chr>         <dbl>    <dbl>    <dbl> <chr>            <chr>           
+1 Risk Ratio    0.632    0.551    0.724 Crew::TRUE/FALSE Survived::Yes/No
 ```
 
 ``` r
 titanic %>%
   mutate(Crew = ifelse(Class == "Crew", TRUE, FALSE)) %>%
   risk_diff(.data = ., exposure = Crew, outcome = Survived)
-#> # A tibble: 1 x 6
-#>   measure         estimate ci_lower ci_upper exposure         outcome         
-#>   <chr>              <dbl>    <dbl>    <dbl> <chr>            <chr>           
-#> 1 Risk Difference   -0.140   -0.178   -0.101 Crew::TRUE/FALSE Survived::Yes/No
+# A tibble: 1 x 6
+  measure         estimate ci_lower ci_upper exposure         outcome         
+  <chr>              <dbl>    <dbl>    <dbl> <chr>            <chr>           
+1 Risk Difference   -0.140   -0.178   -0.101 Crew::TRUE/FALSE Survived::Yes/No
 ```
 
 ## Contributing

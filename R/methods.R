@@ -28,7 +28,7 @@ print.twoxtwo <- function(x, ...) {
 #'
 #' @return
 #'
-#' Printed summary information including the outcome and exposure variables and levels, as well as the number of missing observations, the `twoxtwo` contingency table, and formatted effect measures (see "Description"). In addition to printed output, the function invisibly returns a named list with computed effect measures (i.e. the `tibble` outputs from \link[twoxtwo]{risk_ratio}, and \link[twoxtwo]{risk_diff} respectively).
+#' Printed summary information including the outcome and exposure variables and levels, as well as the number of missing observations, the `twoxtwo` contingency table, and formatted effect measures (see "Description"). In addition to printed output, the function invisibly returns a named list with computed effect measures (i.e. the `tibble` outputs from \link[twoxtwo]{odds_ratio}, \link[twoxtwo]{risk_ratio}, and \link[twoxtwo]{risk_diff} respectively).
 #'
 #' @export
 #'

@@ -34,7 +34,7 @@ A \code{tibble} with the following columns:
 \item \strong{ci_lower}: The lower bound of the confidence interval for the estimate
 \item \strong{ci_upper}: The upper bound of the confidence interval for the estimate
 \item \strong{pvalue}: P-value from the test
-\item \strong{exposure}: Name of the exposure variable followed by +/- lfevels (e.g. smoking::yes/no)
+\item \strong{exposure}: Name of the exposure variable followed by +/- levels (e.g. smoking::yes/no)
 \item \strong{outcome}: Name of the outcome variable followed by +/- levels (e.g. heart_disease::yes/no)
 }
 }

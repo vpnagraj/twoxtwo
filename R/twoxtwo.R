@@ -2,7 +2,20 @@
 #'
 #' @description
 #'
-#' The `twoxtwo` constructor function takes an input data frame and summarizes counts of the specified exposure and outcome variables as a two-by-two contingency table. This function is used internally in package functions for computing measure of effect and hypothesis testing, but can be used on its own as well. The returned object is given a `twoxtwo` class which allows dispatch of the `twoxtwo` S3 methods (see \link[twoxtwo]{print.twoxtwo} and \link[twoxtwo]{summary.twoxtwo}).
+#' The `twoxtwo` constructor function takes an input data frame and summarizes counts of the specified exposure and outcome variables as a two-by-two contingency table. This function is used internally in other functions, but can be used on its own as well. The returned object is given a `twoxtwo` class which allows dispatch of the `twoxtwo` S3 methods (see \link[twoxtwo]{print.twoxtwo} and \link[twoxtwo]{summary.twoxtwo}).
+#'
+#' For more information on how the two-by-two table is created see 'Details'.
+#'
+#' @details
+#'
+#' The two-by-two table covers four conditions that can be specified with A,B,C,D notation:
+#'
+#' - **A**: Exposure "+" and Outcome "+"
+#' - **B**: Exposure "+" and Outcome "-"
+#' - **C**: Exposure "-" and Outcome "+"
+#' - **D**: Exposure "-" and Outcome "-"
+#'
+#' `twoxtwo()` requires that the exposure and outcome variables are binary. The columns can be character, numeric, or factor but must have only two levels. Each column will internally be coerced to a factor with levels reversed. The reversal results in exposures with `TRUE` and `FALSE` (or `1` and `0`) oriented in the two-by-two table with the `TRUE` as "+" (first row) and `FALSE` as "-" (second row). Likewise, `TRUE`/`FALSE` outcomes will be oriented with `TRUE` as "+" (first column) and `FALSE` as "-" (second column). Note that the user can also define the orientation of the table using the "levels" argument.
 #'
 #' @param .data Data frame with observation-level exposure and outcome data
 #' @param exposure Name of exposure variable

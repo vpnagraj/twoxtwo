@@ -22,7 +22,7 @@
 #' - **ci_lower**: The lower bound of the confidence interval for the estimate
 #' - **ci_upper**: The upper bound of the confidence interval for the estimate
 #' - **pvalue**: P-value from the test
-#' - **exposure**: Name of the exposure variable followed by +/- lfevels (e.g. smoking::yes/no)
+#' - **exposure**: Name of the exposure variable followed by +/- levels (e.g. smoking::yes/no)
 #' - **outcome**: Name of the outcome variable followed by +/- levels (e.g. heart_disease::yes/no)
 #'
 #' @importFrom rlang "!!"

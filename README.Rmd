@@ -7,7 +7,7 @@ output: github_document
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
+  comment = "",
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 [![build status (dev)](https://github.com/vpnagraj/twoxtwo/workflows/R-CMD-check-dev/badge.svg)](https://github.com/vpnagraj/twoxtwo/actions)
 <!-- badges: end -->
 
-The `twoxtwo` package provides a collection of functions to display, summarize, and analyze data in two-by-two contingency tables. Statistical analysis functions are oriented towards epidemiological ivestigation of exposure/outcome relationships.
+The `twoxtwo` package provides a collection of functions to display, summarize, and analyze data in two-by-two contingency tables. Statistical analysis functions are oriented towards epidemiological investigation of exposure/outcome relationships.
 
 ## Installation
 
@@ -46,7 +46,7 @@ devtools::install_github("vpnagraj/twoxtwo")
 
 First load `twoxtwo` and `dplyr` to help prep data:
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 library(twoxtwo)
 library(dplyr)
 ```

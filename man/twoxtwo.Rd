@@ -31,5 +31,18 @@ A named list with the \code{twoxtwo} class. Elements include:
 }
 }
 \description{
-The \code{twoxtwo} constructor function takes an input data frame and summarizes counts of the specified exposure and outcome variables as a two-by-two contingency table. This function is used internally in package functions for computing measure of effect and hypothesis testing, but can be used on its own as well. The returned object is given a \code{twoxtwo} class which allows dispatch of the \code{twoxtwo} S3 methods (see \link[twoxtwo]{print.twoxtwo} and \link[twoxtwo]{summary.twoxtwo}).
+The \code{twoxtwo} constructor function takes an input data frame and summarizes counts of the specified exposure and outcome variables as a two-by-two contingency table. This function is used internally in other functions, but can be used on its own as well. The returned object is given a \code{twoxtwo} class which allows dispatch of the \code{twoxtwo} S3 methods (see \link[twoxtwo]{print.twoxtwo} and \link[twoxtwo]{summary.twoxtwo}).
+
+For more information on how the two-by-two table is created see 'Details'.
+}
+\details{
+The two-by-two table covers four conditions that can be specified with A,B,C,D notation:
+\itemize{
+\item \strong{A}: Exposure "+" and Outcome "+"
+\item \strong{B}: Exposure "+" and Outcome "-"
+\item \strong{C}: Exposure "-" and Outcome "+"
+\item \strong{D}: Exposure "-" and Outcome "-"
+}
+
+\code{twoxtwo()} requires that the exposure and outcome variables are binary. The columns can be character, numeric, or factor but must have only two levels. Each column will internally be coerced to a factor with levels reversed. The reversal results in exposures with \code{TRUE} and \code{FALSE} (or \code{1} and \code{0}) oriented in the two-by-two table with the \code{TRUE} as "+" (first row) and \code{FALSE} as "-" (second row). Likewise, \code{TRUE}/\code{FALSE} outcomes will be oriented with \code{TRUE} as "+" (first column) and \code{FALSE} as "-" (second column). Note that the user can also define the orientation of the table using the "levels" argument.
 }
