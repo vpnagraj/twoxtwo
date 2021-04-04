@@ -9,6 +9,7 @@
 #' @param outcome Name of outcome variable
 #' @param alternative Alternative hypothesis for test; must be one of "two.sided", "greater", or "less"; default is `"two.sided"`
 #' @param conf_level Confidence level for the confidence interval; default is `0.95`
+#' @param or Hypothesized odds ratio; default is `1`
 #' @param ... Additional arguments passed to \link[twoxtwo]{twoxtwo} function
 #'
 #' @md
@@ -21,6 +22,8 @@
 #' - **estimate**: Point estimate from the test
 #' - **ci_lower**: The lower bound of the confidence interval for the estimate
 #' - **ci_upper**: The upper bound of the confidence interval for the estimate
+#' - **statistic**: Test statistic from the test (`NA` for `fisher()`)
+#' - **df**: Degrees of freedom parameter for the test statistic (`NA` for `fisher()`)
 #' - **pvalue**: P-value from the test
 #' - **exposure**: Name of the exposure variable followed by +/- levels (e.g. smoking::yes/no)
 #' - **outcome**: Name of the outcome variable followed by +/- levels (e.g. heart_disease::yes/no)
@@ -28,7 +31,7 @@
 #' @importFrom rlang "!!"
 #' @export
 #'
-fisher <- function(.data, exposure, outcome, alternative = "two.sided", conf_level = 0.95, ...) {
+fisher <- function(.data, exposure, outcome, alternative = "two.sided", conf_level = 0.95, or = 1, ...) {
 
   ## handle exposure/outcome variable name quotation
   quo_exposure <- dplyr::enquo(exposure)
@@ -36,16 +39,23 @@ fisher <- function(.data, exposure, outcome, alternative = "two.sided", conf_lev
 
   tmp_twoxtwo <- twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)$tbl
 
-  tmp_twoxtwo %>%
-    dplyr::select(-c(3,4)) %>%
-    dplyr::summarise(estimate = stats::fisher.test(., alternative = alternative, conf.level = conf_level)$estimate,
-                     ci_lower = stats::fisher.test(., alternative = alternative, conf.level = conf_level)$conf.int[1],
-                     ci_upper = stats::fisher.test(., alternative = alternative, conf.level = conf_level)$conf.int[2],
-                     pvalue = stats::fisher.test(., alternative = alternative, conf.level = conf_level)$p.value) %>%
-    dplyr::mutate(test = "Fisher") %>%
-    dplyr::mutate(exposure = unique(tmp_twoxtwo$exposure),
-                  outcome = unique(tmp_twoxtwo$outcome)) %>%
-    dplyr::select(test, estimate, ci_lower, ci_upper, pvalue, exposure, outcome)
+  tmp_twoxtwo2 <-
+    tmp_twoxtwo %>%
+    dplyr::select(-c(3,4))
+
+  fit <-
+    tmp_twoxtwo2 %>%
+    stats::fisher.test(., alternative = alternative, conf.level = conf_level, or = or)
+
+  dplyr::tibble(test = fit$method,
+                estimate = fit$estimate,
+                ci_lower = fit$conf.int[1],
+                ci_upper = fit$conf.int[2],
+                statistic = NA,
+                df = NA,
+                pvalue = fit$p.value,
+                exposure = unique(tmp_twoxtwo$exposure),
+                outcome = unique(tmp_twoxtwo$outcome))
 
 }
 

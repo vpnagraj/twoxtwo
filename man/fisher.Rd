@@ -10,6 +10,7 @@ fisher(
   outcome,
   alternative = "two.sided",
   conf_level = 0.95,
+  or = 1,
   ...
 )
 }
@@ -24,6 +25,8 @@ fisher(
 
 \item{conf_level}{Confidence level for the confidence interval; default is \code{0.95}}
 
+\item{or}{Hypothesized odds ratio; default is \code{1}}
+
 \item{...}{Additional arguments passed to \link[twoxtwo]{twoxtwo} function}
 }
 \value{
@@ -33,6 +36,8 @@ A \code{tibble} with the following columns:
 \item \strong{estimate}: Point estimate from the test
 \item \strong{ci_lower}: The lower bound of the confidence interval for the estimate
 \item \strong{ci_upper}: The upper bound of the confidence interval for the estimate
+\item \strong{statistic}: Test statistic from the test (\code{NA} for \code{fisher()})
+\item \strong{df}: Degrees of freedom parameter for the test statistic (\code{NA} for \code{fisher()})
 \item \strong{pvalue}: P-value from the test
 \item \strong{exposure}: Name of the exposure variable followed by +/- levels (e.g. smoking::yes/no)
 \item \strong{outcome}: Name of the outcome variable followed by +/- levels (e.g. heart_disease::yes/no)
