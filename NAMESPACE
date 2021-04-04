@@ -3,6 +3,7 @@
 S3method(print,twoxtwo)
 S3method(summary,twoxtwo)
 export("%>%")
+export(chisq)
 export(display)
 export(fisher)
 export(odds_ratio)

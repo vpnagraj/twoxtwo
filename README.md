@@ -30,6 +30,7 @@ devtools::install_github("vpnagraj/twoxtwo")
   - `risk_ratio()`: Estimate risk ratio and confidence interval
   - `risk_diff()`: Estimate risk difference and confidence interval
   - `fisher()`: Perform Fisher’s exact test
+  - `chisq()`: Perform Pearson’s chi-squared test
   - `summary.twoxtwo()`: Summarize `twoxtwo` object
   - `print.twoxtwo()`: Print `twoxtwo` object
   - `display()`: Render `twoxtwo` table contents as a `knitr::kable`
