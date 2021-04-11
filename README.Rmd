@@ -26,7 +26,7 @@ The `twoxtwo` package provides a collection of functions to display, summarize, 
 
 ```{r, eval=FALSE}
 ## install.packages("devtools")
-devtools::install_github("vpnagraj/twoxtwo")
+devtools::install_github("vpnagraj/twoxtwo", build_vignettes = TRUE)
 ```
 
 ## Features
@@ -43,7 +43,7 @@ devtools::install_github("vpnagraj/twoxtwo")
 
 ## Usage
 
-### Basic example
+### Example
 
 First load `twoxtwo` and `dplyr` to help prep data:
 
@@ -87,6 +87,16 @@ titanic %>%
 titanic %>%
   mutate(Crew = ifelse(Class == "Crew", TRUE, FALSE)) %>%
   risk_diff(.data = ., exposure = Crew, outcome = Survived)
+```
+
+### Vignettes
+
+The package includes vignettes to describe usage in more detail.
+
+For more on basic usage:
+
+```{r, eval = FALSE}
+vignette("basic-usage", package = "twoxtwo")
 ```
 
 ## Contributing

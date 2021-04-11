@@ -20,7 +20,7 @@ investigation of exposure/outcome relationships.
 
 ``` r
 ## install.packages("devtools")
-devtools::install_github("vpnagraj/twoxtwo")
+devtools::install_github("vpnagraj/twoxtwo", build_vignettes = TRUE)
 ```
 
 ## Features
@@ -37,7 +37,7 @@ devtools::install_github("vpnagraj/twoxtwo")
 
 ## Usage
 
-### Basic example
+### Example
 
 First load `twoxtwo` and `dplyr` to help prep data:
 
@@ -123,6 +123,16 @@ titanic %>%
 #   measure         estimate ci_lower ci_upper exposure         outcome         
 #   <chr>              <dbl>    <dbl>    <dbl> <chr>            <chr>           
 # 1 Risk Difference   -0.140   -0.178   -0.101 Crew::TRUE/FALSE Survived::Yes/No
+```
+
+### Vignettes
+
+The package includes vignettes to describe usage in more detail.
+
+For more on basic usage:
+
+``` r
+vignette("basic-usage", package = "twoxtwo")
 ```
 
 ## Contributing
