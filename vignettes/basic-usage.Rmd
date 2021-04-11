@@ -1,0 +1,206 @@
+---
+title: "Basic Usage"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Basic Usage}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+## Overview
+
+`twoxtwo` provides a collection of utilities for data analysis with two-by-two contingency tables. The functions in the package allow users to conveniently aggregate and summarize observation-level data as counts. 
+
+The two-by-two table is used in epidemiology to summarize count data by combinations of binary *exposure* and *outcome* variables as follows:
+
+```{r, echo=FALSE}
+tmp <- rbind(c("A","B"), c("C", "D"))
+
+rownames(tmp) <- c("**EXPOSURE +**","**EXPOSURE -**")
+names(tmp) <- NULL
+
+knitr::kable(tmp,
+             col.names = c("OUTCOME +","OUTCOME -"),
+               row.names = TRUE)
+```
+
+The notation in the table above corresponds to:
+
+- A = Exposed (Exposure "+") and health indicator present (Outcome "+")
+- B = Exposed (Exposure "+") and health indicator absent (Outcome "-")
+- C = Unexposed (Exposure "-") and health indicator present (Outcome "+")
+- D = Unexposed (Exposure "-") and health indicator absent (Outcome "-")
+
+The package allows for construction of two-by-two tables, as well as direct calculation of measures of effect and hypothesis testing to assess the relationship between the epidemiological *exposure* and *outcome* variables.
+
+## Creating a `twoxtwo`
+
+The usage demonstration below requires that the `twoxtwo` and `dplyr` packages are loaded:
+
+```{r setup, echo = TRUE}
+library(twoxtwo)
+library(dplyr)
+```
+
+The data set used to illustrate the `twoxtwo` functions will be observation-level data describing smoking status (*exposure*) and high blood pressure (*outcome*). For this example, there will be 100 smokers and 200 non-smokers. Of the smokers, 40 will have high blood pressure. 50 of the non-smokers will have high blood pressure:
+
+```{r}
+sh <-
+  tibble(
+    smoke = c(rep(TRUE, 100), rep(FALSE,200)),
+    hbp = c(rep(1,40),rep(0,60),rep(1,50),rep(0,150))
+    )
+```
+
+```{r}
+sh
+```
+
+The `twoxtwo()` constructor function will aggregate the observations to counts by exposure and outcome:
+
+```{r}
+sh_2x2 <-
+  sh %>%
+  twoxtwo(., exposure = smoke, outcome = hbp)
+```
+
+The `twoxtwo` object is an `S3` class. When printed to the console it will display the counts in the contingency table:
+
+```{r}
+sh_2x2
+```
+
+The object is a list with multiple elements, each of which can be extracted by name if needed.
+
+For example, to view the aggregated counts as a `tibble`:
+
+```{r}
+sh_2x2$tbl
+```
+
+To view counts of each cell per the two-by-two notation:
+
+```{r}
+sh_2x2$cells
+```
+
+To view the exposure variable and its levels:
+
+```{r}
+sh_2x2$exposure
+```
+
+To view the outcome variable and its levels:
+
+```{r}
+sh_2x2$outcome
+```
+
+To view the number of observations missing either exposure or outcome:
+
+```{r}
+sh_2x2$n_missing
+```
+
+And to view the original data (stored in the `twoxtwo` object by default[^retrieve-param]):
+
+```{r}
+sh_2x2$data
+```
+
+[^retrieve-param]:  Users can override this behavior with `twoxtwo(..., retain = FALSE)`
+
+The `S3` class has a summary method, which summarizes the count data and computes measures of effect (odds ratio, risk ratio, and risk difference). When the summary is printed it displays the count data, information about the `twoxtwo` object (missing data and exposure/outcome), as well as effect measures:
+
+```{r}
+sh_2x2 %>% 
+  summary(.)
+```
+
+When the summary is assigned to an object, it stores a named list with the effect measures:
+
+```{r}
+sh_2x2_sum <-
+  sh_2x2 %>% 
+  summary(.)
+```
+
+```{r}
+sh_2x2_sum
+```
+
+```{r}
+do.call("rbind", sh_2x2_sum)
+```
+
+Note that the measures of effect are only computed in the `twoxtwo()` summary if the "retain" argument is set to `TRUE`.
+
+## Calculating measures of effect
+
+The `twoxtwo()` function is used in other package functions that allow users to directly perform data analysis *without* first creating a `twoxtwo` object.
+
+Individual measures of effect (odds ratio, risk ratio, and risk difference) can be calculated directly. Each measure includes the point estimate and confidence interval based on the $\alpha$ specified and standard error around the estimate:
+
+```{r}
+sh %>%
+  odds_ratio(., exposure = smoke, outcome = hbp, alpha = 0.05)
+```
+
+```{r}
+sh %>%
+  risk_ratio(., exposure = smoke, outcome = hbp, alpha = 0.05)
+```
+
+```{r}
+sh %>%
+  risk_diff(., exposure = smoke, outcome = hbp, alpha = 0.05)
+```
+
+## Hypothesis testing
+
+As with measures of effect, hypothesis tests (Fisher's exact test for count data and Pearson's $\chi^2$ test) can also be run *without* first creating a `twoxtwo` object:
+
+```{r}
+sh %>%
+  fisher(., exposure = smoke, outcome = hbp)
+```
+
+```{r}
+sh %>%
+  chisq(., exposure = smoke, outcome = hbp)
+```
+
+## Customizing orientation of `twoxtwo`
+
+All processing of exposure and outcome variables requires that both **must** have only two levels. By default, both variables are coerced to factors and reversed. The effect is that, as in the example presented above, a value of `TRUE` or `1` will be oriented as exposure or outcome "+" and a corresponding value of `FALSE` or `0` will be oriented as exposure or outcome "-". 
+
+Anticipating that this logic may not satisfy all use-cases, the `twoxtwo()` constructor function is flexible enough to allow user-specified ordering via a named list passed to the "levels" argument:
+
+```{r}
+sh %>%
+  twoxtwo(., 
+          exposure = smoke, 
+          outcome = hbp, 
+          levels = list(exposure = c(FALSE,TRUE), outcome = c(1,0)))
+```
+
+As mentioned above, the `twoxtwo()` function is abstracted in other analysis functions. Each of these functions inherits all arguments that can be passed to `twoxtwo`, including the "levels" parameter:
+
+```{r}
+sh %>%
+  odds_ratio(., 
+             exposure = smoke, 
+             outcome = hbp, 
+             levels = list(exposure = c(FALSE,TRUE), outcome = c(1,0)))
+```
+
+
