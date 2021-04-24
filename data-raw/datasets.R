@@ -5,6 +5,8 @@ titanic <-
   ## convert to tibble
   dplyr::as_tibble() %>%
   ## expand counts
-  tidyr::uncount(n)
+  tidyr::uncount(n) %>%
+  ## create crew variable
+  dplyr::mutate(Crew = ifelse(Class == "Crew", TRUE, FALSE), .after = "Class")
 
 usethis::use_data(titanic, overwrite = TRUE)

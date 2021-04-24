@@ -8,6 +8,7 @@
 A data frame with 2201 rows and 4 variables:
 \itemize{
 \item \strong{Class}: Passenger class ("1st", "2nd", "3rd") or crew status ("Crew")
+\item \strong{Crew}: Boolean as to whether or not a crew member (TRUE) or not (FALSE)
 \item \strong{Sex}: Sex of individual ("Male" or "Female")
 \item \strong{Age}: Categorized age ("Adult" or "Child")
 \item \strong{Survived}: Whether or not individual survived ("Yes" or "No")

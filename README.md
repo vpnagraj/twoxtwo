@@ -53,7 +53,6 @@ must each be binary variables:
 ``` r
 crew_2x2 <-
   titanic %>%
-  mutate(Crew = ifelse(Class == "Crew", TRUE, FALSE)) %>%
   twoxtwo(.data = ., exposure = Crew, outcome = Survived)
 
 crew_2x2
@@ -97,7 +96,6 @@ Each effect measure can also be calculated without first creating the
 
 ``` r
 titanic %>%
-  mutate(Crew = ifelse(Class == "Crew", TRUE, FALSE)) %>%
   odds_ratio(.data = ., exposure = Crew, outcome = Survived)
 # # A tibble: 1 x 6
 #   measure    estimate ci_lower ci_upper exposure         outcome         
@@ -107,7 +105,6 @@ titanic %>%
 
 ``` r
 titanic %>%
-  mutate(Crew = ifelse(Class == "Crew", TRUE, FALSE)) %>%
   risk_ratio(.data = ., exposure = Crew, outcome = Survived)
 # # A tibble: 1 x 6
 #   measure    estimate ci_lower ci_upper exposure         outcome         
@@ -117,7 +114,6 @@ titanic %>%
 
 ``` r
 titanic %>%
-  mutate(Crew = ifelse(Class == "Crew", TRUE, FALSE)) %>%
   risk_diff(.data = ., exposure = Crew, outcome = Survived)
 # # A tibble: 1 x 6
 #   measure         estimate ci_lower ci_upper exposure         outcome         
