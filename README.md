@@ -131,6 +131,12 @@ For more on basic usage:
 vignette("basic-usage", package = "twoxtwo")
 ```
 
+For details on measures of effect:
+
+``` r
+vignette("measures-of-effect", package = "twoxtwo")
+```
+
 ## Contributing
 
 Please use GitHub issues to report bugs or request features.
