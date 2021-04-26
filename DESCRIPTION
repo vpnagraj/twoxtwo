@@ -21,6 +21,7 @@ Suggests:
     testthat,
     lifecycle,
     rmarkdown,
+    markdown,
     ggplot2,
     purrr
 Depends: 
