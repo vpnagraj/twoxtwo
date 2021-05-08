@@ -1,0 +1,106 @@
+---
+title: "Hypothesis Testing"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Hypothesis Testing}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+```{r setup}
+library(twoxtwo)
+library(dplyr)
+library(tidyr)
+```
+
+## Overview
+
+While exploring the relationship between an exposure and an outcome it may be useful to statistically test the strength of association. Hypothesis testing is a statistical inference technique by which one uses observed sample data to interrogate an assumption about a population parameter. Given an assumed probability distribution for the population parameter, a hypothesis test can yield a measure of how likely it would be to encounter the data observed. Two of the hypothesis tests applied to count data in two-by-two tables include Pearson's chi-squared test and Fisher's exact test. Both of these techniques are implemented in the `twoxtwo` package. The narrative that follows demonstrates how to perform these tests using example datasets created below as well as the `titanic` data that ships with `twoxtwo` [^titanic].
+
+[^titanic]: For more details on see `?titanic`
+
+## Pearson's Chi-squared test
+
+With data organized in a contingency table it is possible to test independence of counts in each cell. At a given cell, one can compare the observed count ($n_{ij}$) and expected count ($\mu_{ij}$) and arrive at the following test statistic:
+
+$$\chi^2 = \sum \frac{(n_{ij}-\mu_{ij})^2}{\mu_{ij}}$$
+The Pearson's $\chi^2$ (chi-squared) statistic above is parameterized by degrees of freedom. A contingency table has degrees of freedom computed as (number or rows - 1 ) * (number of columns - 1). For a two-by-two table (2 rows, 2 columns), $\chi^2$ will have 1 degree of freedom.
+
+The $\chi^2$ test statistic and its degrees of freedom can be used in a hypothesis test. If the probability of observing a statistic as large is less than the stated significance level ($\alpha$) then one can reject the null hypothesis of independence among cell counts.
+
+Pearson's $\chi^2$ test is implemented in R via the `chisq.test()` function in the `stats` package. The `twoxtwo` package wraps this functionality in its `chisq()` function. One of the advantages of `chisq()` as opposed to `chisq.test()` is that the `twoxtwo` implementation returns a tidy hypothesis test output.
+
+Below is an example of using the `chisq()` function to explore the association between crew status and survival in the `titanic` dataset:
+
+```{r}
+titanic %>%
+  chisq(., Crew, Survived)
+```
+## Fisher's exact test
+
+Another method for testing independence between two-by-two cell counts is Fisher's exact test. After fixing marginal row and column totals, one can cycle through possible combinations of cell counts that would sum to those margins. Each combination yields a unique two-by-two table. For each of these tables the binomial probability of observing the given count in cell A[^notation] can be expressed as:
+
+[^notation]: The notation here is described in detail in the `twoxtwo` "Basic Usage" vignette. To read the vignette: `vignette("basic-usage", package = "twoxtwo")`
+
+$$p=\frac{(A+B)!\times{(C+D)!}\times{(A+C)!}\times{(B+D)!}}{A!\times{B!}\times{C!}\times{D!}}$$
+
+
+To calculate a p-value, one can sum the probabilities for cell counts that are at least as extreme as the observed count. Using this method there is no need for a test statistic since the p-value can be calculated *exactly* as the sum of binomial probabilities.
+
+The stated origin of Fisher's exact test is the "tea taster" experiment. The design is detailed in the example below:
+
+```{r}
+tea <-
+  tribble(
+    ~poured, ~guessed, ~ n,
+    "Milk", "Milk", 3,
+    "Milk", "Tea", 1,
+    "Tea", "Milk", 1,
+    "Tea", "Tea", 3
+    ) %>%
+  uncount(n)
+
+tea %>%
+  twoxtwo(., poured, guessed, 
+          levels = list(exposure = c("Milk","Tea"), outcome = c("Milk","Tea")))
+```
+
+To conduct the hypothesis test with the `fisher()` function from the `twoxtwo` package:
+
+```{r}
+tea %>%
+  fisher(., poured, guessed, 
+         levels = list(exposure = c("Milk","Tea"), outcome = c("Milk","Tea")))
+```
+
+As with `chisq()` the `fisher()` function wraps a function from the `stats` package. `fisher()` passes arguments for the proposed odds ratio for the hypothesis testing, confidence level for odds ratio estimate, and alternative hypothesis into the interal `fisher.test()` function. Examples of several of these parameters in practice are provided below to explore the association between crew status and survival in the `titanic` dataset: 
+```{r}
+titanic %>% fisher(., exposure = Crew, outcome = Survived, alternative = "greater")
+```
+```{r}
+titanic %>% fisher(., exposure = Crew, outcome = Survived, alternative = "less")
+```
+
+```{r}
+titanic %>% fisher(., exposure = Crew, outcome = Survived, alternative = "two.sided")
+```
+
+```{r}
+titanic %>% fisher(., exposure = Crew, outcome = Survived, or = 2)
+```
+
+## References
+
+> Agresti, A. (2019). An Introduction to Categorical Data Analysis. Hoboken, New Jersey: Wiley and Sons.
+
+
+
