@@ -137,6 +137,12 @@ For details on measures of effect:
 vignette("measures-of-effect", package = "twoxtwo")
 ```
 
+For details on hypothesis testing:
+
+``` r
+vignette("hypothesis-testing", package = "twoxtwo")
+```
+
 ## Contributing
 
 Please use GitHub issues to report bugs or request features.
