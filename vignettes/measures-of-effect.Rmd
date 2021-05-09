@@ -138,7 +138,7 @@ or_rr <- function(incidence = 0.8) {
   
   ## stack the two on top of one another
   ## add a column with incidence
-  bind_rows(or,rr) %>%
+  rbind(or,rr) %>%
     mutate(Incidence = incidence)
 }
 
@@ -147,7 +147,7 @@ or_rr <- function(incidence = 0.8) {
 res <-
   seq(0.025, 0.5, by = 0.025) %>%
   map_df(., or_rr)
-```
+``` 
 
 ```{r, echo=FALSE}
 res %>%
