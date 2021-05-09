@@ -118,8 +118,8 @@ library(ggplot2)
 or_rr <- function(incidence = 0.8) {
   
   ## define counts in two-by-two cells based on the incidence proportion
-  A <- 100*incidence
-  B <- 100 - (100*incidence)
+  A <- round(100*incidence)
+  B <- 100 - A
   C <- 10
   D <- 90
   
@@ -138,7 +138,7 @@ or_rr <- function(incidence = 0.8) {
   
   ## stack the two on top of one another
   ## add a column with incidence
-  rbind(or,rr) %>%
+  bind_rows(or,rr) %>%
     mutate(Incidence = incidence)
 }
 
