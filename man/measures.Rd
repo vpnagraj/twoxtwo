@@ -14,15 +14,15 @@ risk_ratio(.data, exposure, outcome, alpha = 0.05, ...)
 risk_diff(.data, exposure, outcome, alpha = 0.05, ...)
 }
 \arguments{
-\item{.data}{Data frame with observation-level exposure and outcome data}
+\item{.data}{Either a data frame with observation-level exposure and outcome data or a \link[twoxtwo]{twoxtwo} object}
 
-\item{exposure}{Name of exposure variable}
+\item{exposure}{Name of exposure variable; ignored if input to \code{.data} is a \code{twoxtwo} object}
 
-\item{outcome}{Name of outcome variable}
+\item{outcome}{Name of outcome variable; ignored if input to \code{.data} is a \code{twoxtwo} object}
 
 \item{alpha}{Significance level to be used for constructing confidence interval; default is \code{0.05}}
 
-\item{...}{Additional arguments passed to \link[twoxtwo]{twoxtwo} function}
+\item{...}{Additional arguments passed to \link[twoxtwo]{twoxtwo} function; ignored if input to \code{.data} is a \code{twoxtwo} object}
 }
 \value{
 A \code{tibble} with the following columns:
@@ -38,7 +38,7 @@ A \code{tibble} with the following columns:
 \description{
 The \link[twoxtwo]{twoxtwo} framework allows for estimation of the magnitude of association between an exposure and outcome. Measures of effect that can be calculated include odds ratio, risk ratio, and risk difference. Each measure can be calculated as a point estimate as well as the standard error (SE) around that value. It is critical to note that the interpretation of measures of effect depends on the study design and research question being investigated.
 
-The \code{odds_ratio()}, \code{risk_ratio()}, and \code{risk_diff()} functions provide a standard interface for calculating measures of effect. Each function takes an input dataset and arguments for outcome and exposure as bare, unquoted variable names. The functions all return a tidy \code{tibble} with the name of the measure, the point estimate, and lower/upper bounds of a confidence interval (CI) based on the SE.
+The \code{odds_ratio()}, \code{risk_ratio()}, and \code{risk_diff()} functions provide a standard interface for calculating measures of effect. Each function takes an input dataset and arguments for outcome and exposure as bare, unquoted variable names. If the input has the  \link[twoxtwo]{twoxtwo} class then the effect measures will be calculated using exposure and outcome information from that object. The functions all return a tidy \code{tibble} with the name of the measure, the point estimate, and lower/upper bounds of a confidence interval (CI) based on the SE.
 
 Formulas used in point estimate and SE calculations are available in 'Details'.
 }

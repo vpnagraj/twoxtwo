@@ -7,15 +7,15 @@
 chisq(.data, exposure, outcome, correct = TRUE, ...)
 }
 \arguments{
-\item{.data}{Data frame with observation-level exposure and outcome data}
+\item{.data}{Either a data frame with observation-level exposure and outcome data or a \link[twoxtwo]{twoxtwo} object}
 
-\item{exposure}{Name of exposure variable}
+\item{exposure}{Name of exposure variable; ignored if input to \code{.data} is a \code{twoxtwo} object}
 
-\item{outcome}{Name of outcome variable}
+\item{outcome}{Name of outcome variable; ignored if input to \code{.data} is a \code{twoxtwo} object#' @param outcome Name of outcome variable}
 
 \item{correct}{Logical as to whether or not to apply continuity correction; default is \code{TRUE}}
 
-\item{...}{Additional arguments passed to \link[twoxtwo]{twoxtwo} function
+\item{...}{Additional arguments passed to \link[twoxtwo]{twoxtwo} function; ignored if input to \code{.data} is a \code{twoxtwo} object
 A \code{tibble} with the following columns:
 \itemize{
 \item \strong{test}: Name of the test conducted

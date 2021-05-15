@@ -4,13 +4,13 @@
 #'
 #' This function conducts a Fisher's exact test using specified exposure and outcome. Internally the function uses \link[stats]{fisher.test} to test independence of `twoxtwo` rows and columns. The output of the function includes the odds ratio, the lower/upper bounds for the confidence interval around the estimate, and the p-value from the test.
 #'
-#' @param .data Data frame with observation-level exposure and outcome data
-#' @param exposure Name of exposure variable
-#' @param outcome Name of outcome variable
+#' @param .data Either a data frame with observation-level exposure and outcome data or a \link[twoxtwo]{twoxtwo} object
+#' @param exposure Name of exposure variable; ignored if input to `.data` is a `twoxtwo` object
+#' @param outcome Name of outcome variable; ignored if input to `.data` is a `twoxtwo` object#' @param outcome Name of outcome variable
 #' @param alternative Alternative hypothesis for test; must be one of "two.sided", "greater", or "less"; default is `"two.sided"`
 #' @param conf_level Confidence level for the confidence interval; default is `0.95`
 #' @param or Hypothesized odds ratio; default is `1`
-#' @param ... Additional arguments passed to \link[twoxtwo]{twoxtwo} function
+#' @param ... Additional arguments passed to \link[twoxtwo]{twoxtwo} function; ignored if input to `.data` is a `twoxtwo` object
 #'
 #' @md
 #'
@@ -33,11 +33,18 @@
 #'
 fisher <- function(.data, exposure, outcome, alternative = "two.sided", conf_level = 0.95, or = 1, ...) {
 
-  ## handle exposure/outcome variable name quotation
-  quo_exposure <- dplyr::enquo(exposure)
-  quo_outcome <- dplyr::enquo(outcome)
+  if(any(class(.data) == "twoxtwo")) {
+    tmp_twoxtwo <- .data
+  } else {
+    ## handle exposure/outcome variable name quotation
+    quo_exposure <- dplyr::enquo(exposure)
+    quo_outcome <- dplyr::enquo(outcome)
 
-  tmp_twoxtwo <- twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)$tbl
+    ## run twoxtwo
+    tmp_twoxtwo <- twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)
+  }
+
+  tmp_twoxtwo <- tmp_twoxtwo$tbl
 
   tmp_twoxtwo2 <-
     tmp_twoxtwo %>%
@@ -66,11 +73,11 @@ fisher <- function(.data, exposure, outcome, alternative = "two.sided", conf_lev
 #'
 #' This function conducts a Pearson's chi-squared test for a `twoxtwo` constructed using the specified exposure and outcome. Internally the function uses \link[stats]{chisq.test}. The output of the function includes the chi-squared test statistic, degrees of freedom, and the p-value from the test.
 #'
-#' @param .data Data frame with observation-level exposure and outcome data
-#' @param exposure Name of exposure variable
-#' @param outcome Name of outcome variable
+#' @param .data Either a data frame with observation-level exposure and outcome data or a \link[twoxtwo]{twoxtwo} object
+#' @param exposure Name of exposure variable; ignored if input to `.data` is a `twoxtwo` object
+#' @param outcome Name of outcome variable; ignored if input to `.data` is a `twoxtwo` object#' @param outcome Name of outcome variable
 #' @param correct Logical as to whether or not to apply continuity correction; default is `TRUE`
-#' @param ... Additional arguments passed to \link[twoxtwo]{twoxtwo} function
+#' @param ... Additional arguments passed to \link[twoxtwo]{twoxtwo} function; ignored if input to `.data` is a `twoxtwo` object
 
 #' A `tibble` with the following columns:
 #'
@@ -92,11 +99,18 @@ fisher <- function(.data, exposure, outcome, alternative = "two.sided", conf_lev
 #'
 chisq <- function(.data, exposure, outcome, correct = TRUE, ...) {
 
-  ## handle exposure/outcome variable name quotation
-  quo_exposure <- dplyr::enquo(exposure)
-  quo_outcome <- dplyr::enquo(outcome)
+  if(any(class(.data) == "twoxtwo")) {
+    tmp_twoxtwo <- .data
+  } else {
+    ## handle exposure/outcome variable name quotation
+    quo_exposure <- dplyr::enquo(exposure)
+    quo_outcome <- dplyr::enquo(outcome)
 
-  tmp_twoxtwo <- twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)$tbl
+    ## run twoxtwo
+    tmp_twoxtwo <- twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)
+  }
+
+  tmp_twoxtwo <- tmp_twoxtwo$tbl
 
   tmp2_twoxtwo <-
     tmp_twoxtwo %>%

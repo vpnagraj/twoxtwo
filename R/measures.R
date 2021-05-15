@@ -6,7 +6,7 @@
 #'
 #' The \link[twoxtwo]{twoxtwo} framework allows for estimation of the magnitude of association between an exposure and outcome. Measures of effect that can be calculated include odds ratio, risk ratio, and risk difference. Each measure can be calculated as a point estimate as well as the standard error (SE) around that value. It is critical to note that the interpretation of measures of effect depends on the study design and research question being investigated.
 #'
-#' The `odds_ratio()`, `risk_ratio()`, and `risk_diff()` functions provide a standard interface for calculating measures of effect. Each function takes an input dataset and arguments for outcome and exposure as bare, unquoted variable names. The functions all return a tidy `tibble` with the name of the measure, the point estimate, and lower/upper bounds of a confidence interval (CI) based on the SE.
+#' The `odds_ratio()`, `risk_ratio()`, and `risk_diff()` functions provide a standard interface for calculating measures of effect. Each function takes an input dataset and arguments for outcome and exposure as bare, unquoted variable names. If the input has the  \link[twoxtwo]{twoxtwo} class then the effect measures will be calculated using exposure and outcome information from that object. The functions all return a tidy `tibble` with the name of the measure, the point estimate, and lower/upper bounds of a confidence interval (CI) based on the SE.
 #'
 #' Formulas used in point estimate and SE calculations are available in 'Details'.
 #'
@@ -32,11 +32,11 @@
 #'
 #' \deqn{seRD = sqrt(((A*B)/((A+B)^3)) + ((C*D)/((C+D)^3)))}
 #'
-#' @param .data Data frame with observation-level exposure and outcome data
-#' @param exposure Name of exposure variable
-#' @param outcome Name of outcome variable
+#' @param .data Either a data frame with observation-level exposure and outcome data or a \link[twoxtwo]{twoxtwo} object
+#' @param exposure Name of exposure variable; ignored if input to `.data` is a `twoxtwo` object
+#' @param outcome Name of outcome variable; ignored if input to `.data` is a `twoxtwo` object
 #' @param alpha Significance level to be used for constructing confidence interval; default is `0.05`
-#' @param ... Additional arguments passed to \link[twoxtwo]{twoxtwo} function
+#' @param ... Additional arguments passed to \link[twoxtwo]{twoxtwo} function; ignored if input to `.data` is a `twoxtwo` object
 #'
 #' @return
 #'
@@ -68,12 +68,16 @@ odds_ratio <- function(.data, exposure, outcome, alpha = 0.05, ...) {
   ## get critical value from normal distribution based on value to alpha
   critical_value <- stats::qnorm(1-(alpha/2))
 
-  ## handle exposure/outcome variable name quotation
-  quo_exposure <- dplyr::enquo(exposure)
-  quo_outcome <- dplyr::enquo(outcome)
+  if(any(class(.data) == "twoxtwo")) {
+    tmp_twoxtwo <- .data
+  } else {
+    ## handle exposure/outcome variable name quotation
+    quo_exposure <- dplyr::enquo(exposure)
+    quo_outcome <- dplyr::enquo(outcome)
 
-  ## run twoxtwo
-  tmp_twoxtwo <- twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)
+    ## run twoxtwo
+    tmp_twoxtwo <- twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)
+  }
 
   ## get the cell values
   A <- tmp_twoxtwo$cells$A
@@ -111,12 +115,16 @@ risk_ratio <- function(.data, exposure, outcome, alpha = 0.05, ...) {
   ## get critical value from normal distribution based on value to alpha
   critical_value <- stats::qnorm(1-(alpha/2))
 
-  ## handle exposure/outcome variable name quotation
-  quo_exposure <- dplyr::enquo(exposure)
-  quo_outcome <- dplyr::enquo(outcome)
+  if(any(class(.data) == "twoxtwo")) {
+    tmp_twoxtwo <- .data
+  } else {
+    ## handle exposure/outcome variable name quotation
+    quo_exposure <- dplyr::enquo(exposure)
+    quo_outcome <- dplyr::enquo(outcome)
 
-  ## run twoxtwo
-  tmp_twoxtwo <- twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)
+    ## run twoxtwo
+    tmp_twoxtwo <- twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)
+  }
 
   ## get the cell values
   A <- tmp_twoxtwo$cells$A
@@ -154,12 +162,16 @@ risk_diff <- function(.data, exposure, outcome, alpha = 0.05, ...) {
   ## get critical value from normal distribution based on value to alpha
   critical_value <- stats::qnorm(1-(alpha/2))
 
-  ## handle exposure/outcome variable name quotation
-  quo_exposure <- dplyr::enquo(exposure)
-  quo_outcome <- dplyr::enquo(outcome)
+  if(any(class(.data) == "twoxtwo")) {
+    tmp_twoxtwo <- .data
+  } else {
+    ## handle exposure/outcome variable name quotation
+    quo_exposure <- dplyr::enquo(exposure)
+    quo_outcome <- dplyr::enquo(outcome)
 
-  ## run twoxtwo
-  tmp_twoxtwo <- twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)
+    ## run twoxtwo
+    tmp_twoxtwo <- twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)
+  }
 
   ## get the cell values
   A <- tmp_twoxtwo$cells$A
