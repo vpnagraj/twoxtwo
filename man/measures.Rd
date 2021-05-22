@@ -5,6 +5,7 @@
 \alias{odds_ratio}
 \alias{risk_ratio}
 \alias{risk_diff}
+\alias{arf}
 \title{Measures of effect}
 \usage{
 odds_ratio(.data, exposure, outcome, alpha = 0.05, ...)
@@ -12,6 +13,8 @@ odds_ratio(.data, exposure, outcome, alpha = 0.05, ...)
 risk_ratio(.data, exposure, outcome, alpha = 0.05, ...)
 
 risk_diff(.data, exposure, outcome, alpha = 0.05, ...)
+
+arf(.data, exposure, outcome, alpha = 0.05, percent = FALSE, ...)
 }
 \arguments{
 \item{.data}{Either a data frame with observation-level exposure and outcome data or a \link[twoxtwo]{twoxtwo} object}
@@ -23,6 +26,8 @@ risk_diff(.data, exposure, outcome, alpha = 0.05, ...)
 \item{alpha}{Significance level to be used for constructing confidence interval; default is \code{0.05}}
 
 \item{...}{Additional arguments passed to \link[twoxtwo]{twoxtwo} function; ignored if input to \code{.data} is a \code{twoxtwo} object}
+
+\item{percent}{Logical as to whether or not the measure should be returned as a percentage; only used by \code{arf} and \code{parp}; default is \code{FALSE}}
 }
 \value{
 A \code{tibble} with the following columns:

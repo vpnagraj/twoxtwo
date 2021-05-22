@@ -36,6 +36,7 @@
 #' @param exposure Name of exposure variable; ignored if input to `.data` is a `twoxtwo` object
 #' @param outcome Name of outcome variable; ignored if input to `.data` is a `twoxtwo` object
 #' @param alpha Significance level to be used for constructing confidence interval; default is `0.05`
+#' @param percent Logical as to whether or not the measure should be returned as a percentage; only used by `arf` and `parp`; default is `FALSE`
 #' @param ... Additional arguments passed to \link[twoxtwo]{twoxtwo} function; ignored if input to `.data` is a `twoxtwo` object
 #'
 #' @return
@@ -198,6 +199,66 @@ risk_diff <- function(.data, exposure, outcome, alpha = 0.05, ...) {
   dplyr::tibble(
     measure = "Risk Difference",
     estimate = rd,
+    ci_lower = ci_lower_bound,
+    ci_upper = ci_upper_bound,
+    exposure = dplyr::first(tmp_twoxtwo$tbl$exposure),
+    outcome = dplyr::first(tmp_twoxtwo$tbl$outcome),
+  )
+
+}
+
+#' @export
+#' @rdname measures
+arf <- function(.data, exposure, outcome, alpha = 0.05, percent = FALSE, ...) {
+
+  ## get critical value from normal distribution based on value to alpha
+  critical_value <- stats::qnorm(1-(alpha/2))
+
+  if(any(class(.data) == "twoxtwo")) {
+    tmp_twoxtwo <- .data
+  } else {
+    ## handle exposure/outcome variable name quotation
+    quo_exposure <- dplyr::enquo(exposure)
+    quo_outcome <- dplyr::enquo(outcome)
+
+    ## run twoxtwo
+    tmp_twoxtwo <- twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)
+  }
+
+  ## get the cell values
+  A <- tmp_twoxtwo$cells$A
+  B <- tmp_twoxtwo$cells$B
+  C <- tmp_twoxtwo$cells$C
+  D <- tmp_twoxtwo$cells$D
+
+  r_unexposed <- C / (C + D)
+  r_exposed <- A / (A + B)
+
+  tmp_rr <- r_exposed / r_unexposed
+
+  tmp_arf <- 1 - (1/tmp_rr)
+
+  ## calculate SE
+  se_tmp_arf <-
+    sqrt(
+      ((1/tmp_rr)^2) *
+        (((1-r_unexposed) / ((C+D)*r_unexposed)) + ((1-r_exposed) / ((A+B)*r_exposed)))
+    )
+
+  ci_lower_bound <- tmp_arf - (critical_value*se_tmp_arf)
+  ci_upper_bound <- tmp_arf + (critical_value*se_tmp_arf)
+
+  #tmp_par <- ((tmp_rr - 1) / tmp_rr)
+  if(percent) {
+    tmp_arf <- tmp_arf * 100
+    ci_lower_bound <- ci_lower_bound * 100
+    ci_upper_bound <- ci_upper_bound * 100
+  }
+
+  ## return everything as a tibble
+  dplyr::tibble(
+    measure = "Attributable Risk Fraction",
+    estimate = tmp_arf,
     ci_lower = ci_lower_bound,
     ci_upper = ci_upper_bound,
     exposure = dplyr::first(tmp_twoxtwo$tbl$exposure),
