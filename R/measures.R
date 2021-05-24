@@ -267,3 +267,66 @@ arf <- function(.data, exposure, outcome, alpha = 0.05, percent = FALSE, ...) {
 
 }
 
+#' @export
+#' @rdname measures
+parp <- function(.data, exposure, outcome, alpha = 0.05, percent = FALSE, ...) {
+
+  ## get critical value from normal distribution based on value to alpha
+  critical_value <- stats::qnorm(1-(alpha/2))
+
+  if(any(class(.data) == "twoxtwo")) {
+    tmp_twoxtwo <- .data
+  } else {
+    ## handle exposure/outcome variable name quotation
+    quo_exposure <- dplyr::enquo(exposure)
+    quo_outcome <- dplyr::enquo(outcome)
+
+    ## run twoxtwo
+    tmp_twoxtwo <- twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)
+  }
+
+  ## get the cell values
+  A <- tmp_twoxtwo$cells$A
+  B <- tmp_twoxtwo$cells$B
+  C <- tmp_twoxtwo$cells$C
+  D <- tmp_twoxtwo$cells$D
+
+  r_exposed <- A / (A + B)
+  r_unexposed <- C / (C + D)
+  r_overall <- (A+C) / (A + B + C + D)
+
+  tmp_rr <- r_exposed / r_unexposed
+
+  tmp_parp <- (r_overall - r_unexposed) / r_overall
+  theta <- 1-tmp_parp
+  tmp_n <- A+B+C+D
+  pi_01 <- C / tmp_n
+
+  ## calculate SE
+  se_tmp_parp <-
+    sqrt(
+      (theta^2) * (((1-pi_01) / (tmp_n*pi_01)) - ((r_exposed+r_unexposed-2*pi_01)/(tmp_n*r_unexposed*r_exposed)))
+    )
+
+  ci_lower_bound <- tmp_parp - (critical_value*se_tmp_parp)
+  ci_upper_bound <- tmp_parp + (critical_value*se_tmp_parp)
+
+  #tmp_par <- ((tmp_rr - 1) / tmp_rr)
+  if(percent) {
+    tmp_parp <- tmp_parp * 100
+    ci_lower_bound <- ci_lower_bound * 100
+    ci_upper_bound <- ci_upper_bound * 100
+  }
+
+  ## return everything as a tibble
+  dplyr::tibble(
+    measure = ifelse(percent, "Population Attributable Risk Percentage", "Population Attributable Risk Proportion"),
+    estimate = tmp_parp,
+    ci_lower = ci_lower_bound,
+    ci_upper = ci_upper_bound,
+    exposure = dplyr::first(tmp_twoxtwo$tbl$exposure),
+    outcome = dplyr::first(tmp_twoxtwo$tbl$outcome),
+  )
+
+}
+

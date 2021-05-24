@@ -6,6 +6,7 @@
 \alias{risk_ratio}
 \alias{risk_diff}
 \alias{arf}
+\alias{parp}
 \title{Measures of effect}
 \usage{
 odds_ratio(.data, exposure, outcome, alpha = 0.05, ...)
@@ -15,6 +16,8 @@ risk_ratio(.data, exposure, outcome, alpha = 0.05, ...)
 risk_diff(.data, exposure, outcome, alpha = 0.05, ...)
 
 arf(.data, exposure, outcome, alpha = 0.05, percent = FALSE, ...)
+
+parp(.data, exposure, outcome, alpha = 0.05, percent = FALSE, ...)
 }
 \arguments{
 \item{.data}{Either a data frame with observation-level exposure and outcome data or a \link[twoxtwo]{twoxtwo} object}
