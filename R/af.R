@@ -129,23 +129,22 @@ parp <- function(.data, exposure, outcome, alpha = 0.05, percent = FALSE, ...) {
   r_unexposed <- C / (C + D)
   r_overall <- (A+C) / (A + B + C + D)
 
-  tmp_rr <- r_exposed / r_unexposed
-
   tmp_parp <- (r_overall - r_unexposed) / r_overall
   theta <- 1-tmp_parp
   tmp_n <- A+B+C+D
   pi_01 <- C / tmp_n
+  pi_1 <- (A+C) / tmp_n
+  pi_0 <- (C+D) / tmp_n
 
   ## calculate SE
   se_tmp_parp <-
     sqrt(
-      (theta^2) * (((1-pi_01) / (tmp_n*pi_01)) - ((r_exposed+r_unexposed-2*pi_01)/(tmp_n*r_unexposed*r_exposed)))
+      (theta^2) * (((1-pi_01) / (tmp_n*pi_01)) - ((pi_0+pi_1-(2*pi_01))/(tmp_n*pi_0*pi_1)))
     )
 
   ci_lower_bound <- tmp_parp - (critical_value*se_tmp_parp)
   ci_upper_bound <- tmp_parp + (critical_value*se_tmp_parp)
 
-  #tmp_par <- ((tmp_rr - 1) / tmp_rr)
   if(percent) {
     tmp_parp <- tmp_parp * 100
     ci_lower_bound <- ci_lower_bound * 100
