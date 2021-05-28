@@ -25,7 +25,7 @@ ecin(.data, exposure, outcome, alpha = 0.05, ...)
 \item{...}{Additional arguments passed to \link[twoxtwo]{twoxtwo} function; ignored if input to \code{.data} is a \code{twoxtwo} object}
 }
 \value{
-#' A \code{tibble} with the following columns:
+A \code{tibble} with the following columns:
 \itemize{
 \item \strong{measure}: Name of the measure calculated
 \item \strong{estimate}: Point estimate for the impact number
@@ -41,6 +41,25 @@ Impact numbers are designed to communicate how impactful interventions and/or ex
 The \code{nnt()}, \code{cin()}, and \code{ecin()} functions provide interfaces for calculating impact number estimates. Each function takes an input dataset and arguments for outcome and exposure as bare, unquoted variable names. If the input has the  \link[twoxtwo]{twoxtwo} class then the effect measures will be calculated using exposure and outcome information from that object. The functions all return a tidy \code{tibble} with the name of the measure, the point estimate, and lower/upper bounds of a confidence interval (CI) based on the SE.
 
 Formulas used in point estimate and SE calculations are available in 'Details'.
+}
+\details{
+The formulas below denote cell values as A,B,C,D. For more on \code{twoxtwo} notation see the \link[twoxtwo]{twoxtwo} documentation.
+
+Note that formulas for standard errors are not provided below but are based on forumlas described in Hildebrandt et al (2006).
+\subsection{Number Needed to Treat (NNT)}{
+
+\deqn{NNT = 1/((A/(A+B)) - (C/(C+D)))}
+}
+
+\subsection{Case Impact Number (CIN)}{
+
+\deqn{CIN = 1/(((A+C)/(A+B+C+D))-(C/(C+D)))) / ((A+C)/(A+B+C+D))}
+}
+
+\subsection{Exposed Cases Impact Number (ECIN)}{
+
+\deqn{ECIN = 1/(1 - (1/((A/(A+B)) / (C/(C+D)))))}
+}
 }
 \references{
 Hildebrandt, M., Bender, R., Gehrmann, U., & Blettner, M. (2006). Calculating confidence intervals for impact numbers. BMC medical research methodology, 6, 32. https://doi.org/10.1186/1471-2288-6-32

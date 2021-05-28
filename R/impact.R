@@ -16,9 +16,27 @@
 #' @param alpha Significance level to be used for constructing confidence interval; default is `0.05`
 #' @param ... Additional arguments passed to \link[twoxtwo]{twoxtwo} function; ignored if input to `.data` is a `twoxtwo` object
 #'
+#' @details
+#'
+#' The formulas below denote cell values as A,B,C,D. For more on `twoxtwo` notation see the \link[twoxtwo]{twoxtwo} documentation.
+#'
+#' Note that formulas for standard errors are not provided below but are based on forumlas described in Hildebrandt et al (2006).
+#'
+#' ## Number Needed to Treat (NNT)
+#'
+#' \deqn{NNT = 1/((A/(A+B)) - (C/(C+D)))}
+#'
+#' ## Case Impact Number (CIN)
+#'
+#' \deqn{CIN = 1/(((A+C)/(A+B+C+D))-(C/(C+D)))) / ((A+C)/(A+B+C+D))}
+#'
+#' ## Exposed Cases Impact Number (ECIN)
+#'
+#' \deqn{ECIN = 1/(1 - (1/((A/(A+B)) / (C/(C+D)))))}
+#'
 #' @return
 #'
-#' #' A `tibble` with the following columns:
+#' A `tibble` with the following columns:
 #'
 #' - **measure**: Name of the measure calculated
 #' - **estimate**: Point estimate for the impact number

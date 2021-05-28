@@ -14,6 +14,15 @@
 #'
 #' The formulas below denote cell values as A,B,C,D. For more on `twoxtwo` notation see the \link[twoxtwo]{twoxtwo} documentation.
 #'
+#' Note that formulas for standard errors are not provided below but are based on forumlas described in Hildebrandt et al (2006).
+#'
+#' ## Attributable Risk in the Exposed (ARP)
+#'
+#' \deqn{ARP = 1 - (1/((A/(A+B)) / (C/(C+D))))}
+#'
+#' ## Population Attributable Risk (PARP)
+#'
+#' \deqn{PARP = (((A+C)/(A+B+C+D))-(C/(C+D)))) / ((A+C)/(A+B+C+D))}
 #'
 #' @param .data Either a data frame with observation-level exposure and outcome data or a \link[twoxtwo]{twoxtwo} object
 #' @param exposure Name of exposure variable; ignored if input to `.data` is a `twoxtwo` object

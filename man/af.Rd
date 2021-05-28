@@ -43,6 +43,17 @@ Formulas used in point estimate and SE calculations are available in 'Details'.
 }
 \details{
 The formulas below denote cell values as A,B,C,D. For more on \code{twoxtwo} notation see the \link[twoxtwo]{twoxtwo} documentation.
+
+Note that formulas for standard errors are not provided below but are based on forumlas described in Hildebrandt et al (2006).
+\subsection{Attributable Risk in the Exposed (ARP)}{
+
+\deqn{ARP = 1 - (1/((A/(A+B)) / (C/(C+D))))}
+}
+
+\subsection{Population Attributable Risk (PARP)}{
+
+\deqn{PARP = (((A+C)/(A+B+C+D))-(C/(C+D)))) / ((A+C)/(A+B+C+D))}
+}
 }
 \references{
 Hildebrandt, M., Bender, R., Gehrmann, U., & Blettner, M. (2006). Calculating confidence intervals for impact numbers. BMC medical research methodology, 6, 32. https://doi.org/10.1186/1471-2288-6-32
