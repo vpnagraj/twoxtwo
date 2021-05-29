@@ -89,7 +89,9 @@ arp <- function(.data, exposure, outcome, alpha = 0.05, percent = FALSE, ...) {
     )
 
   ci_lower_bound <- tmp_arp - (critical_value*se_tmp_arp)
+  ci_lower_bound <- bound(ci_lower_bound, 0, 1)
   ci_upper_bound <- tmp_arp + (critical_value*se_tmp_arp)
+  ci_upper_bound <- bound(ci_upper_bound, 0, 1)
 
   #tmp_par <- ((tmp_rr - 1) / tmp_rr)
   if(percent) {
@@ -152,7 +154,9 @@ parp <- function(.data, exposure, outcome, alpha = 0.05, percent = FALSE, ...) {
     )
 
   ci_lower_bound <- tmp_parp - (critical_value*se_tmp_parp)
+  ci_lower_bound <- bound(ci_lower_bound, 0, 1)
   ci_upper_bound <- tmp_parp + (critical_value*se_tmp_parp)
+  ci_upper_bound <- bound(ci_upper_bound, 0, 1)
 
   if(percent) {
     tmp_parp <- tmp_parp * 100
