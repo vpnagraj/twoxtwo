@@ -14,6 +14,7 @@
 #' @param exposure Name of exposure variable; ignored if input to `.data` is a `twoxtwo` object
 #' @param outcome Name of outcome variable; ignored if input to `.data` is a `twoxtwo` object
 #' @param alpha Significance level to be used for constructing confidence interval; default is `0.05`
+#' @param prevalence Prevalence of exposure in the population; must be numeric between `0` and `1`; only used in `cin()`; default is `NULL` and will be ignored
 #' @param ... Additional arguments passed to \link[twoxtwo]{twoxtwo} function; ignored if input to `.data` is a `twoxtwo` object
 #'
 #' @details
@@ -29,6 +30,10 @@
 #' ## Case Impact Number (CIN)
 #'
 #' \deqn{CIN = 1/(((A+C)/(A+B+C+D))-(C/(C+D)))) / ((A+C)/(A+B+C+D))}
+#'
+#' #'  If "prevalence" argument is not `NULL` then the formula uses the value specified for prevalence of exposure (p):
+#'
+#'  \deqn{CIN = 1/ ((p * (((A/(A+B)) / (C/(C+D))) - 1)) / (p * (((A/(A+B)) / (C/(C+D))) - 1) + 1))}
 #'
 #' ## Exposed Cases Impact Number (ECIN)
 #'

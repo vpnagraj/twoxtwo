@@ -12,7 +12,7 @@ ein(.data, exposure, outcome, alpha = 0.05, ...)
 
 nnt(.data, exposure, outcome, alpha = 0.05, ...)
 
-cin(.data, exposure, outcome, alpha = 0.05, ...)
+cin(.data, exposure, outcome, alpha = 0.05, prevalence = NULL, ...)
 
 ecin(.data, exposure, outcome, alpha = 0.05, ...)
 }
@@ -26,6 +26,8 @@ ecin(.data, exposure, outcome, alpha = 0.05, ...)
 \item{alpha}{Significance level to be used for constructing confidence interval; default is \code{0.05}}
 
 \item{...}{Additional arguments passed to \link[twoxtwo]{twoxtwo} function; ignored if input to \code{.data} is a \code{twoxtwo} object}
+
+\item{prevalence}{Prevalence of exposure in the population; must be numeric between \code{0} and \code{1}; only used in \code{cin()}; default is \code{NULL} and will be ignored}
 }
 \value{
 A \code{tibble} with the following columns:
@@ -57,6 +59,10 @@ Note that formulas for standard errors are not provided below but are based on f
 \subsection{Case Impact Number (CIN)}{
 
 \deqn{CIN = 1/(((A+C)/(A+B+C+D))-(C/(C+D)))) / ((A+C)/(A+B+C+D))}
+
+#'  If "prevalence" argument is not \code{NULL} then the formula uses the value specified for prevalence of exposure (p):
+
+\deqn{CIN = 1/ ((p * (((A/(A+B)) / (C/(C+D))) - 1)) / (p * (((A/(A+B)) / (C/(C+D))) - 1) + 1))}
 }
 
 \subsection{Exposed Cases Impact Number (ECIN)}{

@@ -24,12 +24,16 @@
 #'
 #' \deqn{PARP = (((A+C)/(A+B+C+D))-(C/(C+D)))) / ((A+C)/(A+B+C+D))}
 #'
+#'  If "prevalence" argument is not `NULL` then the formula uses the value specified for prevalence of exposure (p):
+#'
+#'  \deqn{PARP = p * (((A/(A+B)) / (C/(C+D))) - 1) / (p * (((A/(A+B)) / (C/(C+D))) - 1) + 1)}
+#'
 #' @param .data Either a data frame with observation-level exposure and outcome data or a \link[twoxtwo]{twoxtwo} object
 #' @param exposure Name of exposure variable; ignored if input to `.data` is a `twoxtwo` object
 #' @param outcome Name of outcome variable; ignored if input to `.data` is a `twoxtwo` object
 #' @param alpha Significance level to be used for constructing confidence interval; default is `0.05`
 #' @param percent Logical as to whether or not the measure should be returned as a percentage; default is `FALSE`
-#' @param prevalence Prevalence of exposure in the population; only used in `parp()`; default is `NULL` and will be ignored
+#' @param prevalence Prevalence of exposure in the population; must be numeric between `0` and `1`; only used in `parp()`; default is `NULL` and will be ignored
 #' @param ... Additional arguments passed to \link[twoxtwo]{twoxtwo} function; ignored if input to `.data` is a `twoxtwo` object
 #'
 #' @return
@@ -45,6 +49,7 @@
 #'
 #' @references Hildebrandt, M., Bender, R., Gehrmann, U., & Blettner, M. (2006). Calculating confidence intervals for impact numbers. BMC medical research methodology, 6, 32. https://doi.org/10.1186/1471-2288-6-32
 #' @references Szklo, M., & Nieto, F. J. (2007). Epidemiology: Beyond the basics. Sudbury, Massachussets: Jones and Bartlett.
+#' @references Zapata-Diomedi, B., Barendregt, J. J., & Veerman, J. L. (2018). Population attributable fraction: names, types and issues with incorrect interpretation of relative risks. British journal of sports medicine, 52(4), 212–213. https://doi.org/10.1136/bjsports-2015-095531
 #'
 #' @importFrom rlang "!!"
 #' @md
@@ -146,7 +151,6 @@ parp <- function(.data, exposure, outcome, alpha = 0.05, percent = FALSE, preval
     tmp_parp <- (r_overall - r_unexposed) / r_overall
   } else {
     stopifnot(is.numeric(prevalence))
-    # tmp_parp <- ((prevalence * tmp_rr) + (1-prevalence)) / (prevalence * (tmp_rr-1))
     tmp_parp <- (prevalence * (tmp_rr-1)) / (prevalence * (tmp_rr - 1) + 1)
   }
 

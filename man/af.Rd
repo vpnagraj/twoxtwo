@@ -31,7 +31,7 @@ parp(
 
 \item{...}{Additional arguments passed to \link[twoxtwo]{twoxtwo} function; ignored if input to \code{.data} is a \code{twoxtwo} object}
 
-\item{prevalence}{Prevalence of exposure in the population; only used in \code{parp()}; default is \code{NULL} and will be ignored}
+\item{prevalence}{Prevalence of exposure in the population; must be numeric between \code{0} and \code{1}; only used in \code{parp()}; default is \code{NULL} and will be ignored}
 }
 \value{
 A \code{tibble} with the following columns:
@@ -63,10 +63,16 @@ Note that formulas for standard errors are not provided below but are based on f
 \subsection{Population Attributable Risk (PARP)}{
 
 \deqn{PARP = (((A+C)/(A+B+C+D))-(C/(C+D)))) / ((A+C)/(A+B+C+D))}
+
+If "prevalence" argument is not \code{NULL} then the formula uses the value specified for prevalence of exposure (p):
+
+\deqn{PARP = p * (((A/(A+B)) / (C/(C+D))) - 1) / (p * (((A/(A+B)) / (C/(C+D))) - 1) + 1)}
 }
 }
 \references{
 Hildebrandt, M., Bender, R., Gehrmann, U., & Blettner, M. (2006). Calculating confidence intervals for impact numbers. BMC medical research methodology, 6, 32. https://doi.org/10.1186/1471-2288-6-32
 
 Szklo, M., & Nieto, F. J. (2007). Epidemiology: Beyond the basics. Sudbury, Massachussets: Jones and Bartlett.
+
+Zapata-Diomedi, B., Barendregt, J. J., & Veerman, J. L. (2018). Population attributable fraction: names, types and issues with incorrect interpretation of relative risks. British journal of sports medicine, 52(4), 212–213. https://doi.org/10.1136/bjsports-2015-095531
 }
