@@ -2,11 +2,14 @@
 % Please edit documentation in R/impact.R
 \name{impact}
 \alias{impact}
+\alias{ein}
 \alias{nnt}
 \alias{cin}
 \alias{ecin}
 \title{Impact numbers}
 \usage{
+ein(.data, exposure, outcome, alpha = 0.05, ...)
+
 nnt(.data, exposure, outcome, alpha = 0.05, ...)
 
 cin(.data, exposure, outcome, alpha = 0.05, ...)
@@ -36,9 +39,9 @@ A \code{tibble} with the following columns:
 }
 }
 \description{
-Impact numbers are designed to communicate how impactful interventions and/or exposures can be on a population. The \link[twoxtwo]{twoxtwo} framework allows for calculation of impact numbers: number needed to treat (NNT), case impact number (CIN), and the exposed cases impact number (ECIN). Note that the NNT is equivalent to the exposure impact number (EIN).
+Impact numbers are designed to communicate how impactful interventions and/or exposures can be on a population. The \link[twoxtwo]{twoxtwo} framework allows for calculation of impact numbers: exposure impact number (EIN), case impact number (CIN), and the exposed cases impact number (ECIN). Note that the EIN is mathematically equivalent to the number needed to treat (NNT).
 
-The \code{nnt()}, \code{cin()}, and \code{ecin()} functions provide interfaces for calculating impact number estimates. Each function takes an input dataset and arguments for outcome and exposure as bare, unquoted variable names. If the input has the  \link[twoxtwo]{twoxtwo} class then the effect measures will be calculated using exposure and outcome information from that object. The functions all return a tidy \code{tibble} with the name of the measure, the point estimate, and lower/upper bounds of a confidence interval (CI) based on the SE.
+The \code{ein()}, \code{cin()}, and \code{ecin()} functions provide interfaces for calculating impact number estimates. Each function takes an input dataset and arguments for outcome and exposure as bare, unquoted variable names. If the input has the  \link[twoxtwo]{twoxtwo} class then the effect measures will be calculated using exposure and outcome information from that object. The functions all return a tidy \code{tibble} with the name of the measure, the point estimate, and lower/upper bounds of a confidence interval (CI) based on the SE.
 
 Formulas used in point estimate and SE calculations are available in 'Details'.
 }
@@ -46,9 +49,9 @@ Formulas used in point estimate and SE calculations are available in 'Details'.
 The formulas below denote cell values as A,B,C,D. For more on \code{twoxtwo} notation see the \link[twoxtwo]{twoxtwo} documentation.
 
 Note that formulas for standard errors are not provided below but are based on forumlas described in Hildebrandt et al (2006).
-\subsection{Number Needed to Treat (NNT)}{
+\subsection{Exposure Impact Number (EIN)}{
 
-\deqn{NNT = 1/((A/(A+B)) - (C/(C+D)))}
+\deqn{EIN = 1/((A/(A+B)) - (C/(C+D)))}
 }
 
 \subsection{Case Impact Number (CIN)}{

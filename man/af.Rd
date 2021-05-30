@@ -8,7 +8,15 @@
 \usage{
 arp(.data, exposure, outcome, alpha = 0.05, percent = FALSE, ...)
 
-parp(.data, exposure, outcome, alpha = 0.05, percent = FALSE, ...)
+parp(
+  .data,
+  exposure,
+  outcome,
+  alpha = 0.05,
+  percent = FALSE,
+  prevalence = NULL,
+  ...
+)
 }
 \arguments{
 \item{.data}{Either a data frame with observation-level exposure and outcome data or a \link[twoxtwo]{twoxtwo} object}
@@ -22,6 +30,8 @@ parp(.data, exposure, outcome, alpha = 0.05, percent = FALSE, ...)
 \item{percent}{Logical as to whether or not the measure should be returned as a percentage; default is \code{FALSE}}
 
 \item{...}{Additional arguments passed to \link[twoxtwo]{twoxtwo} function; ignored if input to \code{.data} is a \code{twoxtwo} object}
+
+\item{prevalence}{Prevalence of exposure in the population; only used in \code{parp()}; default is \code{NULL} and will be ignored}
 }
 \value{
 A \code{tibble} with the following columns:

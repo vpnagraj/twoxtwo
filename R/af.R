@@ -29,6 +29,7 @@
 #' @param outcome Name of outcome variable; ignored if input to `.data` is a `twoxtwo` object
 #' @param alpha Significance level to be used for constructing confidence interval; default is `0.05`
 #' @param percent Logical as to whether or not the measure should be returned as a percentage; default is `FALSE`
+#' @param prevalence Prevalence of exposure in the population; only used in `parp()`; default is `NULL` and will be ignored
 #' @param ... Additional arguments passed to \link[twoxtwo]{twoxtwo} function; ignored if input to `.data` is a `twoxtwo` object
 #'
 #' @return
@@ -114,7 +115,7 @@ arp <- function(.data, exposure, outcome, alpha = 0.05, percent = FALSE, ...) {
 
 #' @export
 #' @rdname af
-parp <- function(.data, exposure, outcome, alpha = 0.05, percent = FALSE, ...) {
+parp <- function(.data, exposure, outcome, alpha = 0.05, percent = FALSE, prevalence = NULL, ...) {
 
   ## get critical value from normal distribution based on value to alpha
   critical_value <- stats::qnorm(1-(alpha/2))
@@ -139,8 +140,16 @@ parp <- function(.data, exposure, outcome, alpha = 0.05, percent = FALSE, ...) {
   r_exposed <- A / (A + B)
   r_unexposed <- C / (C + D)
   r_overall <- (A+C) / (A + B + C + D)
+  tmp_rr <- r_exposed / r_unexposed
 
-  tmp_parp <- (r_overall - r_unexposed) / r_overall
+  if(is.null(prevalence)) {
+    tmp_parp <- (r_overall - r_unexposed) / r_overall
+  } else {
+    stopifnot(is.numeric(prevalence))
+    # tmp_parp <- ((prevalence * tmp_rr) + (1-prevalence)) / (prevalence * (tmp_rr-1))
+    tmp_parp <- (prevalence * (tmp_rr-1)) / (prevalence * (tmp_rr - 1) + 1)
+  }
+
   theta <- 1-tmp_parp
   tmp_n <- A+B+C+D
   pi_01 <- C / tmp_n

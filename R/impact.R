@@ -4,9 +4,9 @@
 #'
 #' @description
 #'
-#' Impact numbers are designed to communicate how impactful interventions and/or exposures can be on a population. The \link[twoxtwo]{twoxtwo} framework allows for calculation of impact numbers: number needed to treat (NNT), case impact number (CIN), and the exposed cases impact number (ECIN). Note that the NNT is equivalent to the exposure impact number (EIN).
+#' Impact numbers are designed to communicate how impactful interventions and/or exposures can be on a population. The \link[twoxtwo]{twoxtwo} framework allows for calculation of impact numbers: exposure impact number (EIN), case impact number (CIN), and the exposed cases impact number (ECIN). Note that the EIN is mathematically equivalent to the number needed to treat (NNT).
 #'
-#' The `nnt()`, `cin()`, and `ecin()` functions provide interfaces for calculating impact number estimates. Each function takes an input dataset and arguments for outcome and exposure as bare, unquoted variable names. If the input has the  \link[twoxtwo]{twoxtwo} class then the effect measures will be calculated using exposure and outcome information from that object. The functions all return a tidy `tibble` with the name of the measure, the point estimate, and lower/upper bounds of a confidence interval (CI) based on the SE.
+#' The `ein()`, `cin()`, and `ecin()` functions provide interfaces for calculating impact number estimates. Each function takes an input dataset and arguments for outcome and exposure as bare, unquoted variable names. If the input has the  \link[twoxtwo]{twoxtwo} class then the effect measures will be calculated using exposure and outcome information from that object. The functions all return a tidy `tibble` with the name of the measure, the point estimate, and lower/upper bounds of a confidence interval (CI) based on the SE.
 #'
 #' Formulas used in point estimate and SE calculations are available in 'Details'.
 #'
@@ -22,9 +22,9 @@
 #'
 #' Note that formulas for standard errors are not provided below but are based on forumlas described in Hildebrandt et al (2006).
 #'
-#' ## Number Needed to Treat (NNT)
+#' ## Exposure Impact Number (EIN)
 #'
-#' \deqn{NNT = 1/((A/(A+B)) - (C/(C+D)))}
+#' \deqn{EIN = 1/((A/(A+B)) - (C/(C+D)))}
 #'
 #' ## Case Impact Number (CIN)
 #'
@@ -53,10 +53,9 @@
 #'
 #'
 
-
 #' @export
 #' @rdname impact
-nnt <- function(.data, exposure, outcome, alpha = 0.05, ...) {
+ein <- function(.data, exposure, outcome, alpha = 0.05, ...) {
   ## get critical value from normal distribution based on value to alpha
   critical_value <- stats::qnorm(1-(alpha/2))
 
@@ -73,14 +72,14 @@ nnt <- function(.data, exposure, outcome, alpha = 0.05, ...) {
 
   tmp_rd <- risk_diff(tmp_twoxtwo)
 
-  tmp_nnt <- 1/tmp_rd$estimate
+  tmp_ein <- 1/tmp_rd$estimate
   ci_lower_bound <- 1/tmp_rd$ci_upper
   ci_upper_bound <- 1/tmp_rd$ci_lower
 
   ## return everything as a tibble
   dplyr::tibble(
-    measure = "Number Needed to Treat",
-    estimate = tmp_nnt,
+    measure = "Exposure Impact Number",
+    estimate = tmp_ein,
     ci_lower = ci_lower_bound,
     ci_upper = ci_upper_bound,
     exposure = dplyr::first(tmp_twoxtwo$tbl$exposure),
@@ -90,7 +89,11 @@ nnt <- function(.data, exposure, outcome, alpha = 0.05, ...) {
 
 #' @export
 #' @rdname impact
-cin <- function(.data, exposure, outcome, alpha = 0.05, ...) {
+nnt <- ein
+
+#' @export
+#' @rdname impact
+cin <- function(.data, exposure, outcome, alpha = 0.05, prevalence = NULL, ...) {
   ## get critical value from normal distribution based on value to alpha
   critical_value <- stats::qnorm(1-(alpha/2))
 
@@ -105,7 +108,7 @@ cin <- function(.data, exposure, outcome, alpha = 0.05, ...) {
     tmp_twoxtwo <- twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)
   }
 
-  tmp_parp <- parp(tmp_twoxtwo, percent = FALSE)
+  tmp_parp <- parp(tmp_twoxtwo, percent = FALSE, prevalence = prevalence)
 
   tmp_cin <- 1/tmp_parp$estimate
   ci_lower_bound <- 1/tmp_parp$ci_upper
