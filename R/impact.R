@@ -4,7 +4,7 @@
 #'
 #' @description
 #'
-#' Impact numbers are designed to communicate how impactful interventions and/or exposures can be on a population. The \link[twoxtwo]{twoxtwo} framework allows for calculation of impact numbers: exposure impact number (EIN), case impact number (CIN), and the exposed cases impact number (ECIN). Note that the EIN is mathematically equivalent to the number needed to treat (NNT).
+#' Impact numbers are designed to communicate how impactful interventions and/or exposures can be on a population. The \link[twoxtwo]{twoxtwo} framework allows for calculation of impact numbers: exposure impact number (EIN), case impact number (CIN), and the exposed cases impact number (ECIN).
 #'
 #' The `ein()`, `cin()`, and `ecin()` functions provide interfaces for calculating impact number estimates. Each function takes an input dataset and arguments for outcome and exposure as bare, unquoted variable names. If the input has the  \link[twoxtwo]{twoxtwo} class then the effect measures will be calculated using exposure and outcome information from that object. The functions all return a tidy `tibble` with the name of the measure, the point estimate, and lower/upper bounds of a confidence interval (CI) based on the SE.
 #'
@@ -91,10 +91,6 @@ ein <- function(.data, exposure, outcome, alpha = 0.05, ...) {
     outcome = dplyr::first(tmp_twoxtwo$tbl$outcome),
   )
 }
-
-#' @export
-#' @rdname impact
-nnt <- ein
 
 #' @export
 #' @rdname impact

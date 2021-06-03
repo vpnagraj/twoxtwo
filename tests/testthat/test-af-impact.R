@@ -74,31 +74,31 @@ test_that("parp is correct", {
   expect_equal(round(ex2_parp$ci_upper, 3), 0.263)
 })
 
-test_that("nnt is correct", {
+test_that("ein is correct", {
 
   ## example 1
-  ex1_nnt <-
+  ex1_ein <-
     ex1 %>%
-    nnt(.)
+    ein(.)
 
   ## estimate
-  expect_equal(round(ex1_nnt$estimate, 2), 395.21)
+  expect_equal(round(ex1_ein$estimate, 2), 395.21)
   ## lower
-  expect_equal(round(ex1_nnt$ci_lower, 2), 232.67)
+  expect_equal(round(ex1_ein$ci_lower, 2), 232.67)
   ## upper
-  expect_equal(round(ex1_nnt$ci_upper, 2), 1311.27)
+  expect_equal(round(ex1_ein$ci_upper, 2), 1311.27)
 
   ## example 2
-  ex2_nnt <-
+  ex2_ein <-
     ex2 %>%
-    nnt(.)
+    ein(.)
 
   ## estimate
-  expect_equal(round(ex2_nnt$estimate, 2), 122.37)
+  expect_equal(round(ex2_ein$estimate, 2), 122.37)
   ## lower
-  expect_equal(round(ex2_nnt$ci_lower, 2), 69.55)
+  expect_equal(round(ex2_ein$ci_lower, 2), 69.55)
   ## upper
-  expect_equal(round(ex2_nnt$ci_upper, 2), 508.69)
+  expect_equal(round(ex2_ein$ci_upper, 2), 508.69)
 })
 
 test_that("cin is correct", {
