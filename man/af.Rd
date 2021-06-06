@@ -45,7 +45,7 @@ A \code{tibble} with the following columns:
 }
 }
 \description{
-In addition to \link[twoxtwo]{measures} of effect such as odds ratio, risk ratio, and risk difference, the \link[twoxtwo]{twoxtwo} framework allows for calculation of attributable fractions: attributable risk in the exposed (ARP) and the population attributable risk (PARP).
+In addition to \link[twoxtwo]{measures} of effect such as odds ratio, risk ratio, and risk difference, the \link[twoxtwo]{twoxtwo} framework allows for calculation of attributable fractions: attributable risk proportion in the exposed (ARP) and the population attributable risk proportion (PARP).
 
 Estimates of the attributable fractions can be calculated with the \code{arp()} and \code{parp()} functions respectively.  Each function takes an input dataset and arguments for outcome and exposure as bare, unquoted variable names. If the input has the  \link[twoxtwo]{twoxtwo} class then the effect measures will be calculated using exposure and outcome information from that object. The functions all return a tidy \code{tibble} with the name of the measure, the point estimate, and lower/upper bounds of a confidence interval (CI) based on the SE.
 
@@ -55,12 +55,12 @@ Formulas used in point estimate and SE calculations are available in 'Details'.
 The formulas below denote cell values as A,B,C,D. For more on \code{twoxtwo} notation see the \link[twoxtwo]{twoxtwo} documentation.
 
 Note that formulas for standard errors are not provided below but are based on forumlas described in Hildebrandt et al (2006).
-\subsection{Attributable Risk in the Exposed (ARP)}{
+\subsection{Attributable Risk Proportion in the Exposed (ARP)}{
 
 \deqn{ARP = 1 - (1/((A/(A+B)) / (C/(C+D))))}
 }
 
-\subsection{Population Attributable Risk (PARP)}{
+\subsection{Population Attributable Risk Proportion (PARP)}{
 
 \deqn{PARP = (((A+C)/(A+B+C+D))-(C/(C+D)))) / ((A+C)/(A+B+C+D))}
 
