@@ -58,9 +58,6 @@
 #' @md
 #'
 
-
-
-
 #' @export
 #' @rdname measures
 odds_ratio <- function(.data, exposure, outcome, alpha = 0.05, ...) {
@@ -205,4 +202,3 @@ risk_diff <- function(.data, exposure, outcome, alpha = 0.05, ...) {
   )
 
 }
-

@@ -1,0 +1,170 @@
+---
+title: "Attributable Fractions and Impact Numbers"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Attributable Fractions and Impact Numbers}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+```{r setup}
+library(twoxtwo)
+```
+
+## Overview
+
+Epidemiological measures of effect can summarize the magnitude and direction of association between exposure and outcome. Additional summaries such as *attributable fractions* and *impact numbers* can provide useful tools for interpretation.  The `twoxtwo` package includes several functions to compute these measures.  
+
+The content below will describe how to calculate the attributable risk proportion (ARP), the population attributable risk proportion (PARP). The examples will also walk through calculation of impact numbers: exposure impact number (EIN), case impact number (CIN), and exposed cases impact number (ECIN). Formulas for point estimates will use the two-by-two notation described in the "Basic Usage" vignette[^basic-usage]. Note that formulas for standard errors are not provided below but are based on variance estimators described in Hildebrandt et al (2006).
+
+The data to motivate usage is based on an example dataset from Hildebrandt et al (2006) and originally published in Doll and Peto (1976). The data summarizes incidence of smoking and mortality from coronary heart disease (CHD) among male British doctors. The code below prepares the data:
+
+```{r}
+library(dplyr)
+library(tidyr)
+
+chd_smoke <-
+  tribble(~smoke, ~chd_died,~n,
+          TRUE, TRUE,69,
+          TRUE, FALSE, 10263,
+          FALSE, TRUE, 100,
+          FALSE, FALSE, 24008) %>%
+  uncount(n)
+```
+
+```{r}
+chd_smoke %>%
+  twoxtwo(., exposure = smoke, outcome = chd_died)
+```
+
+[^basic-usage]: To read the `twoxtwo` "Basic Usage" vignette: `vignette("basic-usage", package = "twoxtwo")`
+
+## Attributable Risk Proportion (ARP)
+
+The attributable risk proportion (ARP) is sometimes also referred to as the attributable fraction among the exposed (AFe) or the aetiological fraction (AF). This measure communicates the proportion of risk among the exposed that can be directly attributed to the exposure of interest.
+
+The formula can be expressed as the inverse of the reciprocal of the risk ratio:
+
+$$1-\frac{1}{\frac{\frac{A}{A+B}}{{\frac{C}{C+D}}}}$$
+
+Using the CHD example data:
+
+```{r}
+chd_smoke %>%
+  arp(exposure =  smoke, outcome = chd_died)
+```
+
+The attributable fraction among the exposed can be expressed as a proportion (default) or percentage by using `arp(..., percent = TRUE`):
+
+```{r}
+chd_smoke %>%
+  arp(exposure =  smoke, outcome = chd_died, percent = TRUE)
+```
+
+One can interpret the above to mean that approximately 38% of the risk of CHD death among smokers in the study can be attributed to smoking. 
+
+## Population Attributable Risk Proportion (PARP)
+
+Another measure that is useful in communicating public health impact is the population attributable risk proportion (PARP). The PARP is also sometimes referred to as the population attributable fraction (PAF). This measure provides an estimate of the proportion of cases overall (i.e. regardless of exposure status) that can be attributed to the exposure. 
+
+Expressed in two-by-two notation, the formula for PARP is:
+
+$$\frac{\frac{A+C}{A+B+C+D}-{{\frac{C}{C+D}}}}{\frac{A+C}{A+B+C+D}}$$
+Using the CHD example data:
+
+```{r}
+chd_smoke %>%
+  parp(exposure =  smoke, outcome = chd_died)
+```
+
+The PARP can be expressed as a proportion (default) or percentage by using `parp(..., percent = TRUE`):
+
+```{r}
+chd_smoke %>%
+  parp(exposure =  smoke, outcome = chd_died, percent = TRUE)
+```
+
+One can interpret the above to mean that approximately 16% of CHD deaths in the population can be attributed to smoking. 
+
+Note that this interpretation assumes that the prevalence of exposure in the population is the same as observed in the study. To loosen this assumption one can revisit the formula and express PARP as a function of population exposure prevalence (denoted as $p_e$ below):
+
+$$\frac{p_e\times({\frac{\frac{A}{A+B}}{\frac{C}{C+D}}- 1)}}{(p_e\times({\frac{\frac{A}{A+B}}{\frac{C}{C+D}}- 1)}) + 1}$$
+If the exposure prevalence of interest differs from the data in the two-by-two table, then it can be specified explicitly in the "prevalence" argument:
+
+```{r}
+chd_smoke %>%
+  parp(exposure =  smoke, outcome = chd_died, percent = TRUE, prevalence = 0.2)
+```
+
+## Exposure Impact Number (EIN)
+
+Heller et al (2002) introduced the concept of "impact numbers" for communicating effect of exposure on a population based on case-control or cohort study results. Each impact number included in `twoxtwo` (EIN, CIN, ECIN) communicates different information.
+
+The EIN is number of those exposed that from whom one excess case arises due to exposure.
+
+The formula for EIN in two-by-two notation:
+
+$$\frac{1}{\frac{A}{A+B} - \frac{C}{C+D}}$$
+
+Using the CHD example data:
+
+```{r}
+chd_smoke %>%
+  ein(exposure = smoke, outcome = chd_died)
+```
+
+Based on these results, one could say that there is on average about 1 additional CHD death for every 395 smokers.
+
+## Case Impact Number (CIN)
+
+Unlike the EIN, the CIN orients interpretation towards impact on cases. 
+The CIN represents the number of individuals with the outcome being studied (i.e. cases) for which at least one case can be attributed to the exposure.
+
+The formula for CIN is the reciprocal of the PARP:
+
+$$\frac{1}{\frac{\frac{A+C}{A+B+C+D}-{{\frac{C}{C+D}}}}{\frac{A+C}{A+B+C+D}}}$$
+
+Using the CHD example data:
+
+```{r}
+chd_smoke %>%
+  cin(exposure = smoke, outcome = chd_died)
+```
+Based on the results above one could conclude that for about every 6 deaths from CHD in the population there will be approximately 1 excess death due to smoking. 
+
+## Exposed Cases Impact Number (ECIN)
+
+The ECIN is also oriented towards impact on cases, but only among those with the exposure. 
+
+This value represents the number of exposed individuals with the outcome for which one excess case is attributed to the exposure.
+
+The ECIN is the reciprocal of the attributable fraction in the exposed (ARP):
+
+$$\frac{1}{1-\frac{1}{\frac{\frac{A}{A+B}}{{\frac{C}{C+D}}}}}$$
+Using the CHD example data:
+
+```{r}
+chd_smoke %>%
+  ecin(exposure = smoke, outcome = chd_died)
+```
+One could interpret the above to indicate that for every 5 CHD deaths among smokers, on average about 2 of those deaths can be attributed to smoking status.
+
+## References
+
+> Doll, R., & Peto, R. (1976). Mortality in relation to smoking: 20 years' observations on male British doctors. British medical journal, 2(6051), 1525–1536. https://doi.org/10.1136/bmj.2.6051.1525
+
+> Heller, R. F., Dobson, A. J., Attia, J., & Page, J. (2002). Impact numbers: measures of risk factor impact on the whole population from case-control and cohort studies. Journal of epidemiology and community health, 56(8), 606–610. https://doi.org/10.1136/jech.56.8.606
+
+> Hildebrandt, M., Bender, R., Gehrmann, U., & Blettner, M. (2006). Calculating confidence intervals for impact numbers. BMC medical research methodology, 6, 32. https://doi.org/10.1186/1471-2288-6-32
+
+> Szklo, M., & Nieto, F. J. (2007). Epidemiology: Beyond the basics. Sudbury, Massachussets: Jones and Bartlett.
+

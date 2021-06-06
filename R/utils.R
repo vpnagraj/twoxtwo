@@ -68,3 +68,22 @@ display <- function(.twoxtwo, ...) {
                ...)
 }
 
+#' Bound a vector
+#'
+#' @description
+#'
+#' This unexported helper function bounds a numeric vector on a minimum and maximum value.
+#'
+#' @param x Numeric vector to be bounded
+#' @param min Minimum allowed value for vector "x"; default is `0.01`
+#' @param max Maximum allowed value for vector "x"; default is `0.99`
+#'
+#' @return Numeric vector of the same length as `x` with no values less than `minimum` nor greater than `maximum`.
+#'
+#' @md
+#'
+bound <- function(x, min = 0.01, max = 0.99) {
+  x <- ifelse(x < min, min, x)
+  x <- ifelse(x > max, max, x)
+  return(x)
+}

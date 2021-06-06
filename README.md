@@ -31,6 +31,15 @@ devtools::install_github("vpnagraj/twoxtwo", build_vignettes = TRUE)
   - `risk_diff()`: Estimate risk difference and confidence interval
   - `fisher()`: Perform Fisher’s exact test
   - `chisq()`: Perform Pearson’s chi-squared test
+  - `arp()`: Estimate attributable risk proportion (ARP) and confidence
+    interval
+  - `parp()`: Estimate population attributable risk proportion (PARP)
+    and confidence interval
+  - `ein()`: Estimate exposure impact number (EIN) and confidence
+    interval
+  - `cin()`: Estimate case impact number (CIN) and confidence interval
+  - `ecin()`: Estimate exposed cases impact number (ECIN) and confidence
+    interval
   - `summary.twoxtwo()`: Summarize `twoxtwo` object
   - `print.twoxtwo()`: Print `twoxtwo` object
   - `display()`: Render `twoxtwo` table contents as a `knitr::kable`
@@ -125,22 +134,30 @@ titanic %>%
 
 The package includes vignettes to describe usage in more detail.
 
-For more on basic usage:
+For details on the `twoxtwo` data structure and demonstration of basic
+usage:
 
 ``` r
 vignette("basic-usage", package = "twoxtwo")
 ```
 
-For details on measures of effect:
+For formulas and examples how to calculate measures of effect :
 
 ``` r
 vignette("measures-of-effect", package = "twoxtwo")
 ```
 
-For details on hypothesis testing:
+For information on hypothesis testing functionality in the package:
 
 ``` r
 vignette("hypothesis-testing", package = "twoxtwo")
+```
+
+For formulas and demonstration of attributable fraction and impact
+number calculations:
+
+``` r
+vignette("af-impact", package = "twoxtwo")
 ```
 
 ## Contributing
