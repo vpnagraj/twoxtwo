@@ -74,6 +74,23 @@ test_that("parp is correct", {
   expect_equal(round(ex2_parp$ci_upper, 3), 0.263)
 })
 
+test_that("parp is handling prevalence arg", {
+
+  ## example 1
+  ex1_parp <-
+    ex1 %>%
+    parp(.)
+
+  ## same thing but with prevalence = 0.5
+  ex1_parp_prev <-
+    ex1 %>%
+    parp(., prevalence = 0.5)
+
+  ## the parp estimate for this data should be greater at prevalence = 0.5
+  expect_gt(ex1_parp_prev$estimate, ex1_parp$estimate)
+
+})
+
 test_that("ein is correct", {
 
   ## example 1
