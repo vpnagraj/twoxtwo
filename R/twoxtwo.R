@@ -100,7 +100,7 @@ twoxtwo <- function(.data, exposure, outcome, levels = NULL, na.rm = TRUE, retai
     ## ... and then reverses the factor to ensure that 1 (or TRUE) is first level and 0 (or FALSE) is second
     dplyr::mutate(!! quo_exposure := forcats::fct_rev(as.factor(!! quo_exposure)),
                   !! quo_outcome := forcats::fct_rev(as.factor(!! quo_outcome))) %>%
-    tidyr::spread(!! quo_outcome, n) %>%
+    tidyr::spread(!! quo_outcome, n, fill = 0) %>%
     dplyr::mutate(!! quo_exposure := as.character(!! quo_exposure))
 
     if(!is.null(levels)) {
@@ -184,6 +184,11 @@ twoxtwo <- function(.data, exposure, outcome, levels = NULL, na.rm = TRUE, retai
                              levels = outcome_levels),
               n_missing = n_na,
               data = .data)
+
+  ## add a warning if any of the cells are 0
+  if(any(unlist(res$cells) == 0)) {
+    warning("\nAt least one of the cells in the two-by-two table is 0.\nEstimates may be uninformative.")
+  }
 
   ## assign the twoxtwo class
   class(res) <- "twoxtwo"
