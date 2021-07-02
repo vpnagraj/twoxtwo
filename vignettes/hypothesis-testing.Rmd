@@ -16,12 +16,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(twoxtwo)
-library(dplyr)
-library(tidyr)
-```
-
 ## Overview
 
 While exploring the relationship between an exposure and an outcome it may be useful to statistically test the strength of association. Hypothesis testing is a statistical inference technique by which one uses observed sample data to interrogate an assumption about a population parameter. Given an assumed probability distribution for the population parameter, a hypothesis test can yield a measure of how likely it would be to encounter the data observed. Two of the hypothesis tests applied to count data in two-by-two tables include Pearson's chi-squared test and Fisher's exact test. Both of these techniques are implemented in the `twoxtwo` package. The narrative that follows demonstrates how to perform these tests using example datasets created below as well as the `titanic` data that ships with `twoxtwo` [^titanic].
@@ -42,6 +36,8 @@ Pearson's $\chi^2$ test is implemented in R via the `chisq.test()` function in t
 Below is an example of using the `chisq()` function to explore the association between crew status and survival in the `titanic` dataset:
 
 ```{r}
+library(twoxtwo)
+
 titanic %>%
   chisq(., Crew, Survived)
 ```
@@ -59,6 +55,9 @@ To calculate a p-value, one can sum the probabilities for cell counts that are a
 The stated origin of Fisher's exact test is the "tea taster" experiment. The design is detailed in the example below:
 
 ```{r}
+library(dplyr)
+library(tidyr)
+
 tea <-
   tribble(
     ~poured, ~guessed, ~ n,
@@ -84,18 +83,22 @@ tea %>%
 
 As with `chisq()` the `fisher()` function wraps a function from the `stats` package. `fisher()` passes arguments for the proposed odds ratio for the hypothesis testing, confidence level for odds ratio estimate, and alternative hypothesis into the interal `fisher.test()` function. Examples of several of these parameters in practice are provided below to explore the association between crew status and survival in the `titanic` dataset: 
 ```{r}
-titanic %>% fisher(., exposure = Crew, outcome = Survived, alternative = "greater")
+titanic %>% 
+  fisher(., exposure = Crew, outcome = Survived, alternative = "greater")
 ```
 ```{r}
-titanic %>% fisher(., exposure = Crew, outcome = Survived, alternative = "less")
-```
-
-```{r}
-titanic %>% fisher(., exposure = Crew, outcome = Survived, alternative = "two.sided")
+titanic %>% 
+  fisher(., exposure = Crew, outcome = Survived, alternative = "less")
 ```
 
 ```{r}
-titanic %>% fisher(., exposure = Crew, outcome = Survived, or = 2)
+titanic %>% 
+  fisher(., exposure = Crew, outcome = Survived, alternative = "two.sided")
+```
+
+```{r}
+titanic %>% 
+  fisher(., exposure = Crew, outcome = Survived, or = 2)
 ```
 
 ## References

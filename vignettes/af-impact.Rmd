@@ -16,15 +16,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(twoxtwo)
-```
-
 ## Overview
 
 Epidemiological measures of effect can summarize the magnitude and direction of association between exposure and outcome. Additional summaries such as *attributable fractions* and *impact numbers* can provide useful tools for interpretation.  The `twoxtwo` package includes several functions to compute these measures.  
 
-The content below will describe how to calculate the attributable risk proportion (ARP), the population attributable risk proportion (PARP). The examples will also walk through calculation of impact numbers: exposure impact number (EIN), case impact number (CIN), and exposed cases impact number (ECIN). Formulas for point estimates will use the two-by-two notation described in the "Basic Usage" vignette[^basic-usage]. Note that formulas for standard errors are not provided below but are based on variance estimators described in Hildebrandt et al (2006).
+The content below will describe how to calculate the attributable risk proportion (ARP) and the population attributable risk proportion (PARP). The examples will also walk through calculation of impact numbers: exposure impact number (EIN), case impact number (CIN), and exposed cases impact number (ECIN). Formulas for point estimates will use the two-by-two notation described in the "Basic Usage" vignette[^basic-usage]. Note that formulas for standard errors are not provided below but are based on variance estimators described in Hildebrandt et al (2006).
 
 The data to motivate usage is based on an example dataset from Hildebrandt et al (2006) and originally published in Doll and Peto (1976). The data summarizes incidence of smoking and mortality from coronary heart disease (CHD) among male British doctors. The code below prepares the data:
 
@@ -42,6 +38,8 @@ chd_smoke <-
 ```
 
 ```{r}
+library(twoxtwo)
+
 chd_smoke %>%
   twoxtwo(., exposure = smoke, outcome = chd_died)
 ```
@@ -74,7 +72,7 @@ One can interpret the above to mean that approximately 38% of the risk of CHD de
 
 ## Population Attributable Risk Proportion (PARP)
 
-Another measure that is useful in communicating public health impact is the population attributable risk proportion (PARP). The PARP is also sometimes referred to as the population attributable fraction (PAF). This measure provides an estimate of the proportion of cases overall (i.e. regardless of exposure status) that can be attributed to the exposure. 
+Another measure that is useful in communicating public health impact is the population attributable risk proportion (PARP). The PARP is also sometimes referred to as the population attributable fraction (PAF). This measure provides an estimate of the proportion of cases overall (regardless of exposure status) that can be attributed to the exposure. 
 
 Expressed in two-by-two notation, the formula for PARP is:
 
@@ -109,7 +107,7 @@ chd_smoke %>%
 
 Heller et al (2002) introduced the concept of "impact numbers" for communicating effect of exposure on a population based on case-control or cohort study results. Each impact number included in `twoxtwo` (EIN, CIN, ECIN) communicates different information.
 
-The EIN is number of those exposed that from whom one excess case arises due to exposure.
+The EIN is the number of those exposed from which one excess case arises due to exposure.
 
 The formula for EIN in two-by-two notation:
 

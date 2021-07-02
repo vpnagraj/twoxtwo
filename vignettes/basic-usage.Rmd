@@ -146,9 +146,24 @@ Note that the measures of effect are only computed in the `twoxtwo()` summary if
 
 ## Calculating measures of effect
 
-The `twoxtwo()` function is used in other package functions that allow users to directly perform data analysis *without* first creating a `twoxtwo` object.
+Individual measures of effect (odds ratio, risk ratio, and risk difference) can be calculated directly. Each measure includes the point estimate and confidence interval based on the $\alpha$ specified and standard error around the estimate. If the user passes a `twoxtwo` object into a data analysis function, the exposure and outcome will be inherited:
 
-Individual measures of effect (odds ratio, risk ratio, and risk difference) can be calculated directly. Each measure includes the point estimate and confidence interval based on the $\alpha$ specified and standard error around the estimate:
+```{r}
+sh_2x2 %>%
+  odds_ratio()
+```
+
+```{r}
+sh_2x2 %>%
+  risk_ratio()
+```
+
+```{r}
+sh_2x2 %>%
+  risk_diff()
+```
+
+Alternatively, users can directly perform data analysis *without* first creating a `twoxtwo` object:
 
 ```{r}
 sh %>%
@@ -167,7 +182,19 @@ sh %>%
 
 ## Hypothesis testing
 
-As with measures of effect, hypothesis tests (Fisher's exact test for count data and Pearson's $\chi^2$ test) can also be run *without* first creating a `twoxtwo` object:
+As with measures of effect, hypothesis tests (Fisher's exact test for count data and Pearson's $\chi^2$ test) can be run on a `twoxtwo`:
+
+```{r}
+sh_2x2 %>%
+  fisher()
+```
+
+```{r}
+sh_2x2 %>%
+  chisq()
+```
+
+Or *without* first creating a `twoxtwo` object:
 
 ```{r}
 sh %>%
@@ -181,9 +208,9 @@ sh %>%
 
 ## Customizing orientation of `twoxtwo`
 
-All processing of exposure and outcome variables requires that both **must** have only two levels. By default, both variables are coerced to factors and reversed. The effect is that, as in the example presented above, a value of `TRUE` or `1` will be oriented as exposure or outcome "+" and a corresponding value of `FALSE` or `0` will be oriented as exposure or outcome "-". 
+All processing of exposure and outcome requires that both variables **must** have only two levels. By default, variables are coerced to factors and reversed. The result is that, as in the example presented above, a value of `TRUE` or `1` will be oriented as exposure or outcome "+" and a corresponding value of `FALSE` or `0` will be oriented as exposure or outcome "-". 
 
-Anticipating that this logic may not satisfy all use-cases, the `twoxtwo()` constructor function is flexible enough to allow user-specified ordering via a named list passed to the "levels" argument:
+The `twoxtwo()` constructor function is flexible enough to allow user-specified ordering via a named list passed to the "levels" argument:
 
 ```{r}
 sh %>%

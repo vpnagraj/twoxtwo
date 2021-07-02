@@ -40,7 +40,7 @@ A \code{tibble} with the following columns:
 \description{
 Impact numbers are designed to communicate how impactful interventions and/or exposures can be on a population. The \link[twoxtwo]{twoxtwo} framework allows for calculation of impact numbers: exposure impact number (EIN), case impact number (CIN), and the exposed cases impact number (ECIN).
 
-The \code{ein()}, \code{cin()}, and \code{ecin()} functions provide interfaces for calculating impact number estimates. Each function takes an input dataset and arguments for outcome and exposure as bare, unquoted variable names. If the input has the  \link[twoxtwo]{twoxtwo} class then the effect measures will be calculated using exposure and outcome information from that object. The functions all return a tidy \code{tibble} with the name of the measure, the point estimate, and lower/upper bounds of a confidence interval (CI) based on the SE.
+The \code{ein()}, \code{cin()}, and \code{ecin()} functions provide interfaces for calculating impact number estimates. Each function takes an input dataset and arguments for outcome and exposure as bare, unquoted variable names. If the input has the  \link[twoxtwo]{twoxtwo} class then the measures will be calculated using exposure and outcome information from that object. The functions all return a tidy \code{tibble} with the name of the measure, the point estimate, and lower/upper bounds of a confidence interval (CI) based on the SE.
 
 Formulas used in point estimate and SE calculations are available in 'Details'.
 }
@@ -57,7 +57,7 @@ Note that formulas for standard errors are not provided below but are based on f
 
 \deqn{CIN = 1/(((A+C)/(A+B+C+D))-(C/(C+D)))) / ((A+C)/(A+B+C+D))}
 
-#'  If "prevalence" argument is not \code{NULL} then the formula uses the value specified for prevalence of exposure (p):
+If "prevalence" argument is not \code{NULL} then the formula uses the value specified for prevalence of exposure (p):
 
 \deqn{CIN = 1/ ((p * (((A/(A+B)) / (C/(C+D))) - 1)) / (p * (((A/(A+B)) / (C/(C+D))) - 1) + 1))}
 }

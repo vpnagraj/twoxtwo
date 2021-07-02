@@ -16,10 +16,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(twoxtwo)
-```
-
 ## Overview
 
 Epidemiological studies typically seek to address the relationship between an exposure and outcome. The magnitude of the relationship between these two variables can be described by *measures of effect*. Summary measures can be relative (odds ratio and risk ratio) or absolute (risk difference). The `twoxtwo` package includes functions to directly calculate measures of effect based on the specified exposure and outcome variables.
@@ -52,10 +48,11 @@ $$\sqrt{\frac{1}{A} + \frac{1}{B} + \frac{1}{C} + \frac{1}{D}}$$
 To calculate the odds ratio (and a confidence interval based on the standard error) with `twoxtwo`:
 
 ```{r}
+library(twoxtwo)
+
 titanic %>%
   odds_ratio(.data = ., exposure = Crew, outcome = Survived)
 ```
-
 
 ### Risk ratio
 
@@ -99,13 +96,13 @@ titanic %>%
 
 ## Comparing measures
 
-Choosing an appropriate effect measure depends on how the data are collected (i.e. the study design). There are many different study designs that can help address epidemiological questions. For example, one could use an unmatched case control study by which exposure status is assessed among identified cases ("outcome +") versus controls ("outcome -"). By including individuals in the study based on outcome, one can no longer calculate risk (or a risk ratio) directly. However, one can compute an odds ratio, which is the measure of effect most commonly reported from case control studies.
+Choosing an appropriate effect measure depends on how the data are collected (i.e. the study design). There are many different study designs that can help address epidemiological questions. For example, one could use an unmatched case control study by which exposure status is assessed among identified cases ("outcome +") versus controls ("outcome -"). By including individuals in the study based on outcome, it is no longer appropriate to calculate risk (or a risk ratio) directly. However, one can compute an odds ratio, which is the measure of effect most commonly reported from case control studies.
 
 In considering how to compare measures of effect, it is worth emphasizing that relative measures are mathematically related to one another. These relationships can confer convenient properties for interpretation. For example, recall the distinction between odds and probability (risk) of an outcome. Given its formula, the odds will always *overestimate* risk. The same can be assumed true for an odds ratio and risk ratio when computed from an identical two-by-two table.
 
 While the odds ratio will always overestimate the risk ratio, the degree to which the measures differ depends in part on the *rarity* of the outcome being studied. This property is summarized in what is sometimes referred to as the *rare disease assumption*. The less common an outcome, the closer the odds ratio will approximate the risk ratio. And vice versa. As such, in some cases it may or may not be appropriate to interpret an odds ratio as an approximation of the risk ratio.
 
-The code below uses `twoxtwo` functionality (with some help from `dplyr`, `tidyr`, `purrr`, and `ggplot2`) to illustrate the relationship between the odds ratio and risk ratio. In doing so, the example also demonstrates the effect of outcome incidence proportion (i.e. how rare the outcome is) on the degree to which odds ratio overestimates the risk ratio.
+The code below uses `twoxtwo` functionality (with some help from `dplyr`, `tidyr`, `purrr`, and `ggplot2`) to illustrate the relationship between the odds ratio and risk ratio. In doing so, the example also demonstrates the effect of outcome incidence proportion (i.e. how rare the outcome is) on the degree to which the odds ratio overestimates the risk ratio.
 
 ```{r}
 library(dplyr)
