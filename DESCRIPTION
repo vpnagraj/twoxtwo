@@ -1,10 +1,10 @@
 Package: twoxtwo
 Type: Package
-Title: Work with two-by-two tables
+Title: Work with Two-by-Two Tables
 Version: 0.1.0
 Authors@R: c(person("VP", "Nagraj", role = c("aut", "cre"), email = "nagraj@nagraj.net"))
 Maintainer: VP Nagraj <nagraj@nagraj.net>
-Description: This package provides a collection of functions for data analysis with two-by-two contingency tables.
+Description: A collection of functions for data analysis with two-by-two contingency tables.
 Imports:
   dplyr,
   tidyr,
