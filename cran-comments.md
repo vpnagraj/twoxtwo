@@ -9,6 +9,11 @@
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
+0 ERRORs, O WARNINGs, 1 NOTE:
 
-* This is a new release.
+> New submission
+
+## Downstream dependencies
+
+None.
+
