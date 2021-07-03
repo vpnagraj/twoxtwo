@@ -6,7 +6,7 @@
 #'
 #' @param .data Either a data frame with observation-level exposure and outcome data or a \link[twoxtwo]{twoxtwo} object
 #' @param exposure Name of exposure variable; ignored if input to `.data` is a `twoxtwo` object
-#' @param outcome Name of outcome variable; ignored if input to `.data` is a `twoxtwo` object#' @param outcome Name of outcome variable
+#' @param outcome Name of outcome variable; ignored if input to `.data` is a `twoxtwo` object
 #' @param alternative Alternative hypothesis for test; must be one of "two.sided", "greater", or "less"; default is `"two.sided"`
 #' @param conf_level Confidence level for the confidence interval; default is `0.95`
 #' @param or Hypothesized odds ratio; default is `1`
@@ -69,16 +69,17 @@ fisher <- function(.data, exposure, outcome, alternative = "two.sided", conf_lev
 
 #' Pearson's chi-squared test
 #'
-#' #' @description
+#' @description
 #'
 #' This function conducts a Pearson's chi-squared test for a `twoxtwo` constructed using the specified exposure and outcome. Internally the function uses \link[stats]{chisq.test}. The output of the function includes the chi-squared test statistic, degrees of freedom, and the p-value from the test.
 #'
 #' @param .data Either a data frame with observation-level exposure and outcome data or a \link[twoxtwo]{twoxtwo} object
 #' @param exposure Name of exposure variable; ignored if input to `.data` is a `twoxtwo` object
-#' @param outcome Name of outcome variable; ignored if input to `.data` is a `twoxtwo` object#' @param outcome Name of outcome variable
+#' @param outcome Name of outcome variable; ignored if input to `.data` is a `twoxtwo` object
 #' @param correct Logical as to whether or not to apply continuity correction; default is `TRUE`
 #' @param ... Additional arguments passed to \link[twoxtwo]{twoxtwo} function; ignored if input to `.data` is a `twoxtwo` object
-
+#'
+#' @return
 #' A `tibble` with the following columns:
 #'
 #' - **test**: Name of the test conducted

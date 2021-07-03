@@ -7,7 +7,7 @@
 #' @format A data frame with 2201 rows and 4 variables:
 #'
 #' - **Class**: Passenger class ("1st", "2nd", "3rd") or crew status ("Crew")
-#' - **Crew**: Boolean as to whether or not a crew member (TRUE) or not (FALSE)
+#' - **Crew**: Logical as to whether or not a crew member (TRUE) or not (FALSE)
 #' - **Sex**: Sex of individual ("Male" or "Female")
 #' - **Age**: Categorized age ("Adult" or "Child")
 #' - **Survived**: Whether or not individual survived ("Yes" or "No")

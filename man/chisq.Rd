@@ -11,11 +11,13 @@ chisq(.data, exposure, outcome, correct = TRUE, ...)
 
 \item{exposure}{Name of exposure variable; ignored if input to \code{.data} is a \code{twoxtwo} object}
 
-\item{outcome}{Name of outcome variable; ignored if input to \code{.data} is a \code{twoxtwo} object#' @param outcome Name of outcome variable}
+\item{outcome}{Name of outcome variable; ignored if input to \code{.data} is a \code{twoxtwo} object}
 
 \item{correct}{Logical as to whether or not to apply continuity correction; default is \code{TRUE}}
 
-\item{...}{Additional arguments passed to \link[twoxtwo]{twoxtwo} function; ignored if input to \code{.data} is a \code{twoxtwo} object
+\item{...}{Additional arguments passed to \link[twoxtwo]{twoxtwo} function; ignored if input to \code{.data} is a \code{twoxtwo} object}
+}
+\value{
 A \code{tibble} with the following columns:
 \itemize{
 \item \strong{test}: Name of the test conducted
@@ -27,11 +29,8 @@ A \code{tibble} with the following columns:
 \item \strong{pvalue}: P-value from the test
 \item \strong{exposure}: Name of the exposure variable followed by +/- levels (e.g. smoking::yes/no)
 \item \strong{outcome}: Name of the outcome variable followed by +/- levels (e.g. heart_disease::yes/no)
-}}
+}
 }
 \description{
-#' @description
-}
-\details{
 This function conducts a Pearson's chi-squared test for a \code{twoxtwo} constructed using the specified exposure and outcome. Internally the function uses \link[stats]{chisq.test}. The output of the function includes the chi-squared test statistic, degrees of freedom, and the p-value from the test.
 }

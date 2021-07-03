@@ -19,7 +19,7 @@ fisher(
 
 \item{exposure}{Name of exposure variable; ignored if input to \code{.data} is a \code{twoxtwo} object}
 
-\item{outcome}{Name of outcome variable; ignored if input to \code{.data} is a \code{twoxtwo} object#' @param outcome Name of outcome variable}
+\item{outcome}{Name of outcome variable; ignored if input to \code{.data} is a \code{twoxtwo} object}
 
 \item{alternative}{Alternative hypothesis for test; must be one of "two.sided", "greater", or "less"; default is \code{"two.sided"}}
 

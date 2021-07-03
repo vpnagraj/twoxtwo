@@ -100,7 +100,28 @@ summary(crew_2x2)
 # Risk Difference: -0.14 (-0.178,-0.101)
 ```
 
-Each effect measure can also be calculated without first creating the
+Individual measures of effect, hypothesis tests, and impact numbers can
+be calculated using the `twoxtwo` object. For example:
+
+``` r
+crew_2x2 %>%
+  odds_ratio()
+# # A tibble: 1 x 6
+#   measure    estimate ci_lower ci_upper exposure         outcome         
+#   <chr>         <dbl>    <dbl>    <dbl> <chr>            <chr>           
+# 1 Odds Ratio    0.516    0.426    0.624 Crew::TRUE/FALSE Survived::Yes/No
+```
+
+``` r
+crew_2x2 %>%
+  chisq()
+# # A tibble: 1 x 9
+#   test      estimate ci_lower ci_upper statistic    df   pvalue exposure outcome
+#   <chr>     <lgl>    <lgl>    <lgl>        <dbl> <int>    <dbl> <chr>    <chr>  
+# 1 Pearson'… NA       NA       NA            46.5     1 8.97e-12 Crew::T… Surviv…
+```
+
+Note that data analysis can also be performed without first creating the
 `twoxtwo` object:
 
 ``` r
@@ -114,20 +135,11 @@ titanic %>%
 
 ``` r
 titanic %>%
-  risk_ratio(.data = ., exposure = Crew, outcome = Survived)
-# # A tibble: 1 x 6
-#   measure    estimate ci_lower ci_upper exposure         outcome         
-#   <chr>         <dbl>    <dbl>    <dbl> <chr>            <chr>           
-# 1 Risk Ratio    0.632    0.551    0.724 Crew::TRUE/FALSE Survived::Yes/No
-```
-
-``` r
-titanic %>%
-  risk_diff(.data = ., exposure = Crew, outcome = Survived)
-# # A tibble: 1 x 6
-#   measure         estimate ci_lower ci_upper exposure         outcome         
-#   <chr>              <dbl>    <dbl>    <dbl> <chr>            <chr>           
-# 1 Risk Difference   -0.140   -0.178   -0.101 Crew::TRUE/FALSE Survived::Yes/No
+  chisq(.data = ., exposure = Crew, outcome = Survived)
+# # A tibble: 1 x 9
+#   test      estimate ci_lower ci_upper statistic    df   pvalue exposure outcome
+#   <chr>     <lgl>    <lgl>    <lgl>        <dbl> <int>    <dbl> <chr>    <chr>  
+# 1 Pearson'… NA       NA       NA            46.5     1 8.97e-12 Crew::T… Surviv…
 ```
 
 ### Vignettes
@@ -141,7 +153,7 @@ usage:
 vignette("basic-usage", package = "twoxtwo")
 ```
 
-For formulas and examples how to calculate measures of effect :
+For formulas and examples of how to calculate measures of effect:
 
 ``` r
 vignette("measures-of-effect", package = "twoxtwo")

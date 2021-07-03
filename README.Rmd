@@ -73,7 +73,19 @@ The `twoxtwo` class has its own `summary.twoxtwo()` method that computes effect 
 summary(crew_2x2)
 ```
 
-Each effect measure can also be calculated without first creating the `twoxtwo` object:
+Individual measures of effect, hypothesis tests, and impact numbers can be calculated using the `twoxtwo` object. For example:
+
+```{r}
+crew_2x2 %>%
+  odds_ratio()
+```
+
+```{r}
+crew_2x2 %>%
+  chisq()
+```
+
+Note that data analysis can also be performed without first creating the `twoxtwo` object:
 
 ```{r}
 titanic %>%
@@ -82,12 +94,7 @@ titanic %>%
 
 ```{r}
 titanic %>%
-  risk_ratio(.data = ., exposure = Crew, outcome = Survived)
-```
-
-```{r}
-titanic %>%
-  risk_diff(.data = ., exposure = Crew, outcome = Survived)
+  chisq(.data = ., exposure = Crew, outcome = Survived)
 ```
 
 ### Vignettes
@@ -100,7 +107,7 @@ For details on the `twoxtwo` data structure and demonstration of basic usage:
 vignette("basic-usage", package = "twoxtwo")
 ```
 
-For formulas and examples how to calculate measures of effect :
+For formulas and examples of how to calculate measures of effect:
 
 ```{r, eval = FALSE}
 vignette("measures-of-effect", package = "twoxtwo")
