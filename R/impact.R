@@ -61,8 +61,6 @@
 #' @export
 #' @rdname impact
 ein <- function(.data, exposure, outcome, alpha = 0.05, ...) {
-  ## get critical value from normal distribution based on value to alpha
-  critical_value <- stats::qnorm(1-(alpha/2))
 
   if(any(class(.data) == "twoxtwo")) {
     tmp_twoxtwo <- .data
@@ -75,11 +73,19 @@ ein <- function(.data, exposure, outcome, alpha = 0.05, ...) {
     tmp_twoxtwo <- twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)
   }
 
-  tmp_rd <- risk_diff(tmp_twoxtwo)
+  tmp_rd <- risk_diff(tmp_twoxtwo, alpha = alpha)
 
   tmp_ein <- 1/tmp_rd$estimate
   ci_lower_bound <- 1/tmp_rd$ci_upper
   ci_upper_bound <- 1/tmp_rd$ci_lower
+
+  ## if the risk difference is
+  if(ci_upper_bound < ci_lower_bound) {
+    warning("The risk difference CI includes 0, which yields an ambiguous EIN CI. Upper and lower bounds of EIN CI will be reported as NA.")
+    ci_lower_bound <- NA
+    ci_upper_bound <- NA
+  }
+
 
   ## return everything as a tibble
   dplyr::tibble(
@@ -95,8 +101,6 @@ ein <- function(.data, exposure, outcome, alpha = 0.05, ...) {
 #' @export
 #' @rdname impact
 cin <- function(.data, exposure, outcome, alpha = 0.05, prevalence = NULL, ...) {
-  ## get critical value from normal distribution based on value to alpha
-  critical_value <- stats::qnorm(1-(alpha/2))
 
   if(any(class(.data) == "twoxtwo")) {
     tmp_twoxtwo <- .data
@@ -109,7 +113,7 @@ cin <- function(.data, exposure, outcome, alpha = 0.05, prevalence = NULL, ...) 
     tmp_twoxtwo <- twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)
   }
 
-  tmp_parp <- parp(tmp_twoxtwo, percent = FALSE, prevalence = prevalence)
+  tmp_parp <- parp(tmp_twoxtwo, percent = FALSE, prevalence = prevalence, alpha = alpha)
 
   tmp_cin <- 1/tmp_parp$estimate
   ci_lower_bound <- 1/tmp_parp$ci_upper
@@ -129,8 +133,6 @@ cin <- function(.data, exposure, outcome, alpha = 0.05, prevalence = NULL, ...) 
 #' @export
 #' @rdname impact
 ecin <- function(.data, exposure, outcome, alpha = 0.05, ...) {
-  ## get critical value from normal distribution based on value to alpha
-  critical_value <- stats::qnorm(1-(alpha/2))
 
   if(any(class(.data) == "twoxtwo")) {
     tmp_twoxtwo <- .data
@@ -143,7 +145,7 @@ ecin <- function(.data, exposure, outcome, alpha = 0.05, ...) {
     tmp_twoxtwo <- twoxtwo(.data, !! quo_exposure, !! quo_outcome, ...)
   }
 
-  tmp_arp <- arp(tmp_twoxtwo, percent = FALSE)
+  tmp_arp <- arp(tmp_twoxtwo, percent = FALSE, alpha = alpha)
 
   tmp_ecin <- 1/tmp_arp$estimate
   ci_lower_bound <- 1/tmp_arp$ci_upper
