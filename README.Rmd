@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 [![build status (main)](https://github.com/vpnagraj/twoxtwo/workflows/R-CMD-check-main/badge.svg)](https://github.com/vpnagraj/twoxtwo/actions)
 [![build status (dev)](https://github.com/vpnagraj/twoxtwo/workflows/R-CMD-check-dev/badge.svg)](https://github.com/vpnagraj/twoxtwo/actions)
+[![](https://cranlogs.r-pkg.org/badges/twoxtwo)](https://cran.r-project.org/package=twoxtwo)
 <!-- badges: end -->
 
 The `twoxtwo` package provides a collection of functions to display, summarize, and analyze data in two-by-two contingency tables. Statistical analysis functions are oriented towards epidemiological investigation of exposure/outcome relationships.
