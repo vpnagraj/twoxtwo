@@ -19,6 +19,14 @@ investigation of exposure/outcome relationships.
 
 ## Installation
 
+To install the stable release from CRAN:
+
+``` r
+install.packages("twoxtwo")
+```
+
+Or to install the development release from GitHub:
+
 ``` r
 ## install.packages("devtools")
 devtools::install_github("vpnagraj/twoxtwo", build_vignettes = TRUE)

@@ -25,6 +25,14 @@ The `twoxtwo` package provides a collection of functions to display, summarize, 
 
 ## Installation
 
+To install the stable release from CRAN:
+
+```{r, eval=FALSE}
+install.packages("twoxtwo")
+```
+
+Or to install the development release from GitHub:
+
 ```{r, eval=FALSE}
 ## install.packages("devtools")
 devtools::install_github("vpnagraj/twoxtwo", build_vignettes = TRUE)
