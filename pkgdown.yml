@@ -1,0 +1,10 @@
+pandoc: 2.7.3
+pkgdown: 1.6.1
+pkgdown_sha: ~
+articles:
+  af-impact: af-impact.html
+  basic-usage: basic-usage.html
+  hypothesis-testing: hypothesis-testing.html
+  measures-of-effect: measures-of-effect.html
+last_built: 2021-11-01T23:24Z
+
